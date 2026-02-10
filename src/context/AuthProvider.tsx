@@ -37,6 +37,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 const data = await res.json();
                 setCustomer(data.customer);
             } else {
+                // 401 is expected when not logged in, don't log as error
+                if (res.status !== 401) {
+                    console.error("Failed to fetch customer session:", res.status);
+                }
                 setCustomer(null);
             }
         } catch (error) {

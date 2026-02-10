@@ -7,7 +7,10 @@ import VariantSelector from '@/components/product/VariantSelector';
 import AddToCart from '@/components/product/AddToCart';
 import ProductSpecs from '@/components/product/ProductSpecs';
 
-export const revalidate = 3600;
+// Enable dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+// Or use ISR with revalidation
+// export const revalidate = 3600;
 
 type Props = {
     params: Promise<{ handle: string }>;

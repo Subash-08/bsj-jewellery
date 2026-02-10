@@ -4,7 +4,8 @@ import { generateSeo } from '@/lib/seo/metadata';
 // import { mockProducts } from '@/lib/shopify/mock'; // Could mock collection too but empty is fine for now
 import CollectionWithFilters from '@/components/features/CollectionWithFilters';
 
-export const revalidate = 3600;
+// Enable dynamic rendering for this route
+export const dynamic = 'force-dynamic';
 
 type Props = {
     params: Promise<{ collection: string }>;
