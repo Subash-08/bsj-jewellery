@@ -1,0 +1,8 @@
+export default function CartSuccessPage() {
+    return (
+        <main>
+            <h1>Order Successful</h1>
+            <p>Thank you for your purchase.</p>
+        </main>
+    );
+}
