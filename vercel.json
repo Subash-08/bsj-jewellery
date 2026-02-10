@@ -1,2 +1,8 @@
-// Skeleton file
-export {};
+{
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/"
+        }
+    ]
+}

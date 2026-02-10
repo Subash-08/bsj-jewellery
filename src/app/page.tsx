@@ -2,7 +2,6 @@ import { getProducts } from '@/lib/shopify/client';
 import { Suspense } from 'react';
 import Hero from '@/components/features/Hero';
 import ProductGrid from '@/components/features/ProductGrid';
-import Navbar from '@/components/layout/Navbar';
 
 export const revalidate = 3600;
 
@@ -31,8 +30,7 @@ export default async function HomePage() {
   }
 
   return (
-    <main className="bg-white min-h-screen">
-      <Navbar />
+    <main className="bg-white min-h-screen pt-32">
       <Hero />
       <Suspense fallback={<div className="text-center py-20">Loading best sellers...</div>}>
         <ProductGrid title="Best Sellers" products={products.slice(0, 4)} />

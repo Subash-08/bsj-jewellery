@@ -5,13 +5,14 @@ import { SessionProvider } from '@/context/SessionProvider';
 import { AuthProvider } from '@/context/AuthProvider';
 import { ThemeProvider } from '@/context/ThemeProvider';
 import { WishlistProvider } from '@/context/WishlistProvider';
+import Navbar from '@/components/layout/Navbar';
 import type { Metadata } from 'next';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Jewelry Store',
-  description: 'Exquisite jewelry for every occasion',
+  title: 'BSJ Jewellery - Exquisite Jewelry for Every Occasion',
+  description: 'Discover our stunning collection of rings, necklaces, bangles, and more. Premium quality jewelry with free shipping on orders above ₹10,000.',
 };
 
 export default function RootLayout({
@@ -26,7 +27,10 @@ export default function RootLayout({
           <AuthProvider>
             <ThemeProvider>
               <WishlistProvider>
-                <CartProvider>{children}</CartProvider>
+                <CartProvider>
+                  <Navbar />
+                  {children}
+                </CartProvider>
               </WishlistProvider>
             </ThemeProvider>
           </AuthProvider>

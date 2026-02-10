@@ -8,6 +8,9 @@ type CartContextType = {
     addCartItem: (variantId: string, quantity: number) => Promise<void>;
     updateCartItem: (lineId: string, quantity: number) => Promise<void>;
     removeCartItem: (lineId: string) => Promise<void>;
+    isCartOpen: boolean;
+    setIsCartOpen: (open: boolean) => void;
+    itemCount: number;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -15,6 +18,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: React.ReactNode }) {
     const [cart, setCart] = useState<Cart | undefined>(undefined);
     const [cartId, setCartId] = useState<string | undefined>(undefined);
+    const [isCartOpen, setIsCartOpen] = useState(false);
 
     useEffect(() => {
         // Initialize cart from local storage or create new
@@ -87,14 +91,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setCart(updatedCart);
     };
 
+    const itemCount = cart?.totalQuantity || 0;
+
     const value = useMemo(
         () => ({
             cart,
             addCartItem,
             updateCartItem,
             removeCartItem,
+            isCartOpen,
+            setIsCartOpen,
+            itemCount,
         }),
-        [cart, cartId]
+        [cart, cartId, isCartOpen, itemCount]
     );
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
