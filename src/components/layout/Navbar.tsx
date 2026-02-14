@@ -2,19 +2,22 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Search, ShoppingBag, Heart, User, Menu, X, Phone, Mail, ChevronDown } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
 import { cn } from '@/lib/utils';
 import TopBar from './TopBar';
 import ShopByCategoryMenu from './ShopByCategoryMenu';
+import CartDrawer from './CartDrawer';
 
 export default function Navbar() {
-    const { itemCount, setIsCartOpen } = useCart();
+    const { itemCount, isCartOpen, setIsCartOpen } = useCart();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
+    const [isCartHovered, setIsCartHovered] = useState(false);
     const pathname = usePathname();
+    const router = useRouter();
 
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 30);
@@ -79,7 +82,8 @@ export default function Navbar() {
 
                             <div
                                 className="flex flex-col items-center cursor-pointer group relative"
-                                onClick={() => setIsCartOpen(true)}
+                                onMouseEnter={() => setIsCartHovered(true)}
+                                onClick={() => router.push('/cart')}
                             >
                                 <div className="relative">
                                     <ShoppingBag size={22} className="text-stone-700 group-hover:text-rose-600 transition-colors" />
@@ -267,6 +271,19 @@ export default function Navbar() {
                     </div>
                 </div>
             )}
+
+            {/* Cart Drawer */}
+            <CartDrawer
+                isOpen={isCartHovered || isCartOpen}
+                onClose={() => {
+                    setIsCartHovered(false);
+                    setIsCartOpen(false);
+                }}
+                onCartClick={() => {
+                    setIsCartHovered(false);
+                    setIsCartOpen(false);
+                }}
+            />
         </>
     );
 }

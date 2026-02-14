@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
+import { useCart } from '@/context/CartProvider'; // Adjust the import path as needed
 import { cn } from '@/lib/utils';
 
 const ShoppingBag = ({ className }: { className?: string }) => (
@@ -19,25 +19,24 @@ interface AddToCartProps {
 
 export default function AddToCart({ availableForSale, variantId }: AddToCartProps) {
     const [isPending, startTransition] = useTransition();
-    const router = useRouter();
+    const { addCartItem, isLoading, setIsCartOpen } = useCart();
 
     const handleAddToCart = () => {
         if (!availableForSale || !variantId) return;
 
         startTransition(async () => {
-            // const error = await addItem(variantId);
-            // if (error) {
-            //     // Handle error
-            //     alert(error);
-            //     return;
-            // }
-            // router.refresh();
-            // Open cart drawer logic here
-            console.log("Adding to cart:", variantId);
-            // Simulate delay
-            await new Promise(resolve => setTimeout(resolve, 800));
+            try {
+                await addCartItem(variantId, 1);
+                console.log("Successfully added to cart:", variantId);
+                setIsCartOpen(true); // Open cart drawer after adding
+            } catch (error) {
+                console.error("Failed to add to cart:", error);
+                alert("Failed to add item to cart. Please try again.");
+            }
         });
     };
+
+    const isDisabled = !availableForSale || !variantId || isPending || isLoading;
 
     if (!availableForSale) {
         return (
@@ -53,18 +52,18 @@ export default function AddToCart({ availableForSale, variantId }: AddToCartProp
     return (
         <button
             onClick={handleAddToCart}
-            disabled={isPending || !variantId}
+            disabled={isDisabled}
             className={cn(
                 "w-full py-4 bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition-all duration-300 flex items-center justify-center gap-2 font-medium text-lg shadow-lg hover:shadow-xl active:scale-[0.98]",
-                (isPending || !variantId) && "opacity-80 cursor-not-allowed"
+                isDisabled && "opacity-80 cursor-not-allowed"
             )}
         >
-            {isPending ? (
+            {isPending || isLoading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
             ) : (
                 <ShoppingBag className="w-5 h-5" />
             )}
-            {isPending ? 'Adding...' : 'Add to Cart'}
+            {isPending || isLoading ? 'Adding...' : 'Add to Cart'}
         </button>
     );
 }
