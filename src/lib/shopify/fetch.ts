@@ -11,7 +11,7 @@ const API_VERSION = env.SHOPIFY_API_VERSION;
 const ENDPOINT = `https://${DOMAIN}/api/${API_VERSION}/graphql.json`;
 
 export async function shopifyFetch<T>({
-    cache = 'force-cache',
+    cache,
     headers,
     query,
     tags,
@@ -24,25 +24,34 @@ export async function shopifyFetch<T>({
     variables?: Record<string, unknown>;
 }): Promise<{ status: number; body: T } | never> {
     const method = 'POST';
+    const isDevelopment = process.env.NODE_ENV === 'development';
+
+    const fetchConfig: RequestInit = {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Shopify-Storefront-Access-Token': STOREFRONT_ACCESS_TOKEN,
+            ...headers,
+        },
+        body: JSON.stringify({
+            ...(query && { query }),
+            ...(variables && { variables }),
+        }),
+    };
+
+    // Use 'no-store' in development mode or if explicitly requested (e.g. for mutations)
+    if (cache === 'no-store' || isDevelopment) {
+        fetchConfig.cache = 'no-store';
+    } else {
+        // In production, respect revalidation for static queries
+        fetchConfig.next = {
+            ...(tags && { tags }),
+            revalidate: 60,
+        };
+    }
 
     try {
-        const result = await fetchWithRetry(
-            ENDPOINT,
-            {
-                method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Shopify-Storefront-Access-Token': STOREFRONT_ACCESS_TOKEN,
-                    ...headers,
-                },
-                body: JSON.stringify({
-                    ...(query && { query }),
-                    ...(variables && { variables }),
-                }),
-                cache,
-                ...(tags && { next: { tags } }),
-            }
-        );
+        const result = await fetchWithRetry(ENDPOINT, fetchConfig);
 
         const body = await result.json();
 

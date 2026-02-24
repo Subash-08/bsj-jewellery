@@ -72,7 +72,6 @@ export async function getProducts({
         query: getProductsQuery,
         variables: { sortKey, reverse, query },
         tags: ['products'],
-        cache: 'force-cache',
     });
     const rawProducts = res.body.products.edges.map((edge) => edge.node);
     return rawProducts
@@ -85,7 +84,6 @@ export async function getCollection(handle: string): Promise<Collection | undefi
         query: getCollectionQuery,
         variables: { handle },
         tags: [`collections-${handle}`],
-        cache: 'force-cache',
     });
     // Note: Collections might need similar reshaping if their products field is used extensively,
     // but typically getCollection returns products as edges.
@@ -104,7 +102,6 @@ export async function getCollections(): Promise<Collection[]> {
     }>({
         query: getCollectionsQuery,
         tags: ['collections'],
-        cache: 'force-cache',
     });
     return res.body.collections.edges.map((edge) => edge.node);
 }

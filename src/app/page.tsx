@@ -14,7 +14,6 @@ export default async function HomePage() {
   try {
     const productsRes = await getProducts();
     products = productsRes || [];
-    console.log('Products:', products);
   } catch (e) {
     console.error('Failed to fetch best sellers, using mock data:', e);
     products = mockProducts;
