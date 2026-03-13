@@ -7,8 +7,7 @@ export function toJsonLd(product: Product): string {
         name: product.title,
         description: product.description,
         image: product.featuredImage?.url,
-        offers: product.variants.edges.map((edge) => {
-            const variant = edge.node;
+        offers: product.variants.map((variant) => {
             return {
                 '@type': 'Offer',
                 availability: variant.availableForSale
@@ -16,7 +15,7 @@ export function toJsonLd(product: Product): string {
                     : 'https://schema.org/OutOfStock',
                 price: variant.price.amount,
                 priceCurrency: variant.price.currencyCode,
-                sku: variant.id, // Better to use SKU if available, else ID
+                sku: variant.sku || variant.id, 
             };
         }),
     };

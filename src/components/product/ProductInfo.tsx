@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from '@/types/shopify/product';
+import type { Product } from '@/types/shopify/product';
 import { usePriceFormatter } from '@/hooks/usePriceFormatter';
 
 interface ProductInfoProps {

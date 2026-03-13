@@ -6,6 +6,7 @@ import { AuthProvider } from '@/context/AuthProvider';
 import { ThemeProvider } from '@/context/ThemeProvider';
 import { WishlistProvider } from '@/context/WishlistProvider';
 import Navbar from '@/components/layout/Navbar';
+import { Toaster } from 'sonner';
 import type { Metadata } from 'next';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -28,6 +29,7 @@ export default function RootLayout({
             <ThemeProvider>
               <WishlistProvider>
                 <CartProvider>
+                  <Toaster position="top-right" richColors closeButton expand />
                   <Navbar />
                   {children}
                 </CartProvider>

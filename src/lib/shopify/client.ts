@@ -18,10 +18,11 @@ import {
     getProductsQuery,
     getCollectionQuery,
     getCollectionsQuery,
+    getCollectionProductsQuery,
     getCartQuery,
     getCustomerQuery,
 } from './queries';
-import type { Product } from '@/types/shopify/product';
+import type { Product, Filter, PageInfo } from '@/types/shopify/product';
 import type { Connection } from '@/types/shopify/image';
 import type { Cart } from '@/types/shopify/cart';
 import type { Collection } from '@/types/shopify/collection';
@@ -94,6 +95,58 @@ export async function getCollection(handle: string): Promise<Collection | undefi
     // Optional: Reshape products inside collection if needed by UI
     // const products = res.body.collection.products.edges.map(e => reshapeProduct(e.node));
     return res.body.collection;
+}
+
+export async function getCollectionProducts({
+    handle,
+    sortKey,
+    reverse,
+    filters,
+    after,
+}: {
+    handle: string;
+    sortKey?: string;
+    reverse?: boolean;
+    filters?: any[];
+    after?: string;
+}): Promise<{ products: Product[]; filters: Filter[]; pageInfo: PageInfo } | undefined> {
+    const res = await shopifyFetch<{
+        collection: {
+            products: {
+                edges: Array<{ node: Product }>;
+                filters: Filter[];
+                pageInfo: PageInfo;
+            };
+        };
+    }>({
+        query: getCollectionProductsQuery,
+        variables: { handle, sortKey, reverse, filters, after },
+        tags: [`collections-${handle}`],
+    });
+
+    if (!res.body.collection) {
+        return undefined;
+    }
+
+    const products = res.body.collection.products;
+    const shopifyFilters = products.filters;
+    const pageInfo = products.pageInfo;
+    
+    // Check if products is undefined just in case
+    if (!products) {
+       return { products: [], filters: [], pageInfo: { hasNextPage: false, hasPreviousPage: false, startCursor: null, endCursor: null } };
+    }
+
+    const rawProducts = products.edges.map((edge) => edge.node);
+    const reshapedProducts = rawProducts
+        .map(reshapeProduct)
+        .filter((p): p is Product => p !== undefined);
+
+    return {
+        products: reshapedProducts,
+        filters: shopifyFilters,
+        pageInfo,
+    };
 }
 
 export async function getCollections(): Promise<Collection[]> {

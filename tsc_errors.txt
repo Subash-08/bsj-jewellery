@@ -1,0 +1,17 @@
+src/app/(routes)/collections/[collection]/page.tsx(44,17): error TS18048: 'priceStr' is possibly 'undefined'.
+src/app/(routes)/collections/[collection]/page.tsx(45,36): error TS18048: 'priceStr' is possibly 'undefined'.
+src/app/actions/get-products.ts(4,10): error TS2305: Module '"@/types/shopify/product"' has no exported member 'ProductFilter'.
+src/app/api/auth/login/route.ts(57,54): error TS2339: Property 'errors' does not exist on type 'ZodError<unknown>'.
+src/app/api/auth/recover/route.ts(27,54): error TS2339: Property 'errors' does not exist on type 'ZodError<unknown>'.
+src/app/api/auth/register/route.ts(64,54): error TS2339: Property 'errors' does not exist on type 'ZodError<unknown>'.
+src/app/api/auth/reset/route.ts(70,54): error TS2339: Property 'errors' does not exist on type 'ZodError<unknown>'.
+src/components/collection/InfiniteProductGrid.tsx(109,21): error TS2532: Object is possibly 'undefined'.
+src/components/filters/PriceSlider.tsx(21,32): error TS18048: 'priceStr' is possibly 'undefined'.
+src/components/product/AddToCart.tsx(22,26): error TS2339: Property 'isLoading' does not exist on type 'CartContextType'.
+src/components/product/ProductGallery.tsx(28,29): error TS18048: 'selectedImage' is possibly 'undefined'.
+src/components/product/ProductGallery.tsx(48,30): error TS18048: 'selectedImage' is possibly 'undefined'.
+src/components/product/ProductGallery.tsx(56,34): error TS18048: 'selectedImage' is possibly 'undefined'.
+src/components/product/ProductGallery.tsx(57,34): error TS18048: 'selectedImage' is possibly 'undefined'.
+src/components/product/ProductInfo.tsx(3,10): error TS1484: 'Product' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+src/lib/seo/jsonld.ts(10,34): error TS2339: Property 'edges' does not exist on type 'ProductVariant[]'.
+src/lib/seo/jsonld.ts(10,45): error TS7006: Parameter 'edge' implicitly has an 'any' type.

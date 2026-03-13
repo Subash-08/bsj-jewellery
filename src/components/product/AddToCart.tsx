@@ -54,7 +54,7 @@ export default function AddToCart({ availableForSale, variantId }: AddToCartProp
             onClick={handleAddToCart}
             disabled={isDisabled}
             className={cn(
-                "w-full py-4 bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition-all duration-300 flex items-center justify-center gap-2 font-medium text-lg shadow-lg hover:shadow-xl active:scale-[0.98]",
+                "w-full py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition-all duration-300 flex items-center justify-center gap-2 font-medium text-sm shadow-sm hover:shadow active:scale-[0.98]",
                 isDisabled && "opacity-80 cursor-not-allowed"
             )}
         >

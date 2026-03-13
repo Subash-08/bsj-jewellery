@@ -1,0 +1,10 @@
+src/app/api/auth/login/route.ts(57,54): error TS2339: Property 'errors' does not exist on type 'ZodError<unknown>'.
+src/app/api/auth/recover/route.ts(27,54): error TS2339: Property 'errors' does not exist on type 'ZodError<unknown>'.
+src/app/api/auth/register/route.ts(64,54): error TS2339: Property 'errors' does not exist on type 'ZodError<unknown>'.
+src/app/api/auth/reset/route.ts(70,54): error TS2339: Property 'errors' does not exist on type 'ZodError<unknown>'.
+src/components/collection/InfiniteProductGrid.tsx(122,21): error TS2532: Object is possibly 'undefined'.
+src/components/layout/CartLineItem.tsx(4,15): error TS2305: Module '"@/types/shopify/cart"' has no exported member 'CartItem'.
+src/components/product/ProductGallery.tsx(28,29): error TS18048: 'selectedImage' is possibly 'undefined'.
+src/components/product/ProductGallery.tsx(48,30): error TS18048: 'selectedImage' is possibly 'undefined'.
+src/components/product/ProductGallery.tsx(56,34): error TS18048: 'selectedImage' is possibly 'undefined'.
+src/components/product/ProductGallery.tsx(57,34): error TS18048: 'selectedImage' is possibly 'undefined'.

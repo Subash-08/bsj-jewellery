@@ -184,6 +184,29 @@ const productFragment = /* GraphQL */ `
   ${metafieldFragment}
 `;
 
+const filterFragment = /* GraphQL */ `
+  fragment filter on Filter {
+    id
+    label
+    type
+    values {
+      id
+      label
+      count
+      input
+    }
+  }
+`;
+
+const pageInfoFragment = /* GraphQL */ `
+  fragment pageInfo on PageInfo {
+    hasNextPage
+    hasPreviousPage
+    startCursor
+    endCursor
+  }
+`;
+
 const cartFragment = /* GraphQL */ `
   fragment cart on Cart {
     id
@@ -242,4 +265,6 @@ export {
   priceFragment,
   productFragment,
   cartFragment,
+  filterFragment,
+  pageInfoFragment,
 };

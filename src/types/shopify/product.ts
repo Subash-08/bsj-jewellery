@@ -77,3 +77,24 @@ export interface ProductVariant {
         value: string;
     }>;
 }
+
+export interface FilterValue {
+    id: string;
+    label: string;
+    count: number;
+    input: string; // JSON string like {"price":{"min":10,"max":50}} or {"productMetafield":{"namespace":"custom","key":"color","value":"red"}}
+}
+
+export interface Filter {
+    id: string;
+    label: string;
+    type: 'LIST' | 'PRICE_RANGE';
+    values: FilterValue[];
+}
+
+export interface PageInfo {
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    startCursor: string | null;
+    endCursor: string | null;
+}

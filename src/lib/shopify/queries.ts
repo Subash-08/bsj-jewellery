@@ -1,6 +1,6 @@
 // q: Why doesn't this file import types? A: It uses them in implementations but the queries are string constants.
 
-import { productFragment, seoFragment, cartFragment } from './fragments';
+import { productFragment, seoFragment, cartFragment, filterFragment, pageInfoFragment } from './fragments';
 
 export const getCollectionQuery = /* GraphQL */ `
   query getCollection($handle: String!) {
@@ -29,6 +29,35 @@ export const getCollectionQuery = /* GraphQL */ `
   }
   ${seoFragment}
   ${productFragment}
+`;
+
+export const getCollectionProductsQuery = /* GraphQL */ `
+  query getCollectionProducts(
+    $handle: String!
+    $sortKey: ProductCollectionSortKeys
+    $reverse: Boolean
+    $filters: [ProductFilter!]
+    $after: String
+  ) {
+    collection(handle: $handle) {
+      products(first: 24, after: $after, filters: $filters, sortKey: $sortKey, reverse: $reverse) {
+        edges {
+          node {
+            ...product
+          }
+        }
+        filters {
+          ...filter
+        }
+        pageInfo {
+          ...pageInfo
+        }
+      }
+    }
+  }
+  ${productFragment}
+  ${filterFragment}
+  ${pageInfoFragment}
 `;
 
 export const getCollectionsQuery = /* GraphQL */ `
