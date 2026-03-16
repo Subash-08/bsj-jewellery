@@ -2,18 +2,25 @@
 
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useCallback, useState, useEffect } from 'react';
-import { X, SlidersHorizontal } from 'lucide-react';
+import { X, SlidersHorizontal, Check } from 'lucide-react';
 import { cn } from '@/components/ui/Badge'; // Using cn utility
 import type { Filter } from '@/types/shopify/product';
 import FilterGroup from './FilterGroup';
 import PriceSlider from './PriceSlider';
 
-interface FilterSidebarProps {
-    filters: Filter[];
-    currentParams: { [key: string]: string | string[] | undefined };
+interface SearchCollection {
+    handle: string;
+    title: string;
+    count: number;
 }
 
-export default function FilterSidebar({ filters, currentParams }: FilterSidebarProps) {
+interface FilterSidebarProps {
+    filters: Filter[];
+    currentParams: Record<string, string | string[] | undefined>;
+    collections?: SearchCollection[];
+}
+
+export default function FilterSidebar({ filters, currentParams, collections = [] }: FilterSidebarProps) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -23,6 +30,11 @@ export default function FilterSidebar({ filters, currentParams }: FilterSidebarP
     useEffect(() => {
         setIsOpen(false);
     }, [pathname, searchParams]);
+
+    // Navigate to the collection page — collection scoping is not available in search API
+    const updateCollection = useCallback((handle: string) => {
+        router.push(`/collections/${handle}`);
+    }, [router]);
 
     // Reconstruct URL with new or removed filter
     const updateFilter = useCallback(
@@ -122,6 +134,36 @@ export default function FilterSidebar({ filters, currentParams }: FilterSidebarP
                 </div>
 
             <div className="space-y-6">
+                {/* Collection navigation links */}
+                {collections && collections.length > 0 && (
+                    <div className="filter-group">
+                        <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+                            Shop by Collection
+                        </h3>
+                        <ul className="space-y-1 max-h-64 overflow-y-auto pr-2">
+                            {collections.map((coll) => (
+                                <li key={coll.handle}>
+                                    <button
+                                        onClick={() => updateCollection(coll.handle)}
+                                        className="w-full flex items-center justify-between py-2 px-1 text-left rounded hover:bg-rose-50 group transition-colors"
+                                    >
+                                        <span className="text-sm text-gray-700 group-hover:text-rose-700">
+                                            {coll.title}
+                                        </span>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-xs text-gray-400 font-medium bg-gray-100 px-2 py-0.5 rounded-full">
+                                                {coll.count}
+                                            </span>
+                                            <span className="text-gray-300 group-hover:text-rose-400 text-xs">→</span>
+                                        </div>
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                        <p className="text-xs text-gray-400 mt-2 italic">Opens collection page</p>
+                    </div>
+                )}
+
                 {filters.map((filter) => {
                     // Skip completely empty filters
                     if (filter.values.length === 0) return null;
@@ -142,16 +184,26 @@ export default function FilterSidebar({ filters, currentParams }: FilterSidebarP
                         // Or just "filter.v.option.color"
                         // We need to parse a usable query param key from it or use the input string
                         
-                        // Extract namespace and key from the first value's input JSON
+                        // Extract paramKey from the first value's input JSON
                         let paramKey = filter.label.toLowerCase().replace(/\s+/g, '_');
-                        if (filter.values[0] && filter.values[0].input) {
+                        if (filter.values[0]?.input) {
                             try {
                                 const inputObj = JSON.parse(filter.values[0].input);
-                                if (inputObj.productMetafield?.key) {
+                                if (inputObj.available !== undefined) {
+                                    paramKey = 'available';
+                                } else if (inputObj.productType) {
+                                    paramKey = 'productType';
+                                } else if (inputObj.tag) {
+                                    paramKey = 'tag';
+                                } else if (inputObj.productVendor) {
+                                    paramKey = 'vendor';
+                                } else if (inputObj.variantOption?.name) {
+                                    paramKey = `option_${inputObj.variantOption.name}`;
+                                } else if (inputObj.productMetafield?.key) {
                                     paramKey = inputObj.productMetafield.key;
                                 }
-                            } catch (e) {
-                                // Fallback to label
+                            } catch {
+                                // Fallback to label-based key
                             }
                         }
 

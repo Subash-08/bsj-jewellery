@@ -15,9 +15,10 @@ const Loader2 = ({ className }: { className?: string }) => (
 interface AddToCartProps {
     availableForSale: boolean;
     variantId?: string;
+    quantity?: number;
 }
 
-export default function AddToCart({ availableForSale, variantId }: AddToCartProps) {
+export default function AddToCart({ availableForSale, variantId, quantity = 1 }: AddToCartProps) {
     const [isPending, startTransition] = useTransition();
     const { addCartItem, isLoading, setIsCartOpen } = useCart();
 
@@ -26,7 +27,7 @@ export default function AddToCart({ availableForSale, variantId }: AddToCartProp
 
         startTransition(async () => {
             try {
-                await addCartItem(variantId, 1);
+                await addCartItem(variantId, quantity);
                 console.log("Successfully added to cart:", variantId);
                 setIsCartOpen(true); // Open cart drawer after adding
             } catch (error) {
@@ -38,13 +39,13 @@ export default function AddToCart({ availableForSale, variantId }: AddToCartProp
 
     const isDisabled = !availableForSale || !variantId || isPending || isLoading;
 
-    if (!availableForSale) {
+    if (!availableForSale || !variantId) {
         return (
             <button
                 disabled
-                className="w-full py-4 bg-gray-100 text-gray-400 rounded-lg cursor-not-allowed font-medium text-lg"
+                className="w-full py-4 bg-stone-100 text-stone-400 rounded-sm cursor-not-allowed font-medium text-sm tracking-[0.2em] uppercase"
             >
-                Out of Stock
+                {!variantId ? "Unavailable" : "Notify Me When Available"}
             </button>
         );
     }
@@ -54,7 +55,7 @@ export default function AddToCart({ availableForSale, variantId }: AddToCartProp
             onClick={handleAddToCart}
             disabled={isDisabled}
             className={cn(
-                "w-full py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition-all duration-300 flex items-center justify-center gap-2 font-medium text-sm shadow-sm hover:shadow active:scale-[0.98]",
+                "w-full py-4 bg-stone-900 text-white text-sm uppercase tracking-[0.2em] font-bold hover:bg-amber-700 transition-all duration-300 rounded-sm flex items-center justify-center gap-2",
                 isDisabled && "opacity-80 cursor-not-allowed"
             )}
         >

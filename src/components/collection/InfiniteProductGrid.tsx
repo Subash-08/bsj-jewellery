@@ -3,20 +3,24 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import type { Product, PageInfo } from '@/types/shopify/product';
-import { fetchMoreProducts } from '@/app/actions/get-products';
+import { fetchMoreProducts, fetchMoreSearchProducts } from '@/app/actions/get-products';
 import { ProductCard } from '@/components/product/ProductCard';
 import { ProductCardSkeleton } from '@/components/product/ProductCardSkeleton';
 
 interface InfiniteProductGridProps {
     initialProducts: Product[];
     initialPageInfo: PageInfo;
-    collectionHandle: string;
+    collectionHandle?: string;    // For collection pages
+    searchQuery?: string;         // For search pages — DSL string from buildSearchQuery()
+    serializedFilters?: string;   // For search pages — JSON.stringify(ProductFilter[])
 }
 
 export default function InfiniteProductGrid({
     initialProducts,
     initialPageInfo,
-    collectionHandle
+    collectionHandle,
+    searchQuery,
+    serializedFilters = '[]',
 }: InfiniteProductGridProps) {
     const searchParams = useSearchParams();
     const [products, setProducts] = useState<Product[]>(initialProducts);
@@ -34,10 +38,9 @@ export default function InfiniteProductGrid({
     }, [initialProducts, initialPageInfo]);
 
     // Construct filters based on current URL Search Parameters
-    // We parse them exactly identically to the server so we can request the next page correctly
     const parseClientFilters = useCallback(() => {
         const filters: any[] = [];
-        const ignoreParams = ['sort', 'q', 'page', 'after'];
+        const ignoreParams = ['sort', 'q', 'page', 'after', 'collection'];
         
         const paramsEntries = Array.from(searchParams.entries());
         for (const [key, value] of paramsEntries) {
@@ -72,48 +75,85 @@ export default function InfiniteProductGrid({
 
         setLoading(true);
 
-        const filters = parseClientFilters();
-        
         // Parse sort
         const sortParam = searchParams.get('sort');
-        let sortKey = 'COLLECTION_DEFAULT';
         let reverse = false;
 
-        if (sortParam === 'price-asc') {
-            sortKey = 'PRICE';
-            reverse = false;
-        } else if (sortParam === 'price-desc') {
-            sortKey = 'PRICE';
-            reverse = true;
-        } else if (sortParam === 'newest') {
-            sortKey = 'CREATED_AT';
-            reverse = true;
-        } else if (sortParam === 'best-selling') {
-            sortKey = 'BEST_SELLING';
-            reverse = false; // Shopify default for best-selling
-        }
+        if (searchQuery) {
+            // SEARCH MODE: use fetchMoreSearchProducts with serialized filters
+            let searchSortKey = 'RELEVANCE';
 
-        const nextData = await fetchMoreProducts(
-            collectionHandle,
-            filters,
-            sortKey,
-            reverse,
-            pageInfo.endCursor as string
-        );
+            if (sortParam === 'price-asc') {
+                searchSortKey = 'PRICE';
+                reverse = false;
+            } else if (sortParam === 'price-desc') {
+                searchSortKey = 'PRICE';
+                reverse = true;
+            } else if (sortParam === 'newest') {
+                searchSortKey = 'CREATED_AT';
+                reverse = true;
+            } else if (sortParam === 'best-selling') {
+                searchSortKey = 'BEST_SELLING';
+                reverse = false;
+            }
 
-        if (nextData && nextData.products) {
-            setProducts(prev => {
-                // Deduplicate by ID
-                const newProducts = nextData.products.filter(
-                    newP => !prev.some(p => p.id === newP.id)
-                );
-                return [...prev, ...newProducts];
-            });
-            setPageInfo(nextData.pageInfo);
+            // Note: sort is baked into the initial server fetch but pagination ignores
+            // sort (Shopify search pagination uses cursor, sort order is preserved)
+            const nextData = await fetchMoreSearchProducts(
+                searchQuery,
+                serializedFilters,
+                pageInfo.endCursor as string
+            );
+
+            if (nextData && nextData.products) {
+                setProducts(prev => {
+                    const newProducts = nextData.products.filter(
+                        (newP: Product) => !prev.some(p => p.id === newP.id)
+                    );
+                    return [...prev, ...newProducts];
+                });
+                setPageInfo(nextData.pageInfo);
+            }
+        } else if (collectionHandle) {
+            // COLLECTION MODE: use existing fetchMoreProducts
+            const filters = parseClientFilters();
+            let collectionSortKey = 'COLLECTION_DEFAULT';
+
+            if (sortParam === 'price-asc') {
+                collectionSortKey = 'PRICE';
+                reverse = false;
+            } else if (sortParam === 'price-desc') {
+                collectionSortKey = 'PRICE';
+                reverse = true;
+            } else if (sortParam === 'newest') {
+                collectionSortKey = 'CREATED_AT';
+                reverse = true;
+            } else if (sortParam === 'best-selling') {
+                collectionSortKey = 'BEST_SELLING';
+                reverse = false;
+            }
+
+            const nextData = await fetchMoreProducts(
+                collectionHandle,
+                filters,
+                collectionSortKey,
+                reverse,
+                pageInfo.endCursor as string
+            );
+
+            if (nextData && nextData.products) {
+                setProducts(prev => {
+                    const newProducts = nextData.products.filter(
+                        newP => !prev.some(p => p.id === newP.id)
+                    );
+                    return [...prev, ...newProducts];
+                });
+                setPageInfo(nextData.pageInfo);
+            }
         }
 
         setLoading(false);
-    }, [loading, pageInfo, searchParams, parseClientFilters, collectionHandle]);
+    }, [loading, pageInfo, searchParams, parseClientFilters, collectionHandle, searchQuery]);
 
     // Setup intersection observer for infinite scroll
     useEffect(() => {
@@ -123,7 +163,7 @@ export default function InfiniteProductGrid({
                     loadMore();
                 }
             },
-            { threshold: 0.1, rootMargin: '400px' } // Load earlier
+            { threshold: 0.1, rootMargin: '400px' }
         );
 
         const currentLoader = loaderRef.current;
@@ -135,7 +175,7 @@ export default function InfiniteProductGrid({
             if (currentLoader) {
                 observer.unobserve(currentLoader);
             }
-            observer?.disconnect(); // Prevent memory leaks
+            observer?.disconnect();
         };
     }, [loadMore]);
 
@@ -162,7 +202,7 @@ export default function InfiniteProductGrid({
                 )}
                 {!loading && !pageInfo.hasNextPage && products.length > 0 && (
                     <p className="text-gray-400 text-sm mt-8 border-t border-gray-100 pt-8 text-center w-full">
-                        You've reached the end of the collection.
+                        {searchQuery ? "You've seen all search results." : "You've reached the end of the collection."}
                     </p>
                 )}
             </div>

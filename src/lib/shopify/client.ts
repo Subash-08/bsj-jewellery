@@ -5,13 +5,19 @@ import {
     removeFromCartMutation,
     editCartLinesMutation,
     updateCartBuyerIdentityMutation,
+    createCheckoutCartMutation,
 } from './mutations';
 import {
     customerAccessTokenCreateMutation,
     customerAccessTokenDeleteMutation,
     customerCreateMutation,
     customerRecoverMutation,
-    customerResetMutation
+    customerResetMutation,
+    customerUpdateMutation,
+    customerAddressCreateMutation,
+    customerAddressUpdateMutation,
+    customerAddressDeleteMutation,
+    customerDefaultAddressUpdateMutation,
 } from './auth-mutations';
 import {
     getProductQuery,
@@ -21,6 +27,7 @@ import {
     getCollectionProductsQuery,
     getCartQuery,
     getCustomerQuery,
+    getNavProductsQuery,
 } from './queries';
 import type { Product, Filter, PageInfo } from '@/types/shopify/product';
 import type { Connection } from '@/types/shopify/image';
@@ -62,22 +69,73 @@ export async function getProducts({
     sortKey,
     reverse,
     query,
+    after,
 }: {
     sortKey?: string;
     reverse?: boolean;
     query?: string;
-} = {}): Promise<Product[]> {
+    after?: string;
+} = {}): Promise<{ products: Product[]; pageInfo: PageInfo }> {
     const res = await shopifyFetch<{
-        products: Connection<Product>;
+        products: {
+            edges: Array<{ node: Product }>;
+            pageInfo: PageInfo;
+        };
     }>({
         query: getProductsQuery,
-        variables: { sortKey, reverse, query },
-        tags: ['products'],
+        variables: { sortKey, reverse, query, after },
+        tags: query ? [`search-${query}`] : ['products'],
     });
     const rawProducts = res.body.products.edges.map((edge) => edge.node);
-    return rawProducts
+    const products = rawProducts
         .map(reshapeProduct)
         .filter((p): p is Product => p !== undefined);
+    return {
+        products,
+        pageInfo: res.body.products.pageInfo,
+    };
+}
+
+export async function getSearchResults({
+    query,
+    sortKey,
+    reverse,
+    productFilters,
+    after,
+}: {
+    query: string;
+    sortKey?: string;
+    reverse?: boolean;
+    productFilters?: any[];
+    after?: string;
+}): Promise<{ products: Product[]; filters: Filter[]; pageInfo: PageInfo }> {
+    const res = await shopifyFetch<{
+        search: {
+            edges: Array<{ node: Product }>;
+            productFilters: Filter[];
+            pageInfo: PageInfo;
+        };
+    }>({
+        query: require('./queries').searchProductsQuery,
+        variables: { query, sortKey, reverse, productFilters, after },
+        tags: [`search-${query}`],
+    });
+
+    const searchData = res.body.search;
+    if (!searchData) {
+        return { products: [], filters: [], pageInfo: { hasNextPage: false, hasPreviousPage: false, startCursor: null, endCursor: null } };
+    }
+
+    const rawProducts = searchData.edges.map((edge) => edge.node);
+    const products = rawProducts
+        .map(reshapeProduct)
+        .filter((p): p is Product => p !== undefined);
+
+    return {
+        products,
+        filters: searchData.productFilters || [],
+        pageInfo: searchData.pageInfo,
+    };
 }
 
 export async function getCollection(handle: string): Promise<Collection | undefined> {
@@ -159,12 +217,67 @@ export async function getCollections(): Promise<Collection[]> {
     return res.body.collections.edges.map((edge) => edge.node);
 }
 
+export async function getNavProducts(): Promise<{ title: string; metafields: { key: string; value: string | null }[] }[]> {
+  const res = await shopifyFetch<{
+    products: {
+      edges: Array<{
+        node: {
+          title: string;
+          metafields: ({ key: string; value: string | null } | null)[];
+        };
+      }>;
+    };
+  }>({
+    query: getNavProductsQuery,
+    tags: ['nav-products'],
+  });
+
+  return res.body.products.edges.map((e) => ({
+    title: e.node.title,
+    metafields: (e.node.metafields ?? []).filter(
+      (m): m is { key: string; value: string | null } => m !== null
+    ),
+  }));
+}
+
 export async function createCart(): Promise<Cart> {
     const res = await shopifyFetch<{ cartCreate: { cart: Cart } }>({
         query: createCartMutation,
         variables: {},
         cache: 'no-store',
     });
+    return res.body.cartCreate.cart;
+}
+
+export async function createCheckoutCart(
+    variantId: string,
+    quantity: number,
+    customerAccessToken?: string,
+    email?: string
+): Promise<{ id: string; checkoutUrl: string }> {
+    const variables = {
+        lines: [{ merchandiseId: variantId, quantity }],
+        ...(customerAccessToken ? {
+            buyerIdentity: { customerAccessToken, email }
+        } : {})
+    };
+
+    const res = await shopifyFetch<{
+        cartCreate: {
+            cart: { id: string; checkoutUrl: string };
+            userErrors: { field: string; message: string }[];
+        };
+    }>({
+        query: createCheckoutCartMutation,
+        variables,
+        cache: 'no-store',
+    });
+
+    const userErrors = res.body.cartCreate?.userErrors;
+    if (userErrors && userErrors.length > 0) {
+        throw new Error(userErrors[0].message);
+    }
+
     return res.body.cartCreate.cart;
 }
 
@@ -322,4 +435,74 @@ export async function resetCustomer(id: string, input: any) {
         cache: 'no-store',
     });
     return res.body.customerReset;
+}
+
+export async function updateCustomer(customerAccessToken: string, customer: { firstName?: string; lastName?: string; phone?: string }) {
+    const res = await shopifyFetch<{
+        customerUpdate: {
+            customer: any;
+            customerUserErrors: { code: string; field: string; message: string }[];
+        };
+    }>({
+        query: customerUpdateMutation,
+        variables: { customerAccessToken, customer },
+        cache: 'no-store',
+    });
+    return res.body.customerUpdate;
+}
+
+export async function createCustomerAddress(customerAccessToken: string, address: any) {
+    const res = await shopifyFetch<{
+        customerAddressCreate: {
+            customerAddress: { id: string } | null;
+            customerUserErrors: { code: string; field: string; message: string }[];
+        };
+    }>({
+        query: customerAddressCreateMutation,
+        variables: { customerAccessToken, address },
+        cache: 'no-store',
+    });
+    return res.body.customerAddressCreate;
+}
+
+export async function updateCustomerAddress(customerAccessToken: string, id: string, address: any) {
+    const res = await shopifyFetch<{
+        customerAddressUpdate: {
+            customerAddress: { id: string } | null;
+            customerUserErrors: { code: string; field: string; message: string }[];
+        };
+    }>({
+        query: customerAddressUpdateMutation,
+        variables: { customerAccessToken, id, address },
+        cache: 'no-store',
+    });
+    return res.body.customerAddressUpdate;
+}
+
+export async function deleteCustomerAddress(customerAccessToken: string, id: string) {
+    const res = await shopifyFetch<{
+        customerAddressDelete: {
+            deletedCustomerAddressId: string;
+            customerUserErrors: { code: string; field: string; message: string }[];
+        };
+    }>({
+        query: customerAddressDeleteMutation,
+        variables: { customerAccessToken, id },
+        cache: 'no-store',
+    });
+    return res.body.customerAddressDelete;
+}
+
+export async function setDefaultCustomerAddress(customerAccessToken: string, addressId: string) {
+    const res = await shopifyFetch<{
+        customerDefaultAddressUpdate: {
+            customer: any;
+            customerUserErrors: { code: string; field: string; message: string }[];
+        };
+    }>({
+        query: customerDefaultAddressUpdateMutation,
+        variables: { customerAccessToken, addressId },
+        cache: 'no-store',
+    });
+    return res.body.customerDefaultAddressUpdate;
 }

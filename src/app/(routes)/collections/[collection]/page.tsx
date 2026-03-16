@@ -21,8 +21,6 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         const collection = await getCollection(params.collection);
         if (!collection) return {};
 
-        const canonicalUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.bsjjewellers.com'}/collections/${params.collection}`;
-
         return generateSeo({
             title: `${collection.seo.title || collection.title} | BSJ Jewellers`,
             description: collection.seo.description || collection.description,
@@ -36,13 +34,11 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 function parseFilters(searchParams: { [key: string]: string | string[] | undefined }) {
     const filters: any[] = [];
     
-    // Process all standard search params except for system ones
     const ignoreParams = ['sort', 'q', 'page', 'after'];
     
     for (const [key, value] of Object.entries(searchParams)) {
         if (ignoreParams.includes(key) || !value) continue;
         
-        // Handle Price specially
         if (key === 'price') {
             const priceStr = Array.isArray(value) ? value[0] : value;
             if (priceStr && priceStr.includes('-')) {
@@ -57,8 +53,6 @@ function parseFilters(searchParams: { [key: string]: string | string[] | undefin
             continue;
         }
 
-        // Handle other standard metafield filters
-        // Convert to array to support multiple selected values for the same key
         const values = Array.isArray(value) ? value : value.split(',');
         
         for (const val of values) {

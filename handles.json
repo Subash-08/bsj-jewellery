@@ -1,0 +1,22 @@
+[
+  {
+    "handle": "anklet",
+    "title": "Anklet"
+  },
+  {
+    "handle": "bracelet",
+    "title": "Bracelet"
+  },
+  {
+    "handle": "ring",
+    "title": "Rings"
+  },
+  {
+    "handle": "chain",
+    "title": "Chain"
+  },
+  {
+    "handle": "pendant",
+    "title": "Pendants"
+  }
+]

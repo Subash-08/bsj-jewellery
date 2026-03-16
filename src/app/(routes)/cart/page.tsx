@@ -2,8 +2,12 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ShoppingBag, Trash2, Plus, Minus, ArrowLeft, Tag, Truck, Shield, ChevronRight } from 'lucide-react';
+import {
+    ShoppingBag, Trash2, Plus, Minus,
+    ChevronRight, Shield, Truck, Tag, Lock
+} from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
 
 export default function CartPage() {
@@ -11,6 +15,7 @@ export default function CartPage() {
     const router = useRouter();
     const [couponCode, setCouponCode] = useState('');
 
+    // ---- Business logic — UNTOUCHED ----
     const handleQuantityChange = async (lineId: string, currentQuantity: number, change: number) => {
         const newQuantity = currentQuantity + change;
         if (newQuantity > 0) {
@@ -27,186 +32,194 @@ export default function CartPage() {
             window.location.href = cart.checkoutUrl;
         }
     };
+    // ---- End business logic ----
 
-    // Empty cart state
+    // Empty state
     if (!cart || itemCount === 0) {
         return (
-            <main className="min-h-screen bg-rose-50 pt-32 pb-16">
-                <div className="container mx-auto px-4">
-                    <div className="max-w-2xl mx-auto text-center">
-                        {/* Empty Cart Icon */}
-                        <div className="w-32 h-32 mx-auto bg-white rounded-full flex items-center justify-center mb-6 shadow-lg">
-                            <ShoppingBag size={64} className="text-stone-300" />
-                        </div>
+            <main className="min-h-screen bg-[#FAF8F5] pt-48 pb-32">
+                <div className="max-w-md mx-auto px-4 text-center space-y-8">
+                    <div className="flex justify-center text-stone-200">
+                        <ShoppingBag size={120} strokeWidth={0.5} />
+                    </div>
+                    <h1 className="text-4xl font-serif font-light text-stone-900">
+                        Your Bag is Empty
+                    </h1>
+                    <p className="text-sm text-stone-500 font-light tracking-widest leading-relaxed">
+                        It looks like you haven&apos;t added anything to your bag yet.
+                        Discover our collections and find something special.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
+                        <Link
+                            href="/shop"
+                            className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-bold hover:bg-stone-800 transition-colors"
+                        >
+                            <ShoppingBag size={16} />
+                            Start Shopping
+                        </Link>
+                        <Link
+                            href="/collections/new-arrivals"
+                            className="inline-flex items-center justify-center gap-2 px-10 py-4 border border-stone-300 text-stone-700 text-xs uppercase tracking-[0.2em] font-bold hover:border-stone-900 transition-colors"
+                        >
+                            New Arrivals
+                            <ChevronRight size={16} />
+                        </Link>
+                    </div>
 
-                        {/* Empty Cart Message */}
-                        <h1 className="text-3xl font-serif font-bold text-gray-800 mb-4">
-                            Your Cart is Empty
-                        </h1>
-                        <p className="text-stone-600 mb-8 text-lg">
-                            Looks like you haven't added any jewellery to your cart yet.
-                            <br />
-                            Start shopping to find your perfect piece!
-                        </p>
-
-                        {/* Action Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Link
-                                href="/shop"
-                                className="px-8 py-4 bg-rose-600 text-white rounded-md hover:bg-rose-700 transition-all duration-200 font-semibold shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
-                            >
-                                <ShoppingBag size={20} />
-                                Start Shopping
-                            </Link>
-                            <Link
-                                href="/collections/new-arrivals"
-                                className="px-8 py-4 bg-white text-stone-700 border-2 border-stone-300 rounded-md hover:bg-stone-50 transition-colors font-semibold flex items-center justify-center gap-2"
-                            >
-                                View New Arrivals
-                                <ChevronRight size={20} />
-                            </Link>
-                        </div>
-
-                        {/* Feature Highlights */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
-                            <div className="bg-white p-6 rounded-lg shadow-sm">
-                                <Truck className="text-rose-600 mx-auto mb-3" size={32} />
-                                <h3 className="font-semibold text-gray-800 mb-2">Free Shipping</h3>
-                                <p className="text-sm text-stone-600">On orders above ₹5,000</p>
+                    {/* Trust strips */}
+                    <div className="grid grid-cols-3 gap-4 mt-16 pt-8 border-t border-stone-200">
+                        {[
+                            { icon: Truck, label: 'Free Shipping', sub: 'On orders above ₹5,000' },
+                            { icon: Shield, label: 'Certified', sub: '100% authentic' },
+                            { icon: Tag, label: 'Best Prices', sub: 'Market rates' },
+                        ].map(({ icon: Icon, label, sub }) => (
+                            <div key={label} className="flex flex-col items-center gap-2 text-center">
+                                <Icon size={24} className="text-stone-400" strokeWidth={1.5} />
+                                <span className="text-xs font-bold text-stone-700 uppercase tracking-widest">{label}</span>
+                                <span className="text-[10px] text-stone-500">{sub}</span>
                             </div>
-                            <div className="bg-white p-6 rounded-lg shadow-sm">
-                                <Shield className="text-rose-600 mx-auto mb-3" size={32} />
-                                <h3 className="font-semibold text-gray-800 mb-2">Certified Jewellery</h3>
-                                <p className="text-sm text-stone-600">100% authentic & certified</p>
-                            </div>
-                            <div className="bg-white p-6 rounded-lg shadow-sm">
-                                <Tag className="text-rose-600 mx-auto mb-3" size={32} />
-                                <h3 className="font-semibold text-gray-800 mb-2">Best Prices</h3>
-                                <p className="text-sm text-stone-600">Competitive market rates</p>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </main>
         );
     }
 
+    const subtotal = parseFloat(cart.cost?.subtotalAmount?.amount || '0');
+    const total = parseFloat(cart.cost?.totalAmount?.amount || '0');
+    const tax = parseFloat(cart.cost?.totalTaxAmount?.amount || '0');
+
     return (
-        <main className="min-h-screen bg-rose-50 pt-32 pb-16">
-            <div className="container mx-auto px-4">
-                {/* Header */}
-                <div className="mb-8">
-                    <button
-                        onClick={() => router.back()}
-                        className="flex items-center gap-2 text-stone-600 hover:text-rose-600 transition-colors mb-4 group"
-                    >
-                        <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="font-medium">Continue Shopping</span>
-                    </button>
-                    <h1 className="text-4xl font-serif font-bold text-gray-800">Shopping Cart</h1>
-                    <p className="text-stone-600 mt-2">
-                        {itemCount} {itemCount === 1 ? 'item' : 'items'} in your cart
-                    </p>
-                </div>
+        <main className="min-h-screen bg-[#FAF8F5] pt-38 pb-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Cart Items Section */}
-                    <div className="lg:col-span-2 space-y-4">
-                        {cart.lines.edges.map(({ node: line }) => (
-                            <div
-                                key={line.id}
-                                className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
-                            >
-                                <div className="flex gap-6">
-                                    {/* Product Image */}
-                                    <div className="w-32 h-32 bg-stone-100 rounded-md overflow-hidden flex-shrink-0 border border-stone-200">
-                                        {line.merchandise.product.featuredImage ? (
-                                            <img
-                                                src={line.merchandise.product.featuredImage.url}
-                                                alt={line.merchandise.product.featuredImage.altText || line.merchandise.product.title}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center">
-                                                <ShoppingBag className="text-stone-300" size={40} />
-                                            </div>
-                                        )}
-                                    </div>
+                {/* Page title */}
+                <h1 className="text-4xl font-serif font-light text-stone-900 mb-4 ">
+                    Your Shopping Bag
+                </h1>
+                <p className="text-stone-400 text-xs uppercase tracking-[0.2em] mb-12">
+                    {itemCount} {itemCount === 1 ? 'item' : 'items'} in your bag
+                </p>
 
-                                    {/* Product Details */}
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex justify-between items-start mb-3">
-                                            <div>
-                                                <h3 className="font-semibold text-lg text-gray-800 mb-1">
-                                                    {line.merchandise.product.title}
-                                                </h3>
-                                                {line.merchandise.title !== 'Default Title' && (
-                                                    <p className="text-sm text-stone-500">
-                                                        {line.merchandise.title}
-                                                    </p>
-                                                )}
-                                            </div>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+
+                    {/* ── Cart Items ── */}
+                    <div className="lg:col-span-8 space-y-0">
+
+                        {/* Table header — desktop only */}
+                        <div className="hidden md:grid grid-cols-12 pb-5 border-b border-stone-200 text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400">
+                            <div className="col-span-6">Product</div>
+                            <div className="col-span-2 text-center">Price</div>
+                            <div className="col-span-2 text-center">Qty</div>
+                            <div className="col-span-2 text-right">Total</div>
+                        </div>
+
+                        {cart.lines.edges.map(({ node: line }) => {
+                            const unitPrice = parseFloat(line.cost.totalAmount.amount) / line.quantity;
+                            return (
+                                <div
+                                    key={line.id}
+                                    className="grid grid-cols-1 md:grid-cols-12 items-center gap-6 py-8 border-b border-stone-100"
+                                >
+                                    {/* Product info */}
+                                    <div className="col-span-6 flex items-start gap-5">
+                                        {/* Image */}
+                                        <div className="w-24 h-32 bg-stone-100 overflow-hidden flex-shrink-0">
+                                            {line.merchandise.product.featuredImage ? (
+                                                <Image
+                                                    src={line.merchandise.product.featuredImage.url}
+                                                    alt={line.merchandise.product.featuredImage.altText || line.merchandise.product.title}
+                                                    width={96}
+                                                    height={128}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center bg-stone-100">
+                                                    <ShoppingBag className="text-stone-300" size={32} />
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Details */}
+                                        <div className="space-y-1 pt-1">
+                                            <h3 className="text-base font-serif tracking-wide text-stone-900">
+                                                {line.merchandise.product.title}
+                                            </h3>
+                                            {line.merchandise.title !== 'Default Title' && (
+                                                <p className="text-[10px] uppercase tracking-widest text-stone-400 font-bold">
+                                                    {line.merchandise.title}
+                                                </p>
+                                            )}
                                             <button
                                                 onClick={() => handleRemoveItem(line.id)}
-                                                className="p-2 text-stone-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                                                className="flex items-center gap-1 text-[10px] uppercase tracking-widest text-rose-500 font-bold hover:opacity-60 transition-opacity pt-2"
                                                 aria-label="Remove item"
                                             >
-                                                <Trash2 size={20} />
+                                                <Trash2 size={11} />
+                                                <span>Remove</span>
                                             </button>
                                         </div>
+                                    </div>
 
-                                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                                            {/* Quantity Controls */}
-                                            <div className="flex items-center gap-4">
-                                                <span className="text-sm font-medium text-stone-600">Quantity:</span>
-                                                <div className="flex items-center border-2 border-stone-300 rounded-md bg-white">
-                                                    <button
-                                                        onClick={() => handleQuantityChange(line.id, line.quantity, -1)}
-                                                        className="p-2 hover:bg-stone-100 transition-colors"
-                                                        aria-label="Decrease quantity"
-                                                    >
-                                                        <Minus size={16} className="text-stone-600" />
-                                                    </button>
-                                                    <span className="px-6 text-base font-semibold text-gray-800 min-w-[50px] text-center">
-                                                        {line.quantity}
-                                                    </span>
-                                                    <button
-                                                        onClick={() => handleQuantityChange(line.id, line.quantity, 1)}
-                                                        className="p-2 hover:bg-stone-100 transition-colors"
-                                                        aria-label="Increase quantity"
-                                                    >
-                                                        <Plus size={16} className="text-stone-600" />
-                                                    </button>
-                                                </div>
-                                            </div>
+                                    {/* Unit price */}
+                                    <div className="col-span-2 text-center font-bold tracking-widest text-stone-800 text-sm">
+                                        ₹{unitPrice.toLocaleString('en-IN')}
+                                    </div>
 
-                                            {/* Price */}
-                                            <div className="text-right">
-                                                <p className="text-2xl font-bold text-gray-800">
-                                                    ₹{parseFloat(line.cost.totalAmount.amount).toLocaleString('en-IN')}
-                                                </p>
-                                                {line.quantity > 1 && (
-                                                    <p className="text-sm text-stone-500">
-                                                        ₹{(parseFloat(line.cost.totalAmount.amount) / line.quantity).toLocaleString('en-IN')} each
-                                                    </p>
-                                                )}
-                                            </div>
+                                    {/* Quantity */}
+                                    <div className="col-span-2 flex justify-center">
+                                        <div className="flex items-center border border-stone-200 px-3 py-1.5 gap-4 bg-white">
+                                            <button
+                                                onClick={() => handleQuantityChange(line.id, line.quantity, -1)}
+                                                className="text-stone-400 hover:text-stone-900 transition-colors"
+                                                aria-label="Decrease quantity"
+                                            >
+                                                <Minus size={13} />
+                                            </button>
+                                            <span className="text-sm font-bold w-4 text-center text-stone-900">
+                                                {line.quantity}
+                                            </span>
+                                            <button
+                                                onClick={() => handleQuantityChange(line.id, line.quantity, 1)}
+                                                className="text-stone-400 hover:text-stone-900 transition-colors"
+                                                aria-label="Increase quantity"
+                                            >
+                                                <Plus size={13} />
+                                            </button>
                                         </div>
                                     </div>
+
+                                    {/* Line total */}
+                                    <div className="col-span-2 text-right font-bold tracking-widest text-rose-500">
+                                        ₹{parseFloat(line.cost.totalAmount.amount).toLocaleString('en-IN')}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
+
+                        {/* Continue shopping link */}
+                        <div className="pt-8">
+                            <button
+                                onClick={() => router.back()}
+                                className="text-xs uppercase tracking-widest font-bold flex items-center gap-2 text-stone-400 hover:text-stone-900 transition-colors"
+                            >
+                                <ChevronRight size={14} className="rotate-180" />
+                                <span>Continue Shopping</span>
+                            </button>
+                        </div>
                     </div>
 
-                    {/* Order Summary Sidebar */}
-                    <div className="lg:col-span-1">
-                        <div className="bg-white rounded-lg shadow-md p-6 sticky top-32">
-                            <h2 className="text-2xl font-serif font-bold text-gray-800 mb-6">Order Summary</h2>
+                    {/* ── Order Summary ── */}
+                    <div className="lg:col-span-4">
+                        <div className="bg-stone-50 p-8 space-y-6 sticky top-32 border border-stone-100">
+                            <h2 className="text-2xl font-serif font-light tracking-wide text-stone-900">
+                                Order Summary
+                            </h2>
 
-                            {/* Coupon Code */}
-                            <div className="mb-6">
-                                <label className="block text-sm font-medium text-stone-700 mb-2">
-                                    Have a coupon code?
+                            {/* Coupon */}
+                            <div className="pt-4 border-t border-stone-200">
+                                <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400 mb-2">
+                                    Coupon Code
                                 </label>
                                 <div className="flex gap-2">
                                     <input
@@ -214,73 +227,77 @@ export default function CartPage() {
                                         value={couponCode}
                                         onChange={(e) => setCouponCode(e.target.value)}
                                         placeholder="Enter code"
-                                        className="flex-1 px-4 py-2 border border-stone-300 rounded-md focus:ring-2 focus:ring-rose-400 focus:border-rose-400 text-sm"
+                                        className="flex-1 px-3 py-2 border border-stone-200 bg-white text-sm text-stone-900 focus:outline-none focus:border-stone-400 placeholder:text-stone-300"
                                     />
-                                    <button className="px-4 py-2 bg-stone-100 text-stone-700 rounded-md hover:bg-stone-200 transition-colors font-medium text-sm">
+                                    <button className="px-4 py-2 border border-stone-200 bg-white text-stone-700 text-xs uppercase tracking-widest font-bold hover:bg-stone-100 transition-colors">
                                         Apply
                                     </button>
                                 </div>
                             </div>
 
-                            {/* Price Breakdown */}
-                            <div className="space-y-3 mb-6 pb-6 border-b border-stone-200">
-                                <div className="flex justify-between text-stone-600">
-                                    <span>Subtotal ({itemCount} items)</span>
-                                    <span className="font-semibold">
-                                        ₹{parseFloat(cart.cost?.subtotalAmount?.amount || '0').toLocaleString('en-IN')}
+                            {/* Price rows */}
+                            <div className="space-y-3 pt-4 border-t border-stone-200">
+                                <div className="flex justify-between text-sm font-light tracking-widest text-stone-600">
+                                    <span>Subtotal ({itemCount} {itemCount === 1 ? 'item' : 'items'})</span>
+                                    <span>₹{subtotal.toLocaleString('en-IN')}</span>
+                                </div>
+                                <div className="flex justify-between text-sm font-light tracking-widest items-center">
+                                    <span className="text-stone-600">Shipping</span>
+                                    <span className="text-[10px] uppercase tracking-widest font-bold text-rose-500">
+                                        Complimentary
                                     </span>
                                 </div>
-                                <div className="flex justify-between text-stone-600">
-                                    <span>Shipping</span>
-                                    <span className="text-green-600 font-medium">FREE</span>
-                                </div>
-                                <div className="flex justify-between text-stone-600">
+                                <div className="flex justify-between text-sm font-light tracking-widest text-stone-600">
                                     <span>Tax</span>
-                                    <span className="font-semibold">
-                                        ₹{parseFloat(cart.cost?.totalTaxAmount?.amount || '0').toLocaleString('en-IN')}
+                                    <span>
+                                        {tax > 0 ? `₹${tax.toLocaleString('en-IN')}` : 'Calculated at checkout'}
                                     </span>
                                 </div>
                             </div>
 
                             {/* Total */}
-                            <div className="flex justify-between items-center mb-6">
-                                <span className="text-lg font-semibold text-gray-800">Total</span>
-                                <span className="text-3xl font-bold text-rose-600">
-                                    ₹{parseFloat(cart.cost?.totalAmount?.amount || '0').toLocaleString('en-IN')}
+                            <div className="pt-5 border-t border-stone-200 flex justify-between items-center">
+                                <span className="text-xl font-serif font-light text-stone-900">Total</span>
+                                <span className="text-2xl font-bold tracking-widest text-rose-500">
+                                    ₹{total.toLocaleString('en-IN')}
                                 </span>
                             </div>
 
-                            {/* Checkout Button */}
+                            {/* Checkout */}
                             <button
                                 onClick={handleCheckout}
-                                className="w-full py-4 bg-rose-600 text-white rounded-md hover:bg-rose-700 transition-all duration-200 font-bold text-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 mb-4"
+                                className="w-full py-4 bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-bold flex items-center justify-center gap-3 hover:bg-stone-800 transition-colors"
                             >
-                                Proceed to Checkout
+                                <span>Proceed to Checkout</span>
+                                <ChevronRight size={16} />
                             </button>
 
-                            {/* Continue Shopping */}
+                            {/* Continue shopping */}
                             <Link
                                 href="/shop"
-                                className="block w-full py-3 bg-white text-stone-700 border-2 border-stone-300 rounded-md hover:bg-stone-50 transition-colors font-semibold text-center"
+                                className="block w-full py-3 border border-stone-200 text-stone-600 text-xs uppercase tracking-[0.2em] font-bold text-center hover:border-stone-400 transition-colors"
                             >
                                 Continue Shopping
                             </Link>
 
-                            {/* Trust Badges */}
-                            <div className="mt-6 pt-6 border-t border-stone-200 space-y-3">
-                                <div className="flex items-center gap-3 text-sm text-stone-600">
-                                    <Shield className="text-rose-600 flex-shrink-0" size={20} />
-                                    <span>Secure checkout with SSL encryption</span>
-                                </div>
-                                <div className="flex items-center gap-3 text-sm text-stone-600">
-                                    <Truck className="text-rose-600 flex-shrink-0" size={20} />
-                                    <span>Free shipping on orders above ₹5,000</span>
-                                </div>
-                                <div className="flex items-center gap-3 text-sm text-stone-600">
-                                    <Tag className="text-rose-600 flex-shrink-0" size={20} />
-                                    <span>100% certified authentic jewellery</span>
-                                </div>
+                            {/* Trust strip */}
+                            <div className="pt-4 border-t border-stone-200 space-y-3">
+                                {[
+                                    { icon: Lock, text: 'Secure checkout with SSL encryption' },
+                                    { icon: Truck, text: 'Free shipping on orders above ₹5,000' },
+                                    { icon: Shield, text: '100% certified authentic jewellery' },
+                                ].map(({ icon: Icon, text }) => (
+                                    <div key={text} className="flex items-center gap-3 text-[10px] text-stone-500 uppercase tracking-widest font-medium">
+                                        <Icon size={14} className="text-stone-400 flex-shrink-0" />
+                                        <span>{text}</span>
+                                    </div>
+                                ))}
                             </div>
+
+                            {/* Secure badge */}
+                            <p className="text-center text-[10px] text-stone-400 uppercase tracking-[0.2em] font-medium">
+                                Secure Checkout Guaranteed
+                            </p>
                         </div>
                     </div>
                 </div>

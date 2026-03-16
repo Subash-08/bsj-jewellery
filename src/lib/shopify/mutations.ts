@@ -58,3 +58,18 @@ export const updateCartBuyerIdentityMutation = /* GraphQL */ `
   }
   ${cartFragment}
 `;
+
+export const createCheckoutCartMutation = /* GraphQL */ `
+  mutation createCheckoutCart($lines: [CartLineInput!], $buyerIdentity: CartBuyerIdentityInput) {
+    cartCreate(input: { lines: $lines, buyerIdentity: $buyerIdentity }) {
+      cart {
+        id
+        checkoutUrl
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;

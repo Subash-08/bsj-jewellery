@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-        const products = await getProducts({ query, sortKey, reverse });
+        const { products } = await getProducts({ query, sortKey, reverse });
         return NextResponse.json({ products });
     } catch (e) {
         return NextResponse.json(

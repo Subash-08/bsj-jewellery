@@ -5,26 +5,8 @@ import { Mail, ChevronDown } from 'lucide-react';
 
 export default function TopBar() {
     return (
-        <div className="bg-rose-50 border-b border-rose-100 py-1 text-center text-xs sm:text-sm font-medium text-gray-800 tracking-wide relative z-[51]">
-            <div className="container mx-auto px-4 flex justify-between items-center">
-                <div className="hidden sm:flex items-center gap-2">
-                    <Mail size={12} className="text-rose-600" />
-                    <span>support@bsjjewellery.com</span>
-                </div>
-                <p className="flex-1 text-center">
-                    Pan India Free Shipping on Orders Above ₹10,000!
-                    <span className="ml-2 font-bold text-rose-700">CODE: BSJNEW</span>
-                </p>
-                <div className="hidden sm:flex items-center gap-4">
-                    <Link href="/track-order" className="hover:text-rose-600 transition-colors">
-                        Track Order
-                    </Link>
-                    <div className="flex items-center gap-1 cursor-pointer hover:text-rose-600">
-                        <span>INR</span>
-                        <ChevronDown size={12} />
-                    </div>
-                </div>
-            </div>
+        <div className="bg-gradient-to-r from-rose-gold via-soft-pink to-rose-gold text-deep-black py-2 text-center text-[10px] uppercase tracking-[0.2em] font-bold border-b border-rose-gold/20 shadow-pastel">
+            0% Making Charges on Gold Jewellery!
         </div>
     );
 }

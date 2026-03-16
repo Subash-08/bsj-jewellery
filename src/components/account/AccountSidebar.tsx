@@ -11,10 +11,11 @@ import {
     Heart,
     LogOut,
     Menu,
-    X
+    X,
+    ChevronRight
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useCustomer } from '@/hooks/useCustomer';
+import { useAuth } from '@/context/AuthProvider';
 
 interface NavItem {
     label: string;
@@ -25,6 +26,7 @@ interface NavItem {
 const navItems: NavItem[] = [
     { label: 'Dashboard', href: '/account', icon: LayoutDashboard },
     { label: 'Orders', href: '/account/orders', icon: Package },
+    { label: 'Addresses', href: '/account/addresses', icon: MapPin },
     { label: 'Profile', href: '/account/profile', icon: User },
     { label: 'Wishlist', href: '/wishlist', icon: Heart },
 ];
@@ -33,15 +35,10 @@ export default function AccountSidebar() {
     const pathname = usePathname();
     const router = useRouter();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const { customer, loading } = useCustomer();
+    const { customer, isLoading, logout } = useAuth();
 
     const handleSignOut = async () => {
-        try {
-            await fetch('/api/auth/logout', { method: 'POST' });
-            router.push('/');
-        } catch (error) {
-            console.error('Sign out error:', error);
-        }
+        await logout();
     };
 
     const isActive = (href: string) => {
@@ -70,10 +67,10 @@ export default function AccountSidebar() {
     const SidebarContent = () => (
         <>
             {/* User Profile Header */}
-            <div className="p-6 border-b border-stone-200 bg-gradient-to-br from-rose-50 to-white">
-                {loading ? (
+            <div className="p-6 border-b border-stone-200/60">
+                {isLoading ? (
                     <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 rounded-full bg-stone-200 animate-pulse"></div>
+                        <div className="w-14 h-14 rounded-full bg-stone-200 animate-pulse"></div>
                         <div className="flex-1">
                             <div className="h-4 bg-stone-200 rounded animate-pulse mb-2"></div>
                             <div className="h-3 bg-stone-200 rounded animate-pulse w-3/4"></div>
@@ -81,19 +78,19 @@ export default function AccountSidebar() {
                     </div>
                 ) : (
                     <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center text-white text-2xl font-bold shadow-lg flex-shrink-0">
+                        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center text-white text-xl font-bold shadow-md flex-shrink-0">
                             {getInitials()}
                         </div>
                         <div className="min-w-0 flex-1">
-                            <h3 className="font-semibold text-gray-800 text-lg truncate">{getDisplayName()}</h3>
-                            <p className="text-sm text-stone-600 truncate">{customer?.email || 'user@example.com'}</p>
+                            <h3 className="font-semibold text-stone-900 text-base truncate">{getDisplayName()}</h3>
+                            <p className="text-sm text-stone-500 truncate">{customer?.email || ''}</p>
                         </div>
                     </div>
                 )}
             </div>
 
             {/* Navigation Links */}
-            <nav className="p-4 space-y-1 flex-1">
+            <nav className="p-3 space-y-0.5 flex-1">
                 {navItems.map((item) => {
                     const Icon = item.icon;
                     const active = isActive(item.href);
@@ -104,27 +101,28 @@ export default function AccountSidebar() {
                             href={item.href}
                             onClick={() => setIsMobileMenuOpen(false)}
                             className={cn(
-                                "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
+                                "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group",
                                 active
-                                    ? "bg-rose-600 text-white shadow-md"
-                                    : "text-stone-700 hover:bg-rose-50 hover:text-rose-600"
+                                    ? "bg-stone-900 text-white shadow-sm"
+                                    : "text-stone-600 hover:bg-stone-100 hover:text-stone-900"
                             )}
                         >
-                            <Icon size={20} />
-                            <span className="font-medium">{item.label}</span>
+                            <Icon size={18} strokeWidth={active ? 2.2 : 1.8} />
+                            <span className="font-medium text-sm flex-1">{item.label}</span>
+                            {active && <ChevronRight size={14} className="opacity-60" />}
                         </Link>
                     );
                 })}
             </nav>
 
             {/* Sign Out Button */}
-            <div className="p-4 border-t border-stone-200">
+            <div className="p-3 border-t border-stone-200/60 mt-auto">
                 <button
                     onClick={handleSignOut}
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-all duration-200 w-full"
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-stone-500 hover:text-red-600 hover:bg-red-50/60 transition-all duration-200 w-full"
                 >
-                    <LogOut size={20} />
-                    <span className="font-medium">Sign Out</span>
+                    <LogOut size={18} strokeWidth={1.8} />
+                    <span className="font-medium text-sm">Sign Out</span>
                 </button>
             </div>
         </>
@@ -133,29 +131,29 @@ export default function AccountSidebar() {
     return (
         <>
             {/* Desktop Sidebar */}
-            <aside className="hidden lg:flex lg:flex-col w-80 bg-white border-r border-stone-200 h-[calc(100vh-120px)] sticky top-[120px]">
+            <aside className="hidden lg:flex lg:flex-col w-72 bg-white/80 backdrop-blur-sm border-r border-stone-200/60 h-[calc(100vh-120px)] sticky top-[120px]">
                 <SidebarContent />
             </aside>
 
             {/* Mobile Menu Button */}
             <button
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="lg:hidden fixed bottom-6 right-6 z-40 p-4 bg-rose-600 text-white rounded-full shadow-lg hover:bg-rose-700 transition-colors"
+                className="lg:hidden fixed bottom-6 right-6 z-40 p-4 bg-stone-900 text-white rounded-full shadow-lg hover:bg-stone-800 transition-colors"
             >
-                <Menu size={24} />
+                <Menu size={22} />
             </button>
 
             {/* Mobile Drawer */}
             {isMobileMenuOpen && (
-                <div className="lg:hidden fixed inset-0 z-50 bg-gray-900/50" onClick={() => setIsMobileMenuOpen(false)}>
+                <div className="lg:hidden fixed inset-0 z-50 bg-gray-900/40 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)}>
                     <div
-                        className="absolute left-0 top-0 h-full w-[85%] max-w-sm bg-white shadow-xl flex flex-col"
+                        className="absolute left-0 top-0 h-full w-[85%] max-w-sm bg-white shadow-2xl flex flex-col"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="flex justify-between items-center p-4 border-b border-stone-200">
-                            <h2 className="font-serif text-2xl text-gray-800">My Account</h2>
-                            <button onClick={() => setIsMobileMenuOpen(false)}>
-                                <X className="text-stone-500" />
+                        <div className="flex justify-between items-center p-5 border-b border-stone-200/60">
+                            <h2 className="font-serif text-xl text-stone-900">My Account</h2>
+                            <button onClick={() => setIsMobileMenuOpen(false)} className="p-1 hover:bg-stone-100 rounded-full transition-colors">
+                                <X className="text-stone-500" size={20} />
                             </button>
                         </div>
                         <SidebarContent />

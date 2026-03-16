@@ -1,0 +1,56 @@
+[dotenv@17.2.3] injecting env (9) from .env.local -- tip: ⚙️  override existing env vars with { override: true }
+{
+  "data": {
+    "search": {
+      "productFilters": [
+        {
+          "id": "filter.v.availability",
+          "label": "Availability",
+          "type": "LIST"
+        },
+        {
+          "id": "filter.v.price",
+          "label": "Price",
+          "type": "PRICE_RANGE"
+        }
+      ],
+      "edges": [
+        {
+          "node": {
+            "title": "Gold Fish 925 Silver Pendant for Male | BSJ Jewellers"
+          }
+        },
+        {
+          "node": {
+            "title": "Square Shaped With Gold Platted 92.5 Silver Bracelet for Female | BSJ Jewelry"
+          }
+        },
+        {
+          "node": {
+            "title": "Gold Boarded White Stone Silver Ring (size 15) for Female | 925 Sterling Silver | BSJ Jewellers"
+          }
+        },
+        {
+          "node": {
+            "title": "3 Gold Heart Silver Ring (size 17) for Female | 925 Sterling Silver | BSJ Jewellers"
+          }
+        },
+        {
+          "node": {
+            "title": "Stined Rose Gold Single Hear Shaped Silver Ring (size 17) for Female | 925 Sterling Silver | BSJ Jewellers"
+          }
+        },
+        {
+          "node": {
+            "title": "Single Hearted With Two Circle Gold Silver Ring (size 12) for Female & kids | 925 Sterling Silver | BSJ Jewellers"
+          }
+        },
+        {
+          "node": {
+            "title": "Heart With Gold Finish With White Stone Silver Ring (size 13) for Female & kids | 925 Sterling Silver | BSJ Jewellers"
+          }
+        }
+      ]
+    }
+  }
+}

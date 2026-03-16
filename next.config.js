@@ -11,8 +11,16 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
+                hostname: 'cdn.shopify.com',
+            },
+            {
+                protocol: 'https',
                 hostname: 'placehold.co',
             },
+            {
+                protocol: 'https',
+                hostname: 'images.unsplash.com',
+            }
         ],
     },
     async redirects() {

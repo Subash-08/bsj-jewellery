@@ -10,6 +10,7 @@ interface Customer {
     lastName?: string;
     phone?: string;
     defaultAddress?: any;
+    addresses?: any;
     orders?: any;
 }
 
@@ -25,9 +26,14 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-    const [customer, setCustomer] = useState<Customer | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+interface AuthProviderProps {
+    children: React.ReactNode;
+    initialCustomer?: Customer | null;
+}
+
+export function AuthProvider({ children, initialCustomer }: AuthProviderProps) {
+    const [customer, setCustomer] = useState<Customer | null>(initialCustomer ?? null);
+    const [isLoading, setIsLoading] = useState(!initialCustomer);
     const router = useRouter();
 
     const fetchCustomer = async () => {
@@ -37,7 +43,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 const data = await res.json();
                 setCustomer(data.customer);
             } else {
-                // 401 is expected when not logged in, don't log as error
                 if (res.status !== 401) {
                     console.error("Failed to fetch customer session:", res.status);
                 }
@@ -52,8 +57,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     useEffect(() => {
+        // Skip fetch if initialCustomer was provided server-side
+        if (initialCustomer !== undefined && initialCustomer !== null) {
+            return;
+        }
         fetchCustomer();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const login = async (email: string, password: string, cartId?: string) => {
         setIsLoading(true);
@@ -67,11 +76,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             const data = await res.json();
 
             if (res.ok && data.success) {
-                // Refresh customer data
                 await fetchCustomer();
                 return { success: true };
             } else {
-                setIsLoading(false); // Stop loading if failed
+                setIsLoading(false);
                 return { success: false, errors: data.errors };
             }
         } catch (error) {
@@ -85,8 +93,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
             await fetch("/api/auth/logout", { method: "POST" });
             setCustomer(null);
-            router.push("/"); // Redirect to home or login
-            router.refresh(); // Refresh server components
+            router.push("/");
+            router.refresh();
         } catch (error) {
             console.error("Logout failed:", error);
         } finally {
@@ -107,11 +115,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
             if (res.ok && data.success) {
                 if (data.requireLogin) {
-                    // Registration valid, but auto-login failed or not attempted
                     setIsLoading(false);
                     return { success: true, requireLogin: true };
                 }
-                // Auto-login successful
                 await fetchCustomer();
                 return { success: true };
             } else {

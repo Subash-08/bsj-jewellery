@@ -10,26 +10,44 @@ export function ActiveFilterBar() {
 
     const activeFilters: { key: string; value: string; displayLabel: string }[] = [];
 
-    // Skip pagination and sort params
+    // Skip pagination, sort, and non-filter params
     searchParams.forEach((value, key) => {
         if (key === 'sort' || key === 'q' || key === 'after' || key === 'page') return;
 
         if (key === 'price') {
-            activeFilters.push({
-                key,
-                value,
-                displayLabel: `Price: ₹${value}`
-            });
+            // Format: "1000-5000" → "₹1,000 – ₹5,000"
+            const [minStr, maxStr] = value.split('-');
+            const min = Number(minStr);
+            const max = Number(maxStr);
+            let label = 'Price Filter';
+            if (!isNaN(min) && min > 0 && !isNaN(max) && max > 0) {
+                label = `₹${min.toLocaleString('en-IN')} – ₹${max.toLocaleString('en-IN')}`;
+            } else if (!isNaN(min) && min > 0) {
+                label = `Over ₹${min.toLocaleString('en-IN')}`;
+            } else if (!isNaN(max) && max > 0) {
+                label = `Under ₹${max.toLocaleString('en-IN')}`;
+            }
+            activeFilters.push({ key, value, displayLabel: label });
         } else {
-            // value might be comma-separated or multiple entries
-            const values = Array.isArray(value) ? value : value.split(',');
+            const values = value.split(',');
             values.forEach(v => {
                 if (!v) return;
-                activeFilters.push({
-                    key,
-                    value: v,
-                    displayLabel: v
-                });
+
+                let label = v;
+                if (key === 'available') {
+                    label = v === 'true' ? 'In Stock' : 'Out of Stock';
+                } else if (key.startsWith('option_')) {
+                    const optionName = key.slice('option_'.length);
+                    label = `${optionName}: ${v}`;
+                } else if (key === 'productType') {
+                    label = v;
+                } else if (key === 'tag') {
+                    label = v;
+                } else if (key === 'vendor') {
+                    label = v;
+                }
+
+                activeFilters.push({ key, value: v, displayLabel: label });
             });
         }
     });
@@ -45,7 +63,7 @@ export function ActiveFilterBar() {
         } else {
             const currentValues = params.getAll(filterKey);
             params.delete(filterKey);
-            
+
             // If it was comma separated previously in some system, we add back the others
             // Given our current implementation, params.getAll catches discrete multiple params
             currentValues.filter(v => v !== filterValue).forEach(v => params.append(filterKey, v));
@@ -58,7 +76,7 @@ export function ActiveFilterBar() {
         const params = new URLSearchParams(searchParams.toString());
         const sort = params.get('sort');
         const q = params.get('q');
-        
+
         const newParams = new URLSearchParams();
         if (sort) newParams.set('sort', sort);
         if (q) newParams.set('q', q);
@@ -79,12 +97,14 @@ export function ActiveFilterBar() {
                     <X className="w-3.5 h-3.5 text-gray-400 group-hover:text-gray-900" />
                 </button>
             ))}
-            <button
-                onClick={clearAll}
-                className="ml-auto text-sm text-rose-600 hover:text-rose-700 underline underline-offset-2 font-medium"
-            >
-                Clear All
-            </button>
+            {activeFilters.length > 1 && (
+                <button
+                    onClick={clearAll}
+                    className="ml-auto text-sm text-rose-600 hover:text-rose-700 underline underline-offset-2 font-medium"
+                >
+                    Clear All
+                </button>
+            )}
         </div>
     );
 }

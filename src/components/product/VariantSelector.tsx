@@ -9,10 +9,12 @@ interface VariantSelectorProps {
         name: string;
         values: string[];
     }[];
-    variants: any[]; // Using any[] for now or ProductVariant[]
+    variants: any[];
+    onVariantChange?: (variantId: string) => void;
+    defaultVariantId?: string;
 }
 
-export default function VariantSelector({ options, variants }: VariantSelectorProps) {
+export default function VariantSelector({ options, variants, onVariantChange, defaultVariantId }: VariantSelectorProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const pathname = usePathname();
@@ -24,19 +26,32 @@ export default function VariantSelector({ options, variants }: VariantSelectorPr
         const newParams = new URLSearchParams(searchParams.toString());
         newParams.set(optionName, value);
 
-        // In a real implementation, we'd also find the matching variant ID to update the URL
-        // For now, we update the option param which ensures state persistence
+        // Find the matching variant ID
+        const matchedVariant = variants.find((variant) => {
+            return variant.selectedOptions.every((opt: any) => {
+                if (opt.name === optionName) return opt.value === value;
+                return opt.value === newParams.get(opt.name);
+            });
+        });
+
+        if (matchedVariant && onVariantChange) {
+            onVariantChange(matchedVariant.id);
+        }
+
         router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
     };
+
+    // Emit initial default variant on mount if not already in URL
+    // Actually, handling this mostly in ProductPageClient makes sense, so we just call it when internal state updates.
 
     if (!options.length) return null;
 
     return (
-        <div className="space-y-6 my-8">
+        <div className="space-y-6 my-6">
             {options.map((option) => (
                 <div key={option.id} className="space-y-3">
-                    <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wide">
-                        {option.name}: <span className="text-gray-500 font-normal">{searchParams.get(option.name)}</span>
+                    <h3 className="text-xs font-semibold text-stone-400 uppercase tracking-widest">
+                        {option.name}: <span className="text-stone-900 font-normal normal-case tracking-normal ml-1">{searchParams.get(option.name) || option.values[0]}</span>
                     </h3>
                     <div className="flex flex-wrap gap-3">
                         {option.values.map((value) => {
@@ -47,10 +62,10 @@ export default function VariantSelector({ options, variants }: VariantSelectorPr
                                     key={value}
                                     onClick={() => handleSelection(option.name, value)}
                                     className={cn(
-                                        "px-4 py-2 border rounded-full text-sm transition-all duration-200",
+                                        "px-4 py-2 border rounded-sm text-sm transition-all duration-200",
                                         isActive
-                                            ? "border-yellow-700 bg-yellow-50 text-yellow-800 font-medium ring-1 ring-yellow-700/30"
-                                            : "border-gray-200 hover:border-gray-400 text-gray-700 hover:bg-gray-50"
+                                            ? "border-amber-700 bg-amber-50 text-amber-800 font-medium"
+                                            : "border-stone-200 hover:border-amber-300 text-stone-700 hover:bg-stone-50"
                                     )}
                                 >
                                     {value}

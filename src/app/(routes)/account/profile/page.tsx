@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from 'react';
-import { User, Mail, Phone, Lock, Camera, Save } from 'lucide-react';
-import { useCustomer } from '@/hooks/useCustomer';
+import { useState, useEffect } from 'react';
+import { User, Mail, Phone, Lock, Save, Loader2 } from 'lucide-react';
+import { useAuth } from '@/context/AuthProvider';
+import { toast } from 'sonner';
 
 export default function ProfilePage() {
-    const { customer, loading, isLoggedIn } = useCustomer();
+    const { customer, isAuthenticated, isLoading } = useAuth();
     const [isEditing, setIsEditing] = useState(false);
     const [showPasswordForm, setShowPasswordForm] = useState(false);
+    const [saving, setSaving] = useState(false);
     const [profileData, setProfileData] = useState({
         firstName: '',
         lastName: '',
@@ -20,8 +22,7 @@ export default function ProfilePage() {
         confirmPassword: ''
     });
 
-    // Initialize form data when customer loads
-    useState(() => {
+    useEffect(() => {
         if (customer) {
             setProfileData({
                 firstName: customer.firstName || '',
@@ -30,51 +31,67 @@ export default function ProfilePage() {
                 phone: customer.phone || ''
             });
         }
-    });
+    }, [customer]);
 
-    if (loading) {
+    if (isLoading) {
         return (
-            <div className="max-w-4xl mx-auto">
-                <div className="bg-white rounded-xl shadow-sm p-12 border border-stone-200 text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-600 mx-auto"></div>
-                    <p className="mt-4 text-stone-600">Loading your profile...</p>
-                </div>
+            <div className="space-y-4 animate-pulse">
+                <div className="h-16 bg-white/60 rounded-xl"></div>
+                <div className="h-48 bg-white/60 rounded-xl"></div>
+                <div className="h-64 bg-white/60 rounded-xl"></div>
             </div>
         );
     }
 
-    if (!isLoggedIn || !customer) {
+    if (!isAuthenticated || !customer) {
         return (
-            <div className="max-w-4xl mx-auto">
-                <div className="bg-white rounded-xl shadow-sm p-12 border border-stone-200 text-center">
-                    <h2 className="text-2xl font-serif font-bold text-gray-800 mb-4">Please Sign In</h2>
-                    <p className="text-stone-600 mb-6">You need to be logged in to view your profile</p>
-                    <a
-                        href="/login"
-                        className="inline-block px-6 py-3 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors font-medium"
-                    >
-                        Sign In
-                    </a>
-                </div>
+            <div className="bg-white rounded-2xl shadow-sm p-12 border border-stone-200/60 text-center">
+                <h2 className="text-2xl font-serif text-stone-900 mb-3">Please Sign In</h2>
+                <p className="text-stone-500 text-sm mb-6">You need to be logged in to view your profile</p>
+                <a
+                    href="/login"
+                    className="inline-block px-8 py-3 bg-stone-900 text-white text-xs uppercase tracking-widest font-bold hover:bg-stone-800 transition-colors"
+                >
+                    Sign In
+                </a>
             </div>
         );
     }
 
-    const handleProfileSubmit = (e: React.FormEvent) => {
+    const handleProfileSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsEditing(false);
-        // TODO: Integrate with Shopify Customer Update API
-        alert('Profile update functionality coming soon!');
+        setSaving(true);
+        try {
+            const res = await fetch('/api/auth/profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    firstName: profileData.firstName,
+                    lastName: profileData.lastName,
+                    phone: profileData.phone || undefined,
+                }),
+            });
+            const data = await res.json();
+            if (data.success) {
+                toast.success('Profile updated successfully');
+                setIsEditing(false);
+            } else {
+                toast.error(data.errors?.[0]?.message || 'Failed to update profile');
+            }
+        } catch {
+            toast.error('Something went wrong');
+        } finally {
+            setSaving(false);
+        }
     };
 
     const handlePasswordSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (passwordData.newPassword !== passwordData.confirmPassword) {
-            alert('Passwords do not match!');
+            toast.error('Passwords do not match');
             return;
         }
-        // TODO: Integrate with Shopify Customer Password Update
-        alert('Password change functionality coming soon!');
+        toast.info('Password change is managed through Shopify');
         setShowPasswordForm(false);
         setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
     };
@@ -90,48 +107,36 @@ export default function ProfilePage() {
         : customer.firstName || 'User';
 
     return (
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="space-y-6">
             {/* Header */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-stone-200">
-                <h1 className="text-3xl font-serif font-bold text-gray-800 mb-2">My Profile</h1>
-                <p className="text-stone-600">Manage your personal information</p>
+            <div>
+                <h1 className="text-3xl font-serif font-light text-stone-900">My Profile</h1>
+                <p className="text-stone-500 text-sm mt-1">Manage your personal information</p>
             </div>
 
-            {/* Profile Picture */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-stone-200">
-                <h2 className="text-xl font-serif font-bold text-gray-800 mb-6">Profile Picture</h2>
-                <div className="flex items-center gap-6">
-                    <div className="relative">
-                        <div className="w-32 h-32 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center text-white text-5xl font-bold shadow-lg">
-                            {getInitials()}
-                        </div>
-                        <button className="absolute bottom-0 right-0 w-10 h-10 bg-rose-600 text-white rounded-full flex items-center justify-center hover:bg-rose-700 transition-colors shadow-lg">
-                            <Camera size={20} />
-                        </button>
+            {/* Profile Card */}
+            <div className="bg-white rounded-2xl border border-stone-200/60 p-6">
+                <div className="flex items-center gap-5">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center text-white text-3xl font-bold shadow-md flex-shrink-0">
+                        {getInitials()}
                     </div>
                     <div>
-                        <h3 className="text-xl font-semibold text-gray-800 mb-1">{displayName}</h3>
-                        <p className="text-stone-600 mb-4">{customer.email}</p>
-                        <button
-                            disabled
-                            className="px-4 py-2 bg-stone-100 text-stone-400 rounded-lg cursor-not-allowed font-medium text-sm"
-                        >
-                            Upload New Photo (Coming Soon)
-                        </button>
+                        <h3 className="text-xl font-medium text-stone-900 mb-0.5">{displayName}</h3>
+                        <p className="text-stone-500 text-sm">{customer.email}</p>
                     </div>
                 </div>
             </div>
 
             {/* Personal Information */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-stone-200">
+            <div className="bg-white rounded-2xl border border-stone-200/60 p-6">
                 <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-serif font-bold text-gray-800">Personal Information</h2>
+                    <h2 className="text-lg font-serif text-stone-900">Personal Information</h2>
                     {!isEditing && (
                         <button
                             onClick={() => setIsEditing(true)}
-                            className="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors font-medium text-sm"
+                            className="px-4 py-2 bg-stone-900 text-white text-xs uppercase tracking-widest font-bold hover:bg-stone-800 transition-colors"
                         >
-                            Edit Profile
+                            Edit
                         </button>
                     )}
                 </div>
@@ -139,86 +144,82 @@ export default function ProfilePage() {
                 <form onSubmit={handleProfileSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-stone-700 mb-2">
-                                <div className="flex items-center gap-2">
-                                    <User size={16} />
-                                    First Name
-                                </div>
+                            <label className="block text-xs font-bold uppercase tracking-widest text-stone-500 mb-2">
+                                <span className="flex items-center gap-1.5"><User size={12} /> First Name</span>
                             </label>
                             <input
                                 type="text"
                                 disabled={!isEditing}
                                 value={isEditing ? profileData.firstName : (customer.firstName || '-')}
                                 onChange={(e) => setProfileData({ ...profileData, firstName: e.target.value })}
-                                className={`w-full px-4 py-3 border border-stone-300 rounded-lg ${isEditing ? 'focus:ring-2 focus:ring-rose-400 focus:border-rose-400' : 'bg-stone-50'
-                                    }`}
+                                className={`w-full px-4 py-3 border border-stone-200 rounded-lg text-sm ${isEditing ? 'focus:ring-2 focus:ring-stone-300 focus:border-stone-400' : 'bg-stone-50 text-stone-600'}`}
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-stone-700 mb-2">
-                                <div className="flex items-center gap-2">
-                                    <User size={16} />
-                                    Last Name
-                                </div>
+                            <label className="block text-xs font-bold uppercase tracking-widest text-stone-500 mb-2">
+                                <span className="flex items-center gap-1.5"><User size={12} /> Last Name</span>
                             </label>
                             <input
                                 type="text"
                                 disabled={!isEditing}
                                 value={isEditing ? profileData.lastName : (customer.lastName || '-')}
                                 onChange={(e) => setProfileData({ ...profileData, lastName: e.target.value })}
-                                className={`w-full px-4 py-3 border border-stone-300 rounded-lg ${isEditing ? 'focus:ring-2 focus:ring-rose-400 focus:border-rose-400' : 'bg-stone-50'
-                                    }`}
+                                className={`w-full px-4 py-3 border border-stone-200 rounded-lg text-sm ${isEditing ? 'focus:ring-2 focus:ring-stone-300 focus:border-stone-400' : 'bg-stone-50 text-stone-600'}`}
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-stone-700 mb-2">
-                            <div className="flex items-center gap-2">
-                                <Mail size={16} />
-                                Email Address
-                            </div>
+                        <label className="block text-xs font-bold uppercase tracking-widest text-stone-500 mb-2">
+                            <span className="flex items-center gap-1.5"><Mail size={12} /> Email Address</span>
                         </label>
                         <input
                             type="email"
                             disabled
                             value={customer.email}
-                            className="w-full px-4 py-3 border border-stone-300 rounded-lg bg-stone-50 cursor-not-allowed"
+                            className="w-full px-4 py-3 border border-stone-200 rounded-lg bg-stone-50 text-stone-600 cursor-not-allowed text-sm"
                         />
-                        <p className="text-xs text-stone-500 mt-1">Email cannot be changed</p>
+                        <p className="text-[11px] text-stone-400 mt-1">Email cannot be changed</p>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-stone-700 mb-2">
-                            <div className="flex items-center gap-2">
-                                <Phone size={16} />
-                                Phone Number
-                            </div>
+                        <label className="block text-xs font-bold uppercase tracking-widest text-stone-500 mb-2">
+                            <span className="flex items-center gap-1.5"><Phone size={12} /> Phone Number</span>
                         </label>
                         <input
                             type="tel"
                             disabled={!isEditing}
                             value={isEditing ? profileData.phone : (customer.phone || '-')}
                             onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
-                            className={`w-full px-4 py-3 border border-stone-300 rounded-lg ${isEditing ? 'focus:ring-2 focus:ring-rose-400 focus:border-rose-400' : 'bg-stone-50'
-                                }`}
+                            className={`w-full px-4 py-3 border border-stone-200 rounded-lg text-sm ${isEditing ? 'focus:ring-2 focus:ring-stone-300 focus:border-stone-400' : 'bg-stone-50 text-stone-600'}`}
                         />
                     </div>
 
                     {isEditing && (
-                        <div className="flex gap-4 pt-4">
+                        <div className="flex gap-3 pt-2">
                             <button
                                 type="submit"
-                                className="px-6 py-3 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors font-medium flex items-center gap-2"
+                                disabled={saving}
+                                className="flex items-center gap-2 px-6 py-3 bg-stone-900 text-white text-xs uppercase tracking-widest font-bold hover:bg-stone-800 transition-colors disabled:opacity-50"
                             >
-                                <Save size={20} />
+                                {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
                                 Save Changes
                             </button>
                             <button
                                 type="button"
-                                onClick={() => setIsEditing(false)}
-                                className="px-6 py-3 bg-white border-2 border-stone-300 text-stone-700 rounded-lg hover:bg-stone-50 transition-colors font-medium"
+                                onClick={() => {
+                                    setIsEditing(false);
+                                    if (customer) {
+                                        setProfileData({
+                                            firstName: customer.firstName || '',
+                                            lastName: customer.lastName || '',
+                                            email: customer.email || '',
+                                            phone: customer.phone || ''
+                                        });
+                                    }
+                                }}
+                                className="px-6 py-3 border border-stone-200 text-stone-600 text-xs uppercase tracking-widest font-bold hover:bg-stone-50 transition-colors"
                             >
                                 Cancel
                             </button>
@@ -227,22 +228,22 @@ export default function ProfilePage() {
                 </form>
             </div>
 
-            {/* Change Password */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-stone-200">
-                <div className="flex items-center justify-between mb-6">
+            {/* Password & Security */}
+            <div className="bg-white rounded-2xl border border-stone-200/60 p-6">
+                <div className="flex items-center justify-between mb-4">
                     <div>
-                        <h2 className="text-xl font-serif font-bold text-gray-800 flex items-center gap-2">
-                            <Lock className="text-rose-600" size={24} />
+                        <h2 className="text-lg font-serif text-stone-900 flex items-center gap-2">
+                            <Lock className="text-stone-400" size={18} />
                             Password & Security
                         </h2>
-                        <p className="text-sm text-stone-600 mt-1">Keep your account secure</p>
+                        <p className="text-xs text-stone-500 mt-1">Keep your account secure</p>
                     </div>
                     {!showPasswordForm && (
                         <button
                             onClick={() => setShowPasswordForm(true)}
-                            className="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors font-medium text-sm"
+                            className="px-4 py-2 bg-stone-900 text-white text-xs uppercase tracking-widest font-bold hover:bg-stone-800 transition-colors"
                         >
-                            Change Password
+                            Change
                         </button>
                     )}
                 </div>
@@ -250,51 +251,43 @@ export default function ProfilePage() {
                 {showPasswordForm && (
                     <form onSubmit={handlePasswordSubmit} className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-stone-700 mb-2">
-                                Current Password
-                            </label>
+                            <label className="block text-xs font-bold uppercase tracking-widest text-stone-500 mb-2">Current Password</label>
                             <input
                                 type="password"
                                 required
                                 value={passwordData.currentPassword}
                                 onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                                className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-rose-400 focus:border-rose-400"
+                                className="w-full px-4 py-3 border border-stone-200 rounded-lg focus:ring-2 focus:ring-stone-300 focus:border-stone-400 text-sm"
                                 placeholder="Enter current password"
                             />
                         </div>
-
                         <div>
-                            <label className="block text-sm font-medium text-stone-700 mb-2">
-                                New Password
-                            </label>
+                            <label className="block text-xs font-bold uppercase tracking-widest text-stone-500 mb-2">New Password</label>
                             <input
                                 type="password"
                                 required
                                 value={passwordData.newPassword}
                                 onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                                className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-rose-400 focus:border-rose-400"
+                                className="w-full px-4 py-3 border border-stone-200 rounded-lg focus:ring-2 focus:ring-stone-300 focus:border-stone-400 text-sm"
                                 placeholder="Enter new password"
                             />
                         </div>
-
                         <div>
-                            <label className="block text-sm font-medium text-stone-700 mb-2">
-                                Confirm New Password
-                            </label>
+                            <label className="block text-xs font-bold uppercase tracking-widest text-stone-500 mb-2">Confirm New Password</label>
                             <input
                                 type="password"
                                 required
                                 value={passwordData.confirmPassword}
                                 onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                                className="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-rose-400 focus:border-rose-400"
+                                className="w-full px-4 py-3 border border-stone-200 rounded-lg focus:ring-2 focus:ring-stone-300 focus:border-stone-400 text-sm"
                                 placeholder="Confirm new password"
                             />
                         </div>
 
-                        <div className="flex gap-4 pt-4">
+                        <div className="flex gap-3 pt-2">
                             <button
                                 type="submit"
-                                className="px-6 py-3 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors font-medium"
+                                className="px-6 py-3 bg-stone-900 text-white text-xs uppercase tracking-widest font-bold hover:bg-stone-800 transition-colors"
                             >
                                 Update Password
                             </button>
@@ -304,7 +297,7 @@ export default function ProfilePage() {
                                     setShowPasswordForm(false);
                                     setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
                                 }}
-                                className="px-6 py-3 bg-white border-2 border-stone-300 text-stone-700 rounded-lg hover:bg-stone-50 transition-colors font-medium"
+                                className="px-6 py-3 border border-stone-200 text-stone-600 text-xs uppercase tracking-widest font-bold hover:bg-stone-50 transition-colors"
                             >
                                 Cancel
                             </button>

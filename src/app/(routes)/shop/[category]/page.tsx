@@ -27,8 +27,8 @@ export default async function CategoryPage(props: Props) {
     let products: any[] = [];
 
     try {
-        const productsRes = await getProducts({});
-        products = productsRes || [];
+        const result = await getProducts({});
+        products = result.products || [];
         if (products.length === 0) products = mockProducts;
     } catch (e) {
         console.error('Failed to fetch products, using mock data:', e);

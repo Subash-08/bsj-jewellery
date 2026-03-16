@@ -17,7 +17,9 @@ export interface Product {
     collections: {
         edges: {
             node: {
+                id: string;
                 handle: string;
+                title: string;
             };
         }[];
     };
@@ -88,9 +90,18 @@ export interface FilterValue {
 export interface Filter {
     id: string;
     label: string;
-    type: 'LIST' | 'PRICE_RANGE';
+    type: 'LIST' | 'PRICE_RANGE' | 'BOOLEAN';
     values: FilterValue[];
 }
+
+export type ProductFilter =
+    | { available: boolean }
+    | { price: { min?: number; max?: number } }
+    | { productType: string }
+    | { tag: string }
+    | { productVendor: string }
+    | { variantOption: { name: string; value: string } }
+    | { productMetafield: { namespace: string; key: string; value: string } };
 
 export interface PageInfo {
     hasNextPage: boolean;

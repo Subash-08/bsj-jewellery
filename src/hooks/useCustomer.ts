@@ -18,7 +18,24 @@ export interface ShopifyCustomer {
         province: string;
         zip: string;
         country: string;
+        phone: string | null;
     } | null;
+    addresses: {
+        edges: Array<{
+            node: {
+                id: string;
+                firstName: string;
+                lastName: string;
+                address1: string;
+                address2: string | null;
+                city: string;
+                province: string;
+                zip: string;
+                country: string;
+                phone: string | null;
+            };
+        }>;
+    };
     orders: {
         edges: Array<{
             node: {
@@ -31,11 +48,44 @@ export interface ShopifyCustomer {
                     amount: string;
                     currencyCode: string;
                 };
+                subtotalPrice?: {
+                    amount: string;
+                    currencyCode: string;
+                };
+                totalShippingPrice?: {
+                    amount: string;
+                    currencyCode: string;
+                };
+                totalTax?: {
+                    amount: string;
+                    currencyCode: string;
+                };
+                shippingAddress?: {
+                    firstName: string;
+                    lastName: string;
+                    address1: string;
+                    address2: string | null;
+                    city: string;
+                    province: string;
+                    zip: string;
+                    country: string;
+                    phone: string | null;
+                };
                 lineItems: {
                     edges: Array<{
                         node: {
                             title: string;
                             quantity: number;
+                            variant?: {
+                                image?: {
+                                    url: string;
+                                    altText: string | null;
+                                };
+                                price?: {
+                                    amount: string;
+                                    currencyCode: string;
+                                };
+                            };
                         };
                     }>;
                 };
