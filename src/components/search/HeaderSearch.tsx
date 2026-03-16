@@ -192,7 +192,7 @@ export default function HeaderSearch({ variant = 'desktop', onClose }: HeaderSea
     /* ================= DESKTOP ================= */
 
     return (
-        <div ref={containerRef} className="relative flex-1 max-w-2xl">
+        <div ref={containerRef} className="relative flex-1 max-w-xl">
 
             <div className="flex w-full items-center bg-[#faf8f4] border border-[#e8e3d9] rounded-full
             shadow-sm transition-all
@@ -206,7 +206,7 @@ export default function HeaderSearch({ variant = 'desktop', onClose }: HeaderSea
                     onKeyDown={handleKeyDown}
                     onFocus={handleFocus}
                     placeholder="Search Rings, Necklaces, Bracelets..."
-                    className="flex-1 bg-transparent border-none focus:ring-0 text-sm px-5 h-11
+                    className="flex-1 bg-transparent border-none focus:ring-0 text-sm px-5 h-9
                     text-gray-700 placeholder:text-gray-400 outline-none"
                     maxLength={100}
                     autoComplete="off"
@@ -218,7 +218,7 @@ export default function HeaderSearch({ variant = 'desktop', onClose }: HeaderSea
                 {query && (
                     <button
                         onClick={handleClear}
-                        className="px-3 h-11 text-gray-400 hover:text-amber-600 transition-colors"
+                        className="px-3 h-9 text-gray-400 hover:text-amber-600 transition-colors"
                     >
                         <X size={18} />
                     </button>
@@ -226,7 +226,7 @@ export default function HeaderSearch({ variant = 'desktop', onClose }: HeaderSea
 
                 <button
                     onClick={() => navigateToSearch(query)}
-                    className="px-5 h-11 text-gray-500 hover:text-amber-600 transition-colors"
+                    className="px-5 h-9 text-gray-500 hover:text-amber-600 transition-colors"
                 >
                     <Search size={20} />
                 </button>

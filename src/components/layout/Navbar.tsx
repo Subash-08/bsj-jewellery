@@ -22,6 +22,7 @@ import HeaderSearch from "@/components/search/HeaderSearch";
 // Add to imports
 import AccountDrawer from './AccountDrawer';
 import { useAuth } from '@/context/AuthProvider'; // adjust to your actual auth hook/context
+import Image from "next/image";
 
 interface NavbarProps {
     categoryMenuSlot?: React.ReactNode;
@@ -87,8 +88,9 @@ export default function Navbar({ categoryMenuSlot }: NavbarProps) {
                 {/* MAIN HEADER */}
                 <div className="bg-[#faf8f4] border-b border-[#e8e3d9]">
                     <div className="container mx-auto px-4">
-                        <div className="flex items-center justify-between gap-4 h-[58px]">
-                            {/* LEFT */}
+                        <div className="grid grid-cols-[1fr_auto_1fr] lg:grid-cols-[200px_1fr_200px] items-center h-[58px] gap-4">
+
+                            {/* LEFT — Logo + Mobile Menu */}
                             <div className="flex items-center gap-4">
                                 <button
                                     className="lg:hidden p-1"
@@ -101,23 +103,20 @@ export default function Navbar({ categoryMenuSlot }: NavbarProps) {
                                     href="/"
                                     className="flex flex-col items-start group shrink-0"
                                 >
-                                    <h1 className="font-serif text-2xl lg:text-3xl font-bold tracking-widest text-gray-900 group-hover:text-amber-600 transition-colors">
-                                        BSJ
-                                    </h1>
-
-                                    <span className="text-[0.55rem] lg:text-[0.65rem] tracking-[0.3em] uppercase text-amber-600">
-                                        Jewellery
-                                    </span>
+                                    <Image src="/bsj.png" alt="Logo" width={100} height={100} />
                                 </Link>
                             </div>
 
-                            {/* SEARCH */}
-                            <div className="hidden lg:flex flex-1 max-w-2xl mx-8 relative">
+                            {/* CENTER — Search */}
+                            <div className="hidden lg:flex w-full relative flex justify-center items-center">
                                 <HeaderSearch variant="desktop" />
                             </div>
 
-                            {/* ICON GROUP */}
-                            <div className="flex items-center gap-3 lg:gap-6 shrink-0">
+                            {/* Mobile: center column is empty spacer */}
+                            <div className="lg:hidden" />
+
+                            {/* RIGHT — Icons */}
+                            <div className="flex items-center justify-end gap-3 lg:gap-5 shrink-0">
                                 <button
                                     className="lg:hidden p-2"
                                     onClick={() => setShowSearch(!showSearch)}
@@ -155,7 +154,7 @@ export default function Navbar({ categoryMenuSlot }: NavbarProps) {
 
                                 <div
                                     className="flex flex-col items-center cursor-pointer group relative"
-                                    onClick={() => router.push("/cart")}
+                                    onClick={() => router.push('/cart')}
                                     onMouseEnter={() => setIsCartHovered(true)}
                                 >
                                     <div className="relative">
@@ -163,15 +162,13 @@ export default function Navbar({ categoryMenuSlot }: NavbarProps) {
                                             size={20}
                                             className="text-gray-700 group-hover:text-amber-600 transition-colors"
                                         />
-
                                         {itemCount > 0 && (
                                             <span className="absolute -top-1 -right-1 h-4 w-4 bg-amber-500 text-white text-[10px] flex items-center justify-center rounded-full">
                                                 {itemCount}
                                             </span>
                                         )}
                                     </div>
-
-                                    <span className="text-[9px] uppercase tracking-widest font-medium mt-1 text-gray-500">
+                                    <span className="text-[9px] uppercase tracking-widests font-medium mt-1 text-gray-500">
                                         Cart
                                     </span>
                                 </div>

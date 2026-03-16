@@ -7,6 +7,7 @@ import ProductGrid from '@/components/features/ProductGrid';
 export const revalidate = 3600;
 
 import { mockProducts } from '@/lib/shopify/mock';
+import CollectionsServer from '@/components/home/collectionSection/CollectionsServer';
 
 export default async function HomePage() {
   let products: any[] = [];
@@ -51,6 +52,8 @@ export default async function HomePage() {
       <Suspense fallback={<div className="text-center py-20">Loading new arrivals...</div>}>
         <ProductGrid title="New Arrivals" products={allProducts.slice(0, 8)} />
       </Suspense>
+
+      <CollectionsServer />
     </main >
   );
 }
