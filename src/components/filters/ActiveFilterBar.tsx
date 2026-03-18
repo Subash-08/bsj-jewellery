@@ -85,22 +85,22 @@ export function ActiveFilterBar() {
     };
 
     return (
-        <div className="flex flex-wrap items-center gap-2 mb-6 p-3 bg-gray-50 border border-gray-100 rounded-lg">
-            <span className="text-sm text-gray-500 font-medium mr-2">Active Filters:</span>
+        <div className="flex flex-wrap items-center gap-2 mb-5">
+            <span className="text-[11px] text-stone-400 uppercase tracking-widest font-semibold">Active Filters:</span>
             {activeFilters.map((filter, i) => (
                 <button
                     key={`${filter.key}-${filter.value}-${i}`}
                     onClick={() => removeFilter(filter.key, filter.value)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-gray-200 text-sm text-gray-700 rounded-full hover:bg-gray-100 transition shadow-sm group"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-stone-100 text-stone-700 text-xs rounded-full hover:bg-stone-200 transition group"
                 >
                     {filter.displayLabel}
-                    <X className="w-3.5 h-3.5 text-gray-400 group-hover:text-gray-900" />
+                    <X className="w-3 h-3 text-stone-400 group-hover:text-stone-700" />
                 </button>
             ))}
             {activeFilters.length > 1 && (
                 <button
                     onClick={clearAll}
-                    className="ml-auto text-sm text-rose-600 hover:text-rose-700 underline underline-offset-2 font-medium"
+                    className="ml-auto text-xs text-amber-600 hover:text-amber-700 underline underline-offset-2 font-semibold"
                 >
                     Clear All
                 </button>

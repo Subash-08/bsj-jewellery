@@ -1,8 +1,9 @@
-import { getProductByHandle, getCollectionProducts } from '@/lib/shopify/client';
+import { getProductByHandle, getCollectionProducts, getProductRecommendations, getComplementaryProducts } from '@/lib/shopify/client';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import type { Product } from '@/types/shopify/product';
 import ProductPageClient from '@/components/product/ProductPageClient';
+import { log } from 'console';
 
 // Enable dynamic rendering for this route
 export const dynamic = 'force-dynamic';
@@ -66,20 +67,25 @@ export default async function ProductPage(props: Props) {
         shortTitle: product.title.replace(/\s*\|\s*BSJ Jewellery/i, '').slice(0, 60),
     };
 
-    // ── Related Products ───────────────────────────────────────────────
     let relatedProducts: Product[] = [];
+
     try {
-        const collectionHandle = firstCollection?.handle;
-        if (collectionHandle) {
-            const result = await getCollectionProducts({ handle: collectionHandle });
-            if (result?.products) {
-                relatedProducts = result.products
-                    .filter((p) => p.id !== product.id)
-                    .slice(0, 4);
-            }
+        // ONLY manual products (Shopify admin)
+        relatedProducts = await getComplementaryProducts(product.handle);
+
+        console.log('RELATED PRODUCTS:', relatedProducts);
+
+        // Optional fallback (ONLY if empty)
+        if (!relatedProducts.length && firstCollection?.handle) {
+            const result = await getCollectionProducts({ handle: firstCollection.handle });
+
+            relatedProducts = result?.products
+                ?.filter((p) => p.id !== product.id)
+                ?.slice(0, 4) || [];
         }
-    } catch {
-        // Related products failure must not block the page
+
+    } catch (err) {
+        console.error('Related product error:', err);
     }
 
     // ── JSON-LD Structured Data ────────────────────────────────────────

@@ -89,14 +89,14 @@ export default function AccountDrawer({
                             </div>
                             <div className="w-full space-y-2">
                                 <Link
-                                    href="/account/login"
+                                    href="/login"
                                     onClick={onClose}
                                     className="flex justify-center w-full py-3 bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-bold hover:bg-amber-600 transition-colors"
                                 >
                                     Sign In
                                 </Link>
                                 <Link
-                                    href="/account/register"
+                                    href="/register"
                                     onClick={onClose}
                                     className="flex justify-center w-full py-3 border border-stone-300 text-stone-600 text-xs uppercase tracking-[0.2em] font-bold hover:border-amber-400 hover:text-amber-600 transition-colors"
                                 >

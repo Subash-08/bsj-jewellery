@@ -19,16 +19,61 @@ import { cn } from "@/lib/utils";
 import TopBar from "./TopBar";
 import CartDrawer from "./CartDrawer";
 import HeaderSearch from "@/components/search/HeaderSearch";
-// Add to imports
 import AccountDrawer from './AccountDrawer';
-import { useAuth } from '@/context/AuthProvider'; // adjust to your actual auth hook/context
+import { useAuth } from '@/context/AuthProvider';
 import Image from "next/image";
+// ── ADDED ────────────────────────────────────────────────────────────────────
+import MobileCategoryMenu from "./MobileCategoryMenu";
+import type { NavCategory } from "@/types/shopify/collection";
+// ────────────────────────────────────────────────────────────────────────────
 
+// ── CHANGE 1: added mobileCategories prop ───────────────────────────────────
 interface NavbarProps {
     categoryMenuSlot?: React.ReactNode;
+    mobileCategories?: NavCategory[];
+}
+// ────────────────────────────────────────────────────────────────────────────
+
+function MobileAccordion({
+    title,
+    children,
+}: {
+    title: string;
+    children: React.ReactNode;
+}) {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <div className="border-b border-[#f1ece3]">
+            <button
+                onClick={() => setOpen(!open)}
+                className="w-full flex justify-between items-center py-3 text-gray-800 font-medium"
+            >
+                {title}
+                <ChevronDown
+                    size={16}
+                    className={cn(
+                        "transition-transform",
+                        open && "rotate-180"
+                    )}
+                />
+            </button>
+
+            <div
+                className={cn(
+                    "overflow-hidden transition-all",
+                    open ? "max-h-96 pb-3" : "max-h-0"
+                )}
+            >
+                <div className="pl-2 space-y-1">{children}</div>
+            </div>
+        </div>
+    );
 }
 
-export default function Navbar({ categoryMenuSlot }: NavbarProps) {
+// ── CHANGE 2: destructure mobileCategories (defaults to []) ─────────────────
+export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: NavbarProps) {
+    // ────────────────────────────────────────────────────────────────────────────
     const { itemCount, isCartOpen, setIsCartOpen } = useCart();
 
     const [isScrolled, setIsScrolled] = useState(false);
@@ -36,8 +81,7 @@ export default function Navbar({ categoryMenuSlot }: NavbarProps) {
     const [showSearch, setShowSearch] = useState(false);
     const [isCartHovered, setIsCartHovered] = useState(false);
 
-    // Add inside Navbar component, alongside other state
-    const { customer, isAuthenticated, signOut } = useAuth(); // adjust to your auth API
+    const { customer, isAuthenticated, logout } = useAuth();
     const [isAccountHovered, setIsAccountHovered] = useState(false);
     const accountHoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
     const pathname = usePathname();
@@ -53,7 +97,6 @@ export default function Navbar({ categoryMenuSlot }: NavbarProps) {
         setIsMobileMenuOpen(false);
     }, [pathname]);
 
-
     const handleAccountMouseEnter = () => {
         accountHoverTimeout.current = setTimeout(() => {
             setIsAccountHovered(true);
@@ -67,9 +110,9 @@ export default function Navbar({ categoryMenuSlot }: NavbarProps) {
     const handleAccountClick = () => {
         if (accountHoverTimeout.current) clearTimeout(accountHoverTimeout.current);
         if (isAuthenticated) {
-            setIsAccountHovered(prev => !prev); // toggle drawer
+            setIsAccountHovered(prev => !prev);
         } else {
-            router.push('/account/login');
+            router.push('/login');
         }
     };
 
@@ -103,7 +146,7 @@ export default function Navbar({ categoryMenuSlot }: NavbarProps) {
                                     href="/"
                                     className="flex flex-col items-start group shrink-0"
                                 >
-                                    <Image src="/bsj.png" alt="Logo" width={100} height={100} />
+                                    <Image src="/logo.jpeg" alt="Logo" width={100} height={100} />
                                 </Link>
                             </div>
 
@@ -190,7 +233,7 @@ export default function Navbar({ categoryMenuSlot }: NavbarProps) {
                     </div>
                 </div>
 
-                {/* SECONDARY NAV */}
+                {/* SECONDARY NAV — desktop only, unchanged */}
                 <nav
                     className={cn(
                         "hidden lg:block bg-[#f8f5ef] border-b border-[#e8e3d9] transition-all duration-300",
@@ -210,7 +253,6 @@ export default function Navbar({ categoryMenuSlot }: NavbarProps) {
                                         className="transition-transform duration-300 group-hover:rotate-180"
                                     />
                                 </button>
-
                                 <div className="absolute top-full left-0 mt-2 w-48 bg-white shadow-xl border border-[#efe8dc] rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                                     <div className="py-2">
                                         {[
@@ -244,7 +286,6 @@ export default function Navbar({ categoryMenuSlot }: NavbarProps) {
                                         className="transition-transform duration-300 group-hover:rotate-180"
                                     />
                                 </button>
-
                                 <div className="absolute top-full left-0 mt-2 w-48 bg-white shadow-xl border border-[#efe8dc] rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                                     <div className="py-2">
                                         {[
@@ -293,49 +334,157 @@ export default function Navbar({ categoryMenuSlot }: NavbarProps) {
                     onClick={() => setIsMobileMenuOpen(false)}
                 >
                     <div
-                        className="absolute left-0 top-0 h-full w-[85%] max-w-sm bg-[#faf8f4] p-6 shadow-xl flex flex-col"
+                        className="absolute left-0 top-0 h-full w-[85%] max-w-sm bg-[#faf8f4] shadow-xl flex flex-col"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="flex justify-between items-center mb-8 border-b border-[#e8e3d9] pb-4">
-                            <h2 className="font-serif text-2xl text-gray-900">Menu</h2>
+                        {/* HEADER */}
+                        <div className="flex justify-between items-center px-5 py-4 border-b border-[#e8e3d9]">
+                            <h2 className="font-serif text-xl text-gray-900">Menu</h2>
                             <button onClick={() => setIsMobileMenuOpen(false)}>
                                 <X className="text-gray-600" />
                             </button>
                         </div>
 
-                        <nav className="flex-1 overflow-y-auto space-y-1">
-                            {[
-                                { label: "Home", href: "/" },
-                                { label: "Gold Jewellery", href: "/shop" },
-                                { label: "Silver Jewellery", href: "/shop" },
-                                { label: "Rings", href: "/shop/rings" },
-                                { label: "Earrings", href: "/shop/earrings" },
-                                { label: "Necklaces", href: "/shop/necklaces" },
-                                { label: "Bangles", href: "/shop/bangles" },
-                                { label: "Bridal Collection", href: "/collections/bridal-collection" },
-                                { label: "New Arrivals", href: "/collections/new-arrivals" },
-                                { label: "About", href: "/about" },
-                                { label: "Contact Us", href: "/contact" },
-                            ].map((item) => (
+                        {/* TOP ACTIONS */}
+                        <div className="grid grid-cols-3 border-b border-[#e8e3d9] text-center">
+                            <button
+                                onClick={() => {
+                                    setIsMobileMenuOpen(false);
+                                    if (isAuthenticated) router.push("/account");
+                                    else router.push("/login");
+                                }}
+                                className="py-4 flex flex-col items-center gap-1"
+                            >
+                                <User size={18} />
+                                <span className="text-[10px] uppercase">Account</span>
+                            </button>
+
+                            <Link
+                                href="/wishlist"
+                                className="py-4 flex flex-col items-center gap-1"
+                            >
+                                <Heart size={18} />
+                                <span className="text-[10px] uppercase">Wishlist</span>
+                            </Link>
+
+                            <button
+                                onClick={() => {
+                                    setIsMobileMenuOpen(false);
+                                    router.push("/cart");
+                                }}
+                                className="py-4 flex flex-col items-center gap-1 relative"
+                            >
+                                <ShoppingBag size={18} />
+                                {itemCount > 0 && (
+                                    <span className="absolute top-2 right-[30%] h-4 w-4 bg-amber-500 text-white text-[10px] flex items-center justify-center rounded-full">
+                                        {itemCount}
+                                    </span>
+                                )}
+                                <span className="text-[10px] uppercase">Cart</span>
+                            </button>
+                        </div>
+
+                        {/* MENU CONTENT */}
+                        <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-2">
+
+                            {/* HOME */}
+                            <Link
+                                href="/"
+                                className="block py-3 px-2 text-gray-800 font-medium border-b border-[#f1ece3]"
+                            >
+                                Home
+                            </Link>
+
+                            {/*
+                             * ── CHANGE 3: replaced {categoryMenuSlot} with <MobileCategoryMenu>
+                             *
+                             * BEFORE:
+                             *   {categoryMenuSlot && (
+                             *     <div className="border-b border-[#f1ece3] py-3">
+                             *       {categoryMenuSlot}   ← rendered the desktop hover component
+                             *     </div>
+                             *   )}
+                             *
+                             * AFTER:
+                             *   Render MobileCategoryMenu fed with live mobileCategories prop.
+                             *   Falls back to a plain /collections link if prop is empty.
+                             */}
+                            {mobileCategories.length > 0 ? (
+                                <MobileCategoryMenu categories={mobileCategories} />
+                            ) : (
                                 <Link
-                                    key={item.label}
-                                    href={item.href}
-                                    className="flex items-center justify-between text-base font-medium text-gray-700 py-3 px-2 border-b border-[#f1ece3] hover:bg-amber-50 hover:text-amber-600 transition-colors rounded-md"
+                                    href="/collections"
+                                    className="block py-3 px-2 text-gray-800 font-medium border-b border-[#f1ece3]"
                                 >
-                                    {item.label}
-                                    <ChevronDown size={16} className="-rotate-90 text-gray-300" />
+                                    Shop By Category
                                 </Link>
-                            ))}
+                            )}
+
+                            {/* GOLD JEWELLERY */}
+                            <MobileAccordion title="Gold Jewellery">
+                                {[
+                                    "Chains",
+                                    "Necklaces",
+                                    "Bangles",
+                                    "Bracelets",
+                                    "Rings",
+                                    "Earrings",
+                                    "Anklets",
+                                    "Toe Rings",
+                                ].map((item) => (
+                                    <Link
+                                        key={item}
+                                        href={`/shop/${item.toLowerCase().replace(/ /g, "-")}`}
+                                        className="block py-2 text-sm text-gray-600 hover:text-amber-600"
+                                    >
+                                        {item}
+                                    </Link>
+                                ))}
+                            </MobileAccordion>
+
+                            {/* SILVER JEWELLERY */}
+                            <MobileAccordion title="Silver Jewellery">
+                                {[
+                                    "Silver Chains",
+                                    "Silver Rings",
+                                    "Silver Anklets",
+                                    "Silver Bracelets",
+                                    "Silver Earrings",
+                                ].map((item) => (
+                                    <Link
+                                        key={item}
+                                        href={`/shop/${item.toLowerCase().replace(/ /g, "-")}`}
+                                        className="block py-2 text-sm text-gray-600 hover:text-amber-600"
+                                    >
+                                        {item}
+                                    </Link>
+                                ))}
+                            </MobileAccordion>
+
+                            {/* STATIC LINKS */}
+                            <Link
+                                href="/about"
+                                className="block py-3 px-2 text-gray-800 font-medium border-b border-[#f1ece3]"
+                            >
+                                About
+                            </Link>
+
+                            <Link
+                                href="/contact"
+                                className="block py-3 px-2 text-gray-800 font-medium border-b border-[#f1ece3]"
+                            >
+                                Contact Us
+                            </Link>
                         </nav>
 
-                        <div className="mt-6 pt-6 border-t border-[#e8e3d9] space-y-4">
-                            <div className="flex items-center gap-3 text-gray-600">
-                                <Phone size={18} />
+                        {/* FOOTER */}
+                        <div className="px-5 py-5 border-t border-[#e8e3d9] space-y-3 text-sm text-gray-600">
+                            <div className="flex items-center gap-2">
+                                <Phone size={16} />
                                 <span>+91 98765 43210</span>
                             </div>
-
-                            <div className="flex items-center gap-3 text-gray-600">
-                                <Mail size={18} />
+                            <div className="flex items-center gap-2">
+                                <Mail size={16} />
                                 <span>support@bsj.com</span>
                             </div>
                         </div>
@@ -348,7 +497,7 @@ export default function Navbar({ categoryMenuSlot }: NavbarProps) {
                 isLoggedIn={isAuthenticated ?? false}
                 customerName={customer ? `${customer.firstName} ${customer.lastName}`.trim() : undefined}
                 customerEmail={customer?.email}
-                onSignOut={signOut}
+                onSignOut={logout}
             />
             <CartDrawer
                 isOpen={isCartHovered || isCartOpen}

@@ -93,9 +93,9 @@ export default function FilterSidebar({ filters, currentParams, collections = []
             {/* Mobile Filter Button */}
             <button
                 onClick={() => setIsOpen(true)}
-                className="md:hidden w-full py-3 mb-4 bg-white border border-gray-200 rounded-lg flex items-center justify-center gap-2 font-medium text-gray-700 shadow-sm transition hover:bg-gray-50"
+                className="md:hidden w-full py-2.5 mb-4 bg-white border border-stone-200 rounded-lg flex items-center justify-center gap-2 text-sm font-semibold text-stone-700 shadow-sm transition hover:border-amber-400 hover:text-amber-700"
             >
-                <SlidersHorizontal className="w-5 h-5" />
+                <SlidersHorizontal className="w-4 h-4" />
                 Filter Products
             </button>
 
@@ -108,27 +108,27 @@ export default function FilterSidebar({ filters, currentParams, collections = []
             )}
 
             <aside className={cn(
-                "filters bg-white p-6 rounded-lg md:border md:border-gray-100 shadow-sm",
-                "self-start md:sticky md:top-24 max-h-[calc(100vh-6rem)] overflow-y-auto",
+                "filters bg-white p-5 rounded-xl md:border md:border-stone-200 shadow-sm",
+                "self-start md:sticky md:top-[calc(var(--navbar-height,80px)+16px)] max-h-[calc(100vh-7rem)] overflow-y-auto",
                 "fixed inset-y-0 left-0 z-40 w-80 h-full transform transition-transform duration-300 ease-in-out md:transform-none md:w-auto",
                 isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
             )}>
-                <div className="flex items-center justify-between mb-6 pb-4 border-b">
-                    <h2 className="text-xl font-serif text-gray-900">Filters</h2>
+                <div className="flex items-center justify-between mb-5 pb-4 border-b border-stone-100">
+                    <h2 className="font-serif text-lg text-stone-900">Filters</h2>
                     <div className="flex items-center gap-3">
                         {activeFilterCount > 0 && (
                             <button
                                 onClick={clearFilters}
-                                className="text-sm text-gray-500 hover:text-rose-600 underline underline-offset-2"
+                                className="text-xs text-stone-400 hover:text-amber-600 underline underline-offset-2 transition-colors"
                             >
                                 Clear all
                             </button>
                         )}
                         <button
                             onClick={() => setIsOpen(false)}
-                            className="md:hidden text-gray-400 hover:text-gray-900 focus:outline-none"
+                            className="md:hidden text-stone-400 hover:text-stone-900 focus:outline-none"
                         >
-                            <X className="w-6 h-6" />
+                            <X className="w-5 h-5" />
                         </button>
                     </div>
                 </div>
@@ -137,7 +137,7 @@ export default function FilterSidebar({ filters, currentParams, collections = []
                     {/* Collection navigation links */}
                     {collections && collections.length > 0 && (
                         <div className="filter-group">
-                            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+                            <h3 className="text-[11px] uppercase tracking-widest font-semibold text-stone-400 mb-3">
                                 Shop by Collection
                             </h3>
                             <ul className="space-y-1 max-h-64 overflow-y-auto pr-2">
@@ -145,22 +145,21 @@ export default function FilterSidebar({ filters, currentParams, collections = []
                                     <li key={coll.handle}>
                                         <button
                                             onClick={() => updateCollection(coll.handle)}
-                                            className="w-full flex items-center justify-between py-2 px-1 text-left rounded hover:bg-rose-50 group transition-colors"
+                                            className="w-full flex items-center justify-between py-1.5 px-1 text-left rounded hover:bg-amber-50 group transition-colors"
                                         >
-                                            <span className="text-sm text-gray-700 group-hover:text-rose-700">
+                                            <span className="text-sm text-stone-600 group-hover:text-amber-700">
                                                 {coll.title}
                                             </span>
                                             <div className="flex items-center gap-2">
-                                                <span className="text-xs text-gray-400 font-medium bg-gray-100 px-2 py-0.5 rounded-full">
+                                                <span className="text-xs text-stone-400 font-medium bg-stone-100 px-2 py-0.5 rounded-full">
                                                     {coll.count}
                                                 </span>
-                                                <span className="text-gray-300 group-hover:text-rose-400 text-xs">→</span>
+                                                <span className="text-stone-300 group-hover:text-amber-400 text-xs">→</span>
                                             </div>
                                         </button>
                                     </li>
                                 ))}
                             </ul>
-                            <p className="text-xs text-gray-400 mt-2 italic">Opens collection page</p>
                         </div>
                     )}
 

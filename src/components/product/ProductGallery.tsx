@@ -80,7 +80,7 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
     ------------------------------------------*/
     if (!images.length) {
         return (
-            <div className="aspect-[4/5] bg-[#FAF8F5] rounded-xl flex items-center justify-center shadow-sm border border-stone-100">
+            <div className="aspect-[4/5] max-h-[550px] w-full bg-[#FAF8F5] rounded-xl flex items-center justify-center shadow-sm border border-stone-100">
                 <Gem size={48} className="text-stone-300" strokeWidth={1} />
             </div>
         );
@@ -127,13 +127,13 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
                         </>
                     )}
 
-                    <div className="relative max-h-[90vh] max-w-[90vw]">
+                    <div className="relative max-h-[550px] max-w-[90vw]">
                         <Image
                             src={selectedImage.url}
                             alt={selectedImage.altText || "Product Image"}
                             width={selectedImage.width || 1200}
                             height={selectedImage.height || 1600}
-                            className="object-contain max-h-[90vh]"
+                            className="object-contain max-h-[550px]"
                             priority
                         />
                     </div>
@@ -199,7 +199,7 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
                 {/* Main image */}
                 <div
                     ref={mainImageRef}
-                    className="relative flex-1 aspect-[5/6] bg-[#FAF8F5] rounded-xl overflow-hidden shadow-sm border border-stone-100 group cursor-zoom-in"
+                    className="relative flex-1 aspect-[4/5] max-h-[500px] bg-[#FAF8F5] rounded-md overflow-hidden shadow-sm border border-stone-100 group cursor-zoom-in"
                     onClick={() => setIsFullscreen(true)}
                     onMouseEnter={() => setIsZoomed(true)}
                     onMouseLeave={() => setIsZoomed(false)}

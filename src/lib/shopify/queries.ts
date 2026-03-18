@@ -300,3 +300,38 @@ export const getCustomerQuery = /* GraphQL */ `
     }
   }
 `;
+
+export const getProductRecommendationsQuery = /* GraphQL */ `
+  query getProductRecommendations($productId: ID!) {
+    productRecommendations(productId: $productId) {
+      ...product
+    }
+  }
+  ${productFragment}
+`;
+
+
+
+export const getComplementaryProductsQuery = /* GraphQL */ `
+  query getComplementaryProducts($handle: String!) {
+    product(handle: $handle) {
+      id
+      title
+      metafield(
+        namespace: "shopify--discovery--product_recommendation"
+        key: "complementary_products"
+      ) {
+        references(first: 10) {
+          edges {
+            node {
+              ... on Product {
+                ...product
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  ${productFragment}
+`;

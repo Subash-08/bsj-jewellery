@@ -28,6 +28,8 @@ import {
     getCartQuery,
     getCustomerQuery,
     getNavProductsQuery,
+    getProductRecommendationsQuery,
+    getComplementaryProductsQuery,
 } from './queries';
 import type { Product, Filter, PageInfo } from '@/types/shopify/product';
 import type { Connection } from '@/types/shopify/image';
@@ -138,6 +140,39 @@ export async function getSearchResults({
     };
 }
 
+export async function getProductRecommendations(productId: string) {
+    const res = await shopifyFetch<{
+        productRecommendations: Product[];
+    }>({
+        query: getProductRecommendationsQuery,
+        variables: { productId },
+        tags: [`product-recommendations-${productId}`],
+    });
+
+    return res.body.productRecommendations
+        ?.map(reshapeProduct)
+        .filter((p): p is Product => p !== undefined) || [];
+}
+export async function getComplementaryProducts(handle: string) {
+    const res = await shopifyFetch<{
+        product: {
+            metafield: {
+                references: {
+                    edges: { node: Product }[];
+                };
+            };
+        };
+    }>({
+        query: getComplementaryProductsQuery,
+        variables: { handle },
+    });
+    console.log(JSON.stringify(res.body, null, 2));
+    const edges = res.body.product?.metafield?.references?.edges || [];
+
+    return edges
+        .map((edge) => reshapeProduct(edge.node))
+        .filter((p): p is Product => p !== undefined);
+}
 export async function getCollection(handle: string): Promise<Collection | undefined> {
     const res = await shopifyFetch<{ collection: Collection }>({
         query: getCollectionQuery,
@@ -189,10 +224,10 @@ export async function getCollectionProducts({
     const products = res.body.collection.products;
     const shopifyFilters = products.filters;
     const pageInfo = products.pageInfo;
-    
+
     // Check if products is undefined just in case
     if (!products) {
-       return { products: [], filters: [], pageInfo: { hasNextPage: false, hasPreviousPage: false, startCursor: null, endCursor: null } };
+        return { products: [], filters: [], pageInfo: { hasNextPage: false, hasPreviousPage: false, startCursor: null, endCursor: null } };
     }
 
     const rawProducts = products.edges.map((edge) => edge.node);
@@ -218,26 +253,26 @@ export async function getCollections(): Promise<Collection[]> {
 }
 
 export async function getNavProducts(): Promise<{ title: string; metafields: { key: string; value: string | null }[] }[]> {
-  const res = await shopifyFetch<{
-    products: {
-      edges: Array<{
-        node: {
-          title: string;
-          metafields: ({ key: string; value: string | null } | null)[];
+    const res = await shopifyFetch<{
+        products: {
+            edges: Array<{
+                node: {
+                    title: string;
+                    metafields: ({ key: string; value: string | null } | null)[];
+                };
+            }>;
         };
-      }>;
-    };
-  }>({
-    query: getNavProductsQuery,
-    tags: ['nav-products'],
-  });
+    }>({
+        query: getNavProductsQuery,
+        tags: ['nav-products'],
+    });
 
-  return res.body.products.edges.map((e) => ({
-    title: e.node.title,
-    metafields: (e.node.metafields ?? []).filter(
-      (m): m is { key: string; value: string | null } => m !== null
-    ),
-  }));
+    return res.body.products.edges.map((e) => ({
+        title: e.node.title,
+        metafields: (e.node.metafields ?? []).filter(
+            (m): m is { key: string; value: string | null } => m !== null
+        ),
+    }));
 }
 
 export async function createCart(): Promise<Cart> {
@@ -275,7 +310,7 @@ export async function createCheckoutCart(
 
     const userErrors = res.body.cartCreate?.userErrors;
     if (userErrors && userErrors.length > 0) {
-        throw new Error(userErrors[0].message);
+        throw new Error(userErrors[0]?.message || 'An error occurred during checkout');
     }
 
     return res.body.cartCreate.cart;

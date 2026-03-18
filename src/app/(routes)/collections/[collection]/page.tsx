@@ -33,12 +33,12 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 function parseFilters(searchParams: { [key: string]: string | string[] | undefined }) {
     const filters: any[] = [];
-    
+
     const ignoreParams = ['sort', 'q', 'page', 'after'];
-    
+
     for (const [key, value] of Object.entries(searchParams)) {
         if (ignoreParams.includes(key) || !value) continue;
-        
+
         if (key === 'price') {
             const priceStr = Array.isArray(value) ? value[0] : value;
             if (priceStr && priceStr.includes('-')) {
@@ -47,14 +47,14 @@ function parseFilters(searchParams: { [key: string]: string | string[] | undefin
                 if (min && !isNaN(Number(min))) priceFilter.min = Number(min);
                 if (max && !isNaN(Number(max))) priceFilter.max = Number(max);
                 if (Object.keys(priceFilter).length > 0) {
-                   filters.push({ price: priceFilter });
+                    filters.push({ price: priceFilter });
                 }
             }
             continue;
         }
 
         const values = Array.isArray(value) ? value : value.split(',');
-        
+
         for (const val of values) {
             filters.push({
                 productMetafield: {
@@ -104,25 +104,25 @@ export default async function CollectionPage(props: Props) {
     });
 
     return (
-        <div className="collection-page min-h-screen bg-gray-50 pt-32 pb-24">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] gap-8 items-start">
+        <div className="collection-page min-h-screen bg-[#FAF8F5] pt-32 pb-24">
+            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] gap-10 lg:gap-12 items-start">
                     {/* Filters sidebar */}
                     {collectionData?.filters && collectionData.filters.length > 0 && (
-                        <FilterSidebar 
-                            filters={collectionData.filters} 
+                        <FilterSidebar
+                            filters={collectionData.filters}
                             currentParams={searchParams}
                         />
                     )}
 
                     {/* Product Grid */}
                     <main className="product-grid flex-1 min-w-0">
-                        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b gap-4">
+                        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 pb-4 border-b border-stone-200 gap-4">
                             <div>
-                                <h1 className="text-4xl font-serif capitalize text-gray-900 mb-2">
+                                <h1 className="text-3xl lg:text-4xl font-serif font-semibold tracking-tight text-stone-900 capitalize mb-1">
                                     {params.collection} Collection
                                 </h1>
-                                <p className="text-gray-500 text-sm">
+                                <p className="text-stone-400 text-sm">
                                     Showing {collectionData?.products.length || 0} {collectionData?.pageInfo.hasNextPage ? 'of many' : ''} products
                                 </p>
                             </div>
@@ -133,9 +133,9 @@ export default async function CollectionPage(props: Props) {
 
                         <Suspense fallback={<div>Loading styles...</div>}>
                             {!collectionData || collectionData.products.length === 0 ? (
-                                <div className="text-center py-24 bg-white rounded-lg border border-gray-100 shadow-sm flex flex-col items-center">
-                                    <p className="text-gray-500 mb-6 text-lg">No products match your selected filters.</p>
-                                    <a href={`/collections/${params.collection}`} className="inline-block bg-rose-600 text-white px-8 py-3 rounded-full hover:bg-rose-700 transition font-medium">
+                                <div className="bg-white border border-stone-100 rounded-xl p-10 text-center shadow-sm flex flex-col items-center">
+                                    <p className="text-stone-500 mb-6 text-base">No products match your selected filters.</p>
+                                    <a href={`/collections/${params.collection}`} className="inline-block bg-amber-600 text-white px-8 py-3 rounded-md text-xs uppercase tracking-widest font-semibold hover:bg-amber-700 transition">
                                         Reset All Filters
                                     </a>
                                 </div>
@@ -156,8 +156,8 @@ export default async function CollectionPage(props: Props) {
                                             })
                                         }}
                                     />
-                                    <InfiniteProductGrid 
-                                        initialProducts={collectionData.products} 
+                                    <InfiniteProductGrid
+                                        initialProducts={collectionData.products}
                                         initialPageInfo={collectionData.pageInfo}
                                         collectionHandle={params.collection}
                                     />

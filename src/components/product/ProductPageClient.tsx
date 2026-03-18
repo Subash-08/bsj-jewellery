@@ -80,7 +80,6 @@ export default function ProductPageClient({
         product.variants[0]?.id
     );
     const [quantity, setQuantity] = useState(1);
-    const [activeTab, setActiveTab] = useState<'description' | 'specs' | 'care'>('description');
     const addToCartRef = useRef<HTMLDivElement>(null);
 
     const { format } = usePriceFormatter(product.priceRange.minVariantPrice.currencyCode);
@@ -146,11 +145,13 @@ export default function ProductPageClient({
     const shortTitle = breadcrumb.shortTitle || product.title.replace(/\s*\|\s*BSJ Jewellery/i, '').slice(0, 60);
 
     return (
-        <div className="bg-[#FAF8F5] min-h-screen mt-14 sm:mt-24 ">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-[#FAF8F5] mt-14 sm:mt-24">
+            <div className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4">
 
-                {/* ── SECTION 1: Breadcrumb ────────────────────────────────── */}
-                <nav className="py-4 border-b border-stone-100" aria-label="Breadcrumb">
+                {/* ══════════════════════════════════════════════════════════
+                    SECTION: BREADCRUMB
+                ══════════════════════════════════════════════════════════ */}
+                <nav className="pt-4 pb-2 border-b border-stone-100" aria-label="Breadcrumb">
                     <ol className="flex items-center gap-2 text-xs text-stone-400 tracking-wide">
                         <li>
                             <Link href="/" className="hover:text-amber-700 transition-colors">Home</Link>
@@ -180,41 +181,43 @@ export default function ProductPageClient({
                     </ol>
                 </nav>
 
-                {/* ── SECTION 2: Hero Layout ───────────────────────────────── */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-10 py-4 md:py-6">
+                {/* ══════════════════════════════════════════════════════════
+                    SECTION: HERO — Sticky Gallery + Scrollable Details
+                ══════════════════════════════════════════════════════════ */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-10 gap-y-6 py-2 md:py-4 items-start">
 
-                    {/* LEFT: Gallery */}
-                    <div>
+                    {/* ── LEFT: Sticky Gallery ─────────────────────────────── */}
+                    <div className="lg:col-span-6 lg:sticky lg:top-[calc(var(--navbar-height,80px)+16px)] lg:self-start h-fit">
                         <ProductGallery images={product.images} />
                     </div>
 
-                    {/* RIGHT: Product Details (sticky on desktop) */}
-                    <div className="lg:sticky lg:top-28 lg:self-start space-y-6">
+                    {/* ── RIGHT: Scrollable Product Details ────────────────── */}
+                    <div className="lg:col-span-6 space-y-2">
 
                         {/* Collection tag + Availability badge */}
-                        <div className="flex items-center gap-3 flex-wrap">
+                        <div className="flex items-center gap-2 flex-wrap">
                             {product?.productType && (
-                                <span className="text-xs uppercase tracking-widest font-semibold text-stone-400 bg-stone-100 px-3 py-1 rounded-sm">
+                                <span className="text-[10px] uppercase tracking-widest font-semibold text-stone-400 bg-stone-100 px-2 py-1 rounded-sm">
                                     {product.productType}
                                 </span>
                             )}
                             {product?.availableForSale ? (
-                                <span className="text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-sm">
+                                <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-1 rounded-sm">
                                     In Stock
                                 </span>
                             ) : (
-                                <span className="text-xs font-semibold bg-red-50 text-red-600 border border-red-200 px-3 py-1 rounded-sm">
+                                <span className="text-[10px] font-semibold bg-red-50 text-red-600 border border-red-200 px-2 py-1 rounded-sm">
                                     Out of Stock
                                 </span>
                             )}
                         </div>
 
                         {/* Product Title */}
-                        <h1 className="font-serif text-3xl lg:text-4xl font-bold text-stone-900 leading-tight">
+                        <h1 className="font-serif text-3xl lg:text-3xl font-bold text-stone-900 leading-tight tracking-tight">
                             {product.title}
                         </h1>
 
-                        {/* Price */}
+                        {/* Price Row */}
                         <div className="flex items-baseline gap-3 flex-wrap">
                             <span className="font-serif text-3xl font-bold text-amber-700">
                                 {price}
@@ -223,7 +226,7 @@ export default function ProductPageClient({
                                 <>
                                     <del className="text-lg text-stone-400">{compareAtPrice}</del>
                                     {savings && savings > 0 && (
-                                        <span className="text-xs font-bold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-sm">
+                                        <span className="text-[10px] font-bold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-sm tracking-wider">
                                             Save {savings}%
                                         </span>
                                     )}
@@ -258,13 +261,13 @@ export default function ProductPageClient({
                         )}
 
                         {/* Quantity Selector */}
-                        <QuantitySelector
+                        {/* <QuantitySelector
                             quantity={quantity}
                             onChange={setQuantity}
                             max={10}
-                        />
+                        /> */}
 
-                        {/* Button Stack */}
+                        {/* CTA Buttons */}
                         <div className="space-y-3" ref={addToCartRef}>
                             <AddToCart
                                 availableForSale={product.availableForSale}
@@ -276,13 +279,24 @@ export default function ProductPageClient({
                                 quantity={quantity}
                                 availableForSale={product.availableForSale}
                             />
-                            <div className="w-full mt-2 border border-stone-200 rounded-sm hover:border-amber-400 transition-colors">
-                                <WishlistButton product={{ ...product, id: product?.variants?.[0]?.id || product.id }} />
-                            </div>
                         </div>
 
-                        {/* Trust Strip */}
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+
+                        {/* ── Description (moved from tabs → inline) ──────── */}
+                        {(product.descriptionHtml || product.description) && (
+                            <div className="mt-6 max-w-xl border-t border-stone-100 pt-6">
+                                <h2 className="font-serif text-base font-semibold text-stone-800 mb-3 tracking-tight">
+                                    About This Piece
+                                </h2>
+                                <div
+                                    className="prose prose-sm text-stone-600 leading-relaxed"
+                                    dangerouslySetInnerHTML={{ __html: product.descriptionHtml || product.description }}
+                                />
+                            </div>
+                        )}
+
+                        {/* ── Trust Badge Strip ───────────────────────────── */}
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
                             {[
                                 { icon: Shield, label: 'Hallmark Certified' },
                                 { icon: Truck, label: 'Free Shipping ₹10K+' },
@@ -297,75 +311,53 @@ export default function ProductPageClient({
                         </div>
 
                         {/* Delivery Estimate */}
-                        <div className="bg-white border border-stone-100 rounded-sm p-3 flex items-center gap-3">
-                            <Truck size={16} className="text-amber-600 shrink-0" />
+                        <div className="bg-white border border-stone-100 rounded-sm p-3 flex items-center gap-3 shadow-sm">
+                            <Truck size={15} className="text-amber-600 shrink-0" />
                             <p className="text-xs text-stone-600">
                                 {dispatchTime
                                     ? `Dispatch in ${dispatchTime}`
                                     : 'Estimated delivery in 3–5 business days'}
                             </p>
                         </div>
-                    </div>
-                </div>
 
-                {/* ── SECTION 3: Tabbed Content ───────────────────────────── */}
-                <div className="py-12 md:py-16 border-t border-stone-100">
-                    {/* Tab Headers */}
-                    <div className="flex gap-8 border-b border-stone-200 mb-8">
-                        {(['description', 'specs', 'care'] as const).map((tab) => {
-                            const labels = {
-                                description: 'Description',
-                                specs: 'Specifications',
-                                care: 'Care & Shipping',
-                            };
-                            return (
-                                <button
-                                    key={tab}
-                                    onClick={() => setActiveTab(tab)}
-                                    className={cn(
-                                        "pb-3 text-sm font-semibold uppercase tracking-widest transition-colors border-b-2 -mb-[1px]",
-                                        activeTab === tab
-                                            ? "text-amber-700 border-amber-700"
-                                            : "text-stone-400 border-transparent hover:text-stone-600"
-                                    )}
-                                >
-                                    {labels[tab]}
-                                </button>
-                            );
-                        })}
-                    </div>
+                    </div>{/* end RIGHT column */}
+                </div>{/* end HERO grid */}
 
-                    {/* Tab Content */}
-                    {activeTab === 'description' && (
-                        <div className="max-w-2xl">
-                            <h2 className="font-serif text-xl font-semibold text-stone-900 mb-4">About This Piece</h2>
-                            <div
-                                className="prose prose-sm text-stone-600 leading-relaxed max-w-none"
-                                dangerouslySetInnerHTML={{ __html: product.descriptionHtml || product.description }}
-                            />
+                {/* ══════════════════════════════════════════════════════════
+                    SECTION: DETAILS — Specifications + Care & Shipping
+                ══════════════════════════════════════════════════════════ */}
+                <div className="py-12 md:py-16 border-t border-stone-100 space-y-12">
+
+                    {/* ── A. Specifications ─────────────────────────────────── */}
+                    {specifications.length > 0 && (
+                        <div>
+                            <h2 className="font-serif text-xl font-semibold text-stone-900 mb-6">
+                                Specifications
+                            </h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-0 max-w-3xl">
+                                {specifications.map((spec, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="flex justify-between items-center py-3 border-b border-stone-100"
+                                    >
+                                        <span className="text-xs uppercase tracking-widest text-stone-400 font-semibold">
+                                            {spec.label}
+                                        </span>
+                                        <span className="text-sm font-medium text-stone-900 text-right">
+                                            {spec.value}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
 
-                    {activeTab === 'specs' && (
-                        <div className="max-w-2xl">
-                            {specifications.length > 0 ? (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
-                                    {specifications.map((spec, idx) => (
-                                        <div key={idx} className="flex justify-between py-2 border-b border-stone-50">
-                                            <span className="text-xs uppercase tracking-widest text-stone-400 font-semibold">{spec.label}</span>
-                                            <span className="text-sm font-medium text-stone-900">{spec.value}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <p className="text-sm text-stone-400">No specifications available yet.</p>
-                            )}
-                        </div>
-                    )}
-
-                    {activeTab === 'care' && (
-                        <div className="max-w-2xl space-y-4">
-                            {/* Care Instructions */}
+                    {/* ── B. Care & Shipping Accordions ─────────────────────── */}
+                    <div>
+                        <h2 className="font-serif text-xl font-semibold text-stone-900 mb-6">
+                            Care &amp; Shipping
+                        </h2>
+                        <div className="max-w-2xl space-y-3">
                             <AccordionSection title="Jewellery Care" defaultOpen>
                                 <p className="text-sm text-stone-600 leading-relaxed">
                                     {careInstructions ||
@@ -373,7 +365,6 @@ export default function ProductPageClient({
                                 </p>
                             </AccordionSection>
 
-                            {/* Shipping & Returns */}
                             <AccordionSection title="Shipping & Returns">
                                 <div className="text-sm text-stone-600 leading-relaxed space-y-2">
                                     <p>Free shipping on all orders above ₹10,000. Standard delivery takes 5–7 business days.</p>
@@ -384,7 +375,7 @@ export default function ProductPageClient({
                             {/* Price Breakdown — only if metalRate exists */}
                             {priceBreakdown.metalRate && (
                                 <AccordionSection title="Price Breakdown">
-                                    <ul className="space-y-2 text-sm">
+                                    <ul className="space-y-3 text-sm">
                                         {priceBreakdown.metalRate && (
                                             <li className="flex justify-between">
                                                 <span className="text-stone-500">Metal Price</span>
@@ -409,10 +400,12 @@ export default function ProductPageClient({
                                 </AccordionSection>
                             )}
                         </div>
-                    )}
+                    </div>
                 </div>
 
-                {/* ── SECTION 4: Certifications & Trust ────────────────────── */}
+                {/* ══════════════════════════════════════════════════════════
+                    SECTION: TRUST — Why Choose BSJ
+                ══════════════════════════════════════════════════════════ */}
                 <div className="py-12 md:py-16 border-t border-stone-100">
                     <h2 className="font-serif text-xl font-semibold text-stone-900 mb-8 text-center">Why Choose BSJ</h2>
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
@@ -440,7 +433,7 @@ export default function ProductPageClient({
                         ].map(({ icon: Icon, title, subtitle }) => (
                             <div
                                 key={title}
-                                className="bg-white border border-stone-100 rounded-sm p-6 text-center shadow-sm"
+                                className="bg-white border border-stone-100 rounded-sm p-6 text-center shadow-sm hover:shadow-md transition-shadow"
                             >
                                 <Icon size={28} className="text-amber-600 mx-auto mb-3" strokeWidth={1.5} />
                                 <h3 className="font-semibold text-stone-900 text-sm mb-1">{title}</h3>
@@ -450,7 +443,9 @@ export default function ProductPageClient({
                     </div>
                 </div>
 
-                {/* ── SECTION 5: Reviews Placeholder ────────────────────────── */}
+                {/* ══════════════════════════════════════════════════════════
+                    SECTION: REVIEWS — Placeholder (ready for integration)
+                ══════════════════════════════════════════════════════════ */}
                 <div className="py-12 md:py-16 border-t border-stone-100">
                     <h2 className="font-serif text-xl font-semibold text-stone-900 mb-8 text-center">Customer Reviews</h2>
                     <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -464,7 +459,9 @@ export default function ProductPageClient({
                     </div>
                 </div>
 
-                {/* ── SECTION 6: Related Products ────────────────────────────── */}
+                {/* ══════════════════════════════════════════════════════════
+                    SECTION: RELATED PRODUCTS
+                ══════════════════════════════════════════════════════════ */}
                 <div className="py-12 md:py-16 border-t border-stone-100">
                     <h2 className="font-serif text-xl font-semibold text-stone-900 mb-8 text-center">You May Also Like</h2>
                     {relatedProducts.length > 0 ? (
@@ -511,9 +508,12 @@ export default function ProductPageClient({
                         </div>
                     )}
                 </div>
-            </div>
 
-            {/* Sticky Buy Bar (mobile only) */}
+            </div>{/* end max-w-7xl */}
+
+            {/* ══════════════════════════════════════════════════════════
+                SECTION: STICKY BUY BAR (mobile)
+            ══════════════════════════════════════════════════════════ */}
             <StickyBuyBar
                 price={price}
                 variantId={selectedVariantId}
@@ -537,12 +537,12 @@ function AccordionSection({
 }) {
     const [isOpen, setIsOpen] = useState(defaultOpen);
     return (
-        <div className="border border-stone-100 rounded-sm bg-white">
+        <div className="border border-stone-100 rounded-sm bg-white shadow-sm">
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="flex items-center justify-between w-full px-5 py-4 text-left group"
             >
-                <span className="text-sm font-semibold text-stone-900 group-hover:text-amber-700 transition-colors">
+                <span className="text-sm font-semibold text-stone-900 group-hover:text-amber-700 transition-colors tracking-tight">
                     {title}
                 </span>
                 <ChevronDown
@@ -554,7 +554,7 @@ function AccordionSection({
                 />
             </button>
             {isOpen && (
-                <div className="px-5 pb-5">{children}</div>
+                <div className="px-5 pb-5 pt-1">{children}</div>
             )}
         </div>
     );

@@ -181,12 +181,12 @@ export default function InfiniteProductGrid({
 
     return (
         <div className="infinite-grid-container">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 lg:gap-6">
                 {products.map((product) => (
-                    <ProductCard 
-                        key={product.id} 
-                        product={product} 
-                        collectionHandle={collectionHandle} 
+                    <ProductCard
+                        key={product.id}
+                        product={product}
+                        collectionHandle={collectionHandle}
                     />
                 ))}
             </div>
@@ -194,14 +194,14 @@ export default function InfiniteProductGrid({
             {/* Infinite Scroll Loader Target */}
             <div ref={loaderRef} className="py-12 flex justify-center w-full min-h-[100px]">
                 {loading && (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 lg:gap-6 w-full">
                         {[...Array(4)].map((_, i) => (
                             <ProductCardSkeleton key={`skeleton-${i}`} />
                         ))}
                     </div>
                 )}
                 {!loading && !pageInfo.hasNextPage && products.length > 0 && (
-                    <p className="text-gray-400 text-sm mt-8 border-t border-gray-100 pt-8 text-center w-full">
+                    <p className="text-stone-400 text-xs uppercase tracking-widest mt-8 border-t border-stone-100 pt-8 text-center w-full">
                         {searchQuery ? "You've seen all search results." : "You've reached the end of the collection."}
                     </p>
                 )}

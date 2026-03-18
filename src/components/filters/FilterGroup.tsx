@@ -37,8 +37,8 @@ export default function FilterGroup({ paramKey, filter, activeValues, updateFilt
 
     return (
         <div className="filter-group">
-            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">{filter.label}</h3>
-            <ul className="space-y-2.5 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+            <h3 className="text-[11px] uppercase tracking-widest font-semibold text-stone-400 mb-3">{filter.label}</h3>
+            <ul className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                 {filter.values.map((val) => {
                     let actualValue = val.label;
                     try {
@@ -60,7 +60,7 @@ export default function FilterGroup({ paramKey, filter, activeValues, updateFilt
 
                     return (
                         <li key={val.id}>
-                            <label className="flex items-center group cursor-pointer">
+                            <label className="flex items-center gap-2 cursor-pointer group text-sm text-stone-600 hover:text-amber-600 transition-colors">
                                 <input
                                     type="checkbox"
                                     className="hidden"
@@ -70,20 +70,20 @@ export default function FilterGroup({ paramKey, filter, activeValues, updateFilt
                                     }}
                                 />
                                 <div className={cn(
-                                    "w-5 h-5 rounded border flex items-center justify-center mr-3 transition-colors",
+                                    "w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-colors",
                                     isActive
-                                        ? "bg-rose-600 border-rose-600"
-                                        : "border-gray-300 group-hover:border-rose-400 bg-white"
+                                        ? "bg-amber-600 border-amber-600"
+                                        : "border-stone-300 group-hover:border-amber-400 bg-white"
                                 )}>
-                                    {isActive && <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-check w-3.5 h-3.5 text-white"><path d="M20 6 9 17l-5-5"/></svg>}
+                                    {isActive && <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-check w-2.5 h-2.5 text-white"><path d="M20 6 9 17l-5-5"/></svg>}
                                 </div>
                                 <span className={cn(
-                                    "text-sm flex-1 truncate",
-                                    isActive ? "text-gray-900 font-medium" : "text-gray-600 group-hover:text-gray-900"
+                                    "flex-1 truncate text-sm",
+                                    isActive ? "text-stone-900 font-medium" : "text-stone-600"
                                 )}>
                                     {val.label}
                                 </span>
-                                <span className="text-xs text-gray-400 font-medium bg-gray-50 px-2 py-0.5 rounded-full ml-2">
+                                <span className="text-xs text-stone-400 bg-stone-50 px-1.5 py-0.5 rounded-full ml-auto">
                                     {val.count}
                                 </span>
                             </label>

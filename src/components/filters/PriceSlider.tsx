@@ -44,37 +44,37 @@ export default function PriceSlider({ filter, currentParams, updateFilter }: Pri
 
     return (
         <div className="filter-group block">
-            <h3 className="font-semibold text-gray-900 mb-3">{filter.label}</h3>
-            
-            <div className="flex items-center space-x-2">
-                <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
-                    <input 
-                        type="number" 
-                        placeholder="Min" 
+            <h3 className="text-[11px] uppercase tracking-widest font-semibold text-stone-400 mb-3">{filter.label}</h3>
+
+            <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-xs">₹</span>
+                    <input
+                        type="number"
+                        placeholder="Min"
                         value={minPrice}
                         onChange={(e) => setMinPrice(e.target.value)}
-                        className="w-full pl-6 pr-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-rose-500 focus:border-rose-500"
+                        className="w-full pl-6 pr-2 py-2 text-sm border border-stone-200 rounded-md focus:border-amber-500 focus:outline-none transition-colors"
                     />
                 </div>
-                <span className="text-gray-400">-</span>
-                <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
-                    <input 
-                        type="number" 
-                        placeholder="Max" 
+                <span className="text-stone-300 text-xs">—</span>
+                <div className="relative flex-1">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-xs">₹</span>
+                    <input
+                        type="number"
+                        placeholder="Max"
                         value={maxPrice}
                         onChange={(e) => setMaxPrice(e.target.value)}
-                        className="w-full pl-6 pr-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-rose-500 focus:border-rose-500"
+                        className="w-full pl-6 pr-2 py-2 text-sm border border-stone-200 rounded-md focus:border-amber-500 focus:outline-none transition-colors"
                     />
                 </div>
             </div>
-            
-            <button 
+
+            <button
                 onClick={handleApply}
-                className="mt-3 w-full bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium py-1.5 rounded transition"
+                className="mt-3 w-full bg-amber-600 hover:bg-amber-700 text-white text-xs uppercase tracking-widest font-semibold py-2 rounded-md transition-colors"
             >
-                Apply Price
+                Apply
             </button>
         </div>
     );
