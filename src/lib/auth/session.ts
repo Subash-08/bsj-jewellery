@@ -11,14 +11,14 @@ import { env } from '@/lib/env';
  * Uses cache: 'no-store' internally (via getCustomer) to avoid stale data.
  */
 export async function getCustomerFromSession() {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get(env.AUTH_COOKIE_NAME)?.value;
+
+    if (!accessToken) {
+        return null;
+    }
+
     try {
-        const cookieStore = await cookies();
-        const accessToken = cookieStore.get(env.AUTH_COOKIE_NAME)?.value;
-
-        if (!accessToken) {
-            return null;
-        }
-
         const customer = await getCustomer(accessToken);
         return customer || null;
     } catch (error) {

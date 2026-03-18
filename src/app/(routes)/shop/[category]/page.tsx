@@ -1,6 +1,5 @@
 import { getProducts } from '@/lib/shopify/client';
 import { mockProducts } from '@/lib/shopify/mock';
-import ProductGrid from '@/components/features/ProductGrid';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { CATEGORY_DATA } from '@/lib/categories';
@@ -66,7 +65,7 @@ export default async function CategoryPage(props: Props) {
                     </p>
                 </div>
 
-                {categoryProducts.length === 0 ? (
+                {/* {categoryProducts.length === 0 ? (
                     <div className="text-center py-20">
                         <div className="max-w-md mx-auto">
                             <h2 className="text-2xl font-serif text-gray-800 mb-4">No products available in this category yet</h2>
@@ -81,7 +80,7 @@ export default async function CategoryPage(props: Props) {
                     </div>
                 ) : (
                     <ProductGrid title="" products={categoryProducts} />
-                )}
+                )} */}
             </div>
         </main>
     );
