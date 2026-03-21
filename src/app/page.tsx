@@ -2,12 +2,21 @@ import { getProducts, getCollections } from '@/lib/shopify/client';
 import { Suspense } from 'react';
 import Hero from '@/components/home/Hero';
 import CategorySlider from '@/components/home/CategorySlider';
+import FeaturedCollections from '@/components/home/FeaturedCollections';
+import SplitProductShowcase from '@/components/home/SplitProductShowcase';
 import ProductGrid from '@/components/features/ProductGrid';
+import PromoBanner from '@/components/home/PromoBanner';
+import WhyChooseUs from '@/components/home/WhyChooseUs';
+import FeaturedProduct from '@/components/home/FeaturedProduct';
+import Testimonials from '@/components/home/Testimonials';
+import FAQ from '@/components/home/FAQ';
+import InstagramFeed from '@/components/home/InstagramFeed';
+import FinalCTA from '@/components/home/FinalCTA';
+import ProductSkeleton from '@/components/home/ProductSkeleton';
+import SectionSkeleton from '@/components/home/SectionSkeleton';
+import { mockProducts } from '@/lib/shopify/mock';
 
 export const revalidate = 3600;
-
-import { mockProducts } from '@/lib/shopify/mock';
-import CollectionsServer from '@/components/home/collectionSection/CollectionsServer';
 
 export default async function HomePage() {
   let products: any[] = [];
@@ -39,21 +48,44 @@ export default async function HomePage() {
 
   return (
     <main>
-      <div className="mt-[50px]">
-        < Hero />
-      </div>
+      <Hero />
 
       <CategorySlider collections={collections} />
 
-      <Suspense fallback={<div className="text-center py-20">Loading trending products...</div>}>
-        <ProductGrid title="Trending Products" products={products.slice(0, 4)} />
+      <FeaturedCollections collections={collections} />
+
+      <Suspense fallback={<ProductSkeleton />}>
+        <SplitProductShowcase
+          title="Celebration Edit"
+          description="Life is one big celebration. Dance, dazzle and enjoy with the finest festive jewellery designs."
+          products={products.slice(0, 6)}
+          imageSrc="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=800"
+        />
       </Suspense>
 
-      <Suspense fallback={<div className="text-center py-20">Loading new arrivals...</div>}>
-        <ProductGrid title="New Arrivals" products={allProducts.slice(0, 8)} />
+      {/* <Suspense fallback={<ProductSkeleton />}>
+        <ProductGrid title="New Arrivals" products={allProducts.slice(0, 6)} />
+      </Suspense> */}
+
+      <PromoBanner />
+
+      <WhyChooseUs />
+
+      <FinalCTA />
+      {/* {products.length > 0 && <FeaturedProduct product={products[0]} />} */}
+      <Suspense fallback={<SectionSkeleton />}>
+        <InstagramFeed />
       </Suspense>
 
-      <CollectionsServer />
-    </main >
+      <Suspense fallback={<SectionSkeleton />}>
+        <Testimonials />
+      </Suspense>
+
+      <Suspense fallback={<SectionSkeleton />}>
+        <FAQ />
+      </Suspense>
+
+
+    </main>
   );
 }

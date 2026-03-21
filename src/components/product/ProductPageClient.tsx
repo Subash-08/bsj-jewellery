@@ -192,7 +192,7 @@ export default function ProductPageClient({
                     </div>
 
                     {/* ── RIGHT: Scrollable Product Details ────────────────── */}
-                    <div className="lg:col-span-6 space-y-2">
+                    <div className="lg:col-span-6 space-y-4">
 
                         {/* Collection tag + Availability badge */}
                         <div className="flex items-center gap-2 flex-wrap">
@@ -285,7 +285,7 @@ export default function ProductPageClient({
                         {/* ── Description (moved from tabs → inline) ──────── */}
                         {(product.descriptionHtml || product.description) && (
                             <div className="mt-6 max-w-xl border-t border-stone-100 pt-6">
-                                <h2 className="font-serif text-base font-semibold text-stone-800 mb-3 tracking-tight">
+                                <h2 className="font-serif text-base font-semibold text-stone-800 tracking-tight">
                                     About This Piece
                                 </h2>
                                 <div

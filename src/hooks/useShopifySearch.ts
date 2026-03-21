@@ -80,19 +80,21 @@ export function useShopifySearch() {
             };
 
             setResults(newData);
-        } catch (err: unknown) {
-            // If we throw a string reason via controller.abort('reason')
-            if (typeof err === 'string' && (err === 'New search started' || err === 'Search cleared or user navigated' || err === 'Component unmounted')) {
+        } catch (err: any) {
+            // Handle various forms of AbortError thrown by different fetch implementations
+            const isAbort = 
+                (err?.name === 'AbortError') ||
+                (err instanceof DOMException && err.name === 'AbortError') ||
+                (typeof err === 'string' && ['New search started', 'Search cleared or user navigated', 'Component unmounted'].includes(err)) ||
+                (err instanceof Error && ['New search started', 'Search cleared or user navigated', 'Component unmounted'].includes(err.message)) ||
+                (err?.cause && typeof err.cause === 'string' && ['New search started', 'Search cleared or user navigated', 'Component unmounted'].includes(err.cause)) ||
+                // Next.js specific wrapper format
+                (err?.message && (err.message.includes('New search started') || err.message.includes('Search cleared or user navigated') || err.message.includes('Component unmounted')));
+
+            if (isAbort) {
                 return;
             }
-            if (err instanceof DOMException && err.name === 'AbortError') {
-                // Request was cancelled by typical browser abort — do nothing
-                return;
-            }
-            if (err instanceof Error && err.name === 'AbortError') {
-                // Fetch aborted (older browser support check)
-                return;
-            }
+
             console.error('Predictive search error:', err);
             setError(err instanceof Error ? err.message : 'Search failed');
             setResults(EMPTY_RESULTS);

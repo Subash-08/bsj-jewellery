@@ -73,8 +73,6 @@ export default async function ProductPage(props: Props) {
         // ONLY manual products (Shopify admin)
         relatedProducts = await getComplementaryProducts(product.handle);
 
-        console.log('RELATED PRODUCTS:', relatedProducts);
-
         // Optional fallback (ONLY if empty)
         if (!relatedProducts.length && firstCollection?.handle) {
             const result = await getCollectionProducts({ handle: firstCollection.handle });

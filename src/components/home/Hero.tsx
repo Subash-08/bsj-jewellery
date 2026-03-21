@@ -41,7 +41,7 @@ const Hero = () => {
 
   return (
     <section
-      className="relative h-[90vh] min-h-[600px] w-full overflow-hidden bg-primary pt-[116px]"
+      className="relative h-[90vh] min-h-[600px] w-full overflow-hidden bg-[#FAF8F5] pt-[116px]"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}
@@ -56,7 +56,7 @@ const Hero = () => {
           transition={{ duration: 1.5, ease: "easeInOut" }}
           className="absolute inset-0"
         >
-          <div className="absolute inset-0 bg-black/40 z-10" /> {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-10" /> {/* Dark gradient overlay for text readability */}
           <Image
             src={slides[currentSlide]?.image || ''}
             alt={slides[currentSlide]?.title || ''}
@@ -77,22 +77,29 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="max-w-3xl mx-auto space-y-6"
           >
-            <span className="text-xs md:text-sm uppercase tracking-[0.3em] text-white/80 font-bold font-body">
-              Aurelia Exclusive
+            <span className="text-xs md:text-sm uppercase tracking-[0.3em] text-white/80 font-semibold font-sans">
+              BSJ Exclusive
             </span>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading text-white leading-tight drop-shadow-lg">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white leading-tight drop-shadow-xl">
               {slides[currentSlide]?.title}
             </h1>
-            <p className="text-lg md:text-2xl text-white/90 font-light drop-shadow-md font-body">
+            <p className="text-lg md:text-2xl text-white/90 font-light drop-shadow-md font-sans">
               {slides[currentSlide]?.subtitle}
             </p>
-            <div className="pt-8">
+            <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/shop"
-                className="inline-block bg-white text-primary px-12 py-4 text-sm font-bold uppercase tracking-[0.2em] font-body hover:bg-rose-gold hover:text-white transition-colors duration-300"
-                aria-label="Explore Collection"
+                className="inline-block bg-white text-stone-900 px-10 py-4 text-sm font-semibold uppercase tracking-[0.15em] font-sans hover:bg-stone-100 transition-colors duration-300 shadow-lg"
+                aria-label="Shop Now"
               >
-                Explore Collection
+                Shop Now
+              </Link>
+              <Link
+                href="/collections"
+                className="inline-block border border-white/60 text-white backdrop-blur-sm px-10 py-4 text-sm font-semibold uppercase tracking-[0.15em] font-sans hover:bg-white hover:text-stone-900 transition-all duration-300"
+                aria-label="Explore Collections"
+              >
+                Explore Collections
               </Link>
             </div>
           </motion.div>

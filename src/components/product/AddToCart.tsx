@@ -28,7 +28,6 @@ export default function AddToCart({ availableForSale, variantId, quantity = 1 }:
         startTransition(async () => {
             try {
                 await addCartItem(variantId, quantity);
-                console.log("Successfully added to cart:", variantId);
                 setIsCartOpen(true); // Open cart drawer after adding
             } catch (error) {
                 console.error("Failed to add to cart:", error);

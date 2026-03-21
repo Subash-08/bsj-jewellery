@@ -7,6 +7,7 @@ import { ThemeProvider } from '@/context/ThemeProvider';
 import { WishlistProvider } from '@/context/WishlistProvider';
 import Navbar from '@/components/layout/Navbar';
 import ShopByCategoryMenu from '@/components/layout/ShopByCategoryMenu';
+import Footer from '@/components/layout/Footer';
 import { Toaster } from 'sonner';
 import { getCustomerFromSession } from '@/lib/auth/session';
 import type { Metadata } from 'next';
@@ -38,6 +39,7 @@ export default async function RootLayout({
                   <main>
                     {children}
                   </main>
+                  <Footer />
                 </CartProvider>
               </WishlistProvider>
             </ThemeProvider>

@@ -166,7 +166,6 @@ export async function getComplementaryProducts(handle: string) {
         query: getComplementaryProductsQuery,
         variables: { handle },
     });
-    console.log(JSON.stringify(res.body, null, 2));
     const edges = res.body.product?.metafield?.references?.edges || [];
 
     return edges
