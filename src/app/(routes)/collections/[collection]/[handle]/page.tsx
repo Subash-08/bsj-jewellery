@@ -2,8 +2,9 @@ import { getProductByHandle, getCollectionProducts, getProductRecommendations, g
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import type { Product } from '@/types/shopify/product';
+import type { ReviewSummaryData, JudgeMeReview } from '@/types/review';
 import ProductPageClient from '@/components/product/ProductPageClient';
-import { log } from 'console';
+import { getReviews, getReviewSummary, extractNumericProductId } from '@/lib/judgeme';
 
 // Enable dynamic rendering for this route
 export const dynamic = 'force-dynamic';
@@ -114,11 +115,53 @@ export default async function ProductPage(props: Props) {
         },
     };
 
+    // ── Reviews (SSR with timeout — must never block page render) ─────
+    const emptyReviews: { reviews: JudgeMeReview[]; summary: ReviewSummaryData } = { reviews: [], summary: { average: 0, count: 0, distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 } } };
+    let reviewData = emptyReviews;
+    try {
+        const numericId = extractNumericProductId(product.id);
+        const timeout = new Promise<typeof emptyReviews>((resolve) =>
+            setTimeout(() => resolve(emptyReviews), 3000)
+        );
+        const fetchReviews = (async () => {
+            const [reviewsResult, summaryResult] = await Promise.all([
+                getReviews(numericId, 1, 5),
+                getReviewSummary(numericId),
+            ]);
+
+            const finalSummary = summaryResult.average === 0 && summaryResult.count > 0
+                ? { ...reviewsResult.summary, count: summaryResult.count }
+                : summaryResult;
+
+            return { reviews: reviewsResult.reviews, summary: finalSummary };
+        })();
+        reviewData = await Promise.race([fetchReviews, timeout]);
+    } catch (err) {
+        console.error('[Reviews] SSR fetch failed', {
+            handle: params.handle,
+            productId: product.id,
+            error: err instanceof Error ? err.message : String(err),
+        });
+    }
+
+    const jsonLdWithReviews = {
+        ...jsonLd,
+        ...(reviewData.summary.count > 0 && {
+            aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: reviewData.summary.average,
+                reviewCount: reviewData.summary.count,
+                bestRating: 5,
+                worstRating: 1,
+            },
+        }),
+    };
+
     return (
         <>
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWithReviews) }}
             />
             <ProductPageClient
                 product={product}
@@ -126,6 +169,8 @@ export default async function ProductPage(props: Props) {
                 priceBreakdown={priceBreakdown}
                 breadcrumb={breadcrumb}
                 relatedProducts={relatedProducts}
+                initialReviews={reviewData.reviews}
+                initialSummary={reviewData.summary}
             />
         </>
     );

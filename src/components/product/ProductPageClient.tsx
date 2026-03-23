@@ -16,7 +16,9 @@ import QuantitySelector from './QuantitySelector';
 import AddToCart from './AddToCart';
 import BuyNowButton from './BuyNowButton';
 import StickyBuyBar from './StickyBuyBar';
+import ReviewSection from '@/components/reviews/ReviewSection';
 import type { Product, ProductVariant } from '@/types/shopify/product';
+import type { JudgeMeReview, ReviewSummaryData } from '@/types/review';
 
 // ─── Types ───────────────────────────────────────────────────────────────
 interface SpecItem {
@@ -43,6 +45,8 @@ interface ProductPageClientProps {
     priceBreakdown: PriceBreakdown;
     breadcrumb: BreadcrumbData;
     relatedProducts: Product[];
+    initialReviews: JudgeMeReview[];
+    initialSummary: ReviewSummaryData;
 }
 
 // ─── Description Parsing Fallback ────────────────────────────────────────
@@ -75,6 +79,8 @@ export default function ProductPageClient({
     priceBreakdown,
     breadcrumb,
     relatedProducts,
+    initialReviews,
+    initialSummary,
 }: ProductPageClientProps) {
     const [selectedVariantId, setSelectedVariantId] = useState<string | undefined>(
         product.variants[0]?.id
@@ -444,20 +450,15 @@ export default function ProductPageClient({
                 </div>
 
                 {/* ══════════════════════════════════════════════════════════
-                    SECTION: REVIEWS — Placeholder (ready for integration)
+                    SECTION: REVIEWS
                 ══════════════════════════════════════════════════════════ */}
-                <div className="py-12 md:py-16 border-t border-stone-100">
-                    <h2 className="font-serif text-xl font-semibold text-stone-900 mb-8 text-center">Customer Reviews</h2>
-                    <div className="flex flex-col items-center justify-center py-12 text-center">
-                        <div className="flex gap-1 mb-4">
-                            {[1, 2, 3, 4, 5].map((i) => (
-                                <Star key={i} size={24} className="text-stone-200" strokeWidth={1.5} />
-                            ))}
-                        </div>
-                        <p className="text-sm text-stone-400 mb-2">No reviews yet</p>
-                        <p className="text-xs text-stone-400">Be the first to review this product</p>
-                    </div>
-                </div>
+                <ReviewSection
+                    productId={product.id}
+                    productHandle={product.handle}
+                    productTitle={product.title}
+                    initialReviews={initialReviews}
+                    initialSummary={initialSummary}
+                />
 
                 {/* ══════════════════════════════════════════════════════════
                     SECTION: RELATED PRODUCTS

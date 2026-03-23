@@ -2,7 +2,9 @@ import { getProductByHandle, getCollectionProducts } from '@/lib/shopify/client'
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import type { Product } from '@/types/shopify/product';
+import type { ReviewSummaryData, JudgeMeReview } from '@/types/review';
 import ProductPageClient from '@/components/product/ProductPageClient';
+import { getReviews, getReviewSummary, extractNumericProductId } from '@/lib/judgeme';
 
 export const revalidate = 3600;
 
@@ -81,6 +83,35 @@ export default async function ProductPage(props: Props) {
         // Related products failure must not block the page
     }
 
+    // ── Reviews (SSR with timeout — must never block page render) ─────
+    const emptyReviews: { reviews: JudgeMeReview[]; summary: ReviewSummaryData } = { reviews: [], summary: { average: 0, count: 0, distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 } } };
+    let reviewData = emptyReviews;
+    try {
+        const numericId = extractNumericProductId(product.id);
+        const timeout = new Promise<typeof emptyReviews>((resolve) =>
+            setTimeout(() => resolve(emptyReviews), 3000)
+        );
+        const fetchReviews = (async () => {
+            const [reviewsResult, summaryResult] = await Promise.all([
+                getReviews(numericId, 1, 5),
+                getReviewSummary(numericId),
+            ]);
+            
+            const finalSummary = summaryResult.average === 0 && summaryResult.count > 0
+                ? { ...reviewsResult.summary, count: summaryResult.count }
+                : summaryResult;
+
+            return { reviews: reviewsResult.reviews, summary: finalSummary };
+        })();
+        reviewData = await Promise.race([fetchReviews, timeout]);
+    } catch (err) {
+        console.error('[Reviews] SSR fetch failed', {
+            handle: params.handle,
+            productId: product.id,
+            error: err instanceof Error ? err.message : String(err),
+        });
+    }
+
     // ── JSON-LD Structured Data ────────────────────────────────────────
     const minPrice = product.priceRange.minVariantPrice;
     const jsonLd = {
@@ -107,6 +138,16 @@ export default async function ProductPage(props: Props) {
                 name: 'BSJ Jewellery',
             },
         },
+        // SEO: aggregateRating for Google star snippets
+        ...(reviewData.summary.count > 0 && {
+            aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: reviewData.summary.average,
+                reviewCount: reviewData.summary.count,
+                bestRating: 5,
+                worstRating: 1,
+            },
+        }),
     };
 
     return (
@@ -121,6 +162,8 @@ export default async function ProductPage(props: Props) {
                 priceBreakdown={priceBreakdown}
                 breadcrumb={breadcrumb}
                 relatedProducts={relatedProducts}
+                initialReviews={reviewData.reviews}
+                initialSummary={reviewData.summary}
             />
         </>
     );

@@ -146,7 +146,7 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                     href="/"
                                     className="flex flex-col items-start group shrink-0"
                                 >
-                                    <Image src="/logo.jpeg" alt="Logo" width={100} height={100} />
+                                    <Image src="/logo2.png" alt="Logo" width={100} height={100} />
                                 </Link>
                             </div>
 
