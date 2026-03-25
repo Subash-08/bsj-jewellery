@@ -103,18 +103,18 @@ export function ActiveFilterBar() {
             </div>
 
             <style>{`
-                .afb-root {
-                    display: flex;
-                    flex-wrap: wrap;
-                    align-items: center;
-                    gap: 0.5rem;
-                    padding: 0.65rem 0.9rem;
-                    background: #FFFDF9;
-                    border: 1px solid #EDE8DF;
-                    border-radius: 8px;
-                    margin-bottom: 1.25rem;
-                    animation: afbSlideDown 0.25s cubic-bezier(0.22,1,0.36,1) both;
-                }
+              .afb-root {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 0.9rem;
+    background: #FFFDF9;
+    border: 1px solid #EDE8DF;
+    border-radius: 8px;
+    margin-bottom: 0; /* ← was 1.25rem, let .cp-active-filters handle spacing */
+    animation: afbSlideDown 0.25s cubic-bezier(0.22,1,0.36,1) both;
+}
 
                 @keyframes afbSlideDown {
                     from { opacity: 0; transform: translateY(-6px); }

@@ -21,12 +21,11 @@ const TRUST_BADGES = [
 ];
 
 const SHOP_LINKS = [
-  { label: "Rings", href: "/shop/rings" },
-  { label: "Chains", href: "/shop/chains" },
-  { label: "Bracelets", href: "/shop/bracelets" },
-  { label: "Earrings", href: "/shop/earrings" },
-  { label: "Anklets", href: "/shop/anklets" },
-  { label: "View All Collections", href: "/collections" },
+  { label: "Rings", href: "/collections/ring" },
+  { label: "Chains", href: "/collections/chain" },
+  { label: "Bracelets", href: "/collections/bracelet" },
+  { label: "Pendants", href: "/collections/pendant" },
+  { label: "Anklets", href: "/collections/anklet" },
 ];
 
 const CUSTOMER_CARE_LINKS = [
@@ -34,21 +33,20 @@ const CUSTOMER_CARE_LINKS = [
   { label: "Track Order", href: "/track-order" },
   { label: "FAQs", href: "/faqs" },
   { label: "Shipping Policy", href: "/shipping-policy" },
-  { label: "Return Policy", href: "/return-policy" },
+  { label: "Return & Refund Policy", href: "/return-refund-policy" },
 ];
 
 const ABOUT_LINKS = [
   { label: "About Us", href: "/about" },
   { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "Terms & Conditions", href: "/terms-conditions" },
-  { label: "Refund Policy", href: "/refund-policy" },
+  { label: "Terms & Conditions", href: "/terms-of-service" },
 ];
 
 export default function Footer() {
   return (
     <footer className="bg-[#FAF8F5] pt-16 pb-8 border-t border-stone-200">
       <div className="container mx-auto px-4 lg:px-8 max-w-[1400px]">
-        
+
         {/* 1. TOP TRUST BAR */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 pb-16 border-b border-stone-200">
           {TRUST_BADGES.map((badge, idx) => {
@@ -66,11 +64,11 @@ export default function Footer() {
 
         {/* 2. MAIN FOOTER GRID */}
         <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
-          
+
           {/* Column 1 — Brand */}
           <div className="lg:col-span-4 flex flex-col gap-6">
             <Link href="/" className="inline-block">
-              <Image src="/logo.jpeg" alt="BSJ Logo" width={120} height={120} className="w-auto h-16 object-contain" />
+              <Image src="/logo2.png" alt="BSJ Logo" width={120} height={120} className="w-auto h-16 object-contain" />
             </Link>
             <p className="text-sm text-stone-600 leading-relaxed max-w-sm">
               Crafting timeless luxury and exquisite diamond, gold, and silver jewellery tailored to celebrate your life's most precious moments.
@@ -138,14 +136,14 @@ export default function Footer() {
             </p>
             <form className="flex flex-col gap-3 mt-2">
               <div className="relative">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email" 
+                <input
+                  type="email"
+                  placeholder="Enter your email"
                   className="w-full bg-white border border-stone-200 text-stone-800 text-sm px-4 py-3 outline-none focus:border-amber-600 transition-colors placeholder:text-stone-400"
                   required
                 />
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="absolute right-0 top-0 bottom-0 px-4 text-stone-500 hover:text-amber-600 transition-colors flex items-center justify-center"
                   aria-label="Subscribe"
                 >

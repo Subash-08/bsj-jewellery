@@ -315,21 +315,17 @@ export default function FilterSidebar({ filters, currentParams, collections = []
                    Desktop: sticky panel with internal scroll
                    Mobile:  fixed left drawer above backdrop
                 ══════════════════════════════════════════ */
-                .fs-aside {
-                    /* Desktop */
-                    background: #FFFFFF;
-                    border: 1px solid #EDE8E0;
-                    border-radius: 12px;
-                    display: flex;
-                    flex-direction: column;
-                    position: sticky;
-                    top: calc(var(--navbar-height, 80px) + 1rem);
-                    align-self: start;
-                    /* max-height drives the scrollable body below */
-                    max-height: calc(100vh - var(--navbar-height, 80px) - 2rem);
-                    /* Do NOT set overflow here on desktop — let .fs-body scroll */
-                    overflow: visible;
-                }
+.fs-aside {
+    background: #FFFFFF;
+    border: 1px solid #EDE8E0;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: calc(var(--navbar-height, 80px) + 1rem);
+    align-self: start;
+    overflow: hidden; /* ← changed: needed so .fs-body scroll is contained */
+}
 
                 @media (max-width: 767px) {
                     .fs-aside {
@@ -477,20 +473,20 @@ export default function FilterSidebar({ filters, currentParams, collections = []
                    Desktop: grows inside sticky aside
                    Mobile:  fills remaining drawer height
                 ══════════════════════════════════════════ */
-                .fs-body {
-                    flex: 1;
-                    overflow-y: auto;
-                    overflow-x: hidden;
-                    padding: 0.85rem 1.1rem 2rem;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1.25rem;
-                    /* Thin gold-toned scrollbar */
-                    scrollbar-width: thin;
-                    scrollbar-color: #D4C4A8 transparent;
-                    /* Desktop: cap height so aside stays sticky */
-                    max-height: calc(100vh - var(--navbar-height, 80px) - 7rem);
-                }
+.fs-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0.85rem 1.1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    scrollbar-width: thin;
+    scrollbar-color: #D4C4A8 transparent;
+    /* Auto height: fills whatever space the aside allows, no hardcoded calc */
+    max-height: none;
+    min-height: 0; /* ← critical: allows flex child to shrink and scroll properly */
+}
 
                 .fs-body::-webkit-scrollbar {
                     width: 3px;

@@ -347,11 +347,13 @@ export default async function CollectionPage(props: Props) {
 
                 /* ── Sidebar: sticky on desktop, no independent scroll ── */
 .cp-sidebar {
-        padding: 0 !important;
-        overflow: visible !important;
-        position: static !important; /* <--- THIS breaks the stacking context trap! */
-    }
-
+    padding: 0 !important;
+    overflow: visible !important;
+    position: sticky !important;
+    top: 7rem; /* matches your navbar height */
+    height: fit-content;
+    align-self: start;
+}
                 /* ── ActiveFilterBar: never clip, never scroll, grow naturally ── */
                 .cp-active-filters {
                     height: auto;

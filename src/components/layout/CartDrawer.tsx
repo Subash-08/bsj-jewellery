@@ -59,8 +59,7 @@ export default function CartDrawer({ isOpen, onClose, onCartClick }: CartDrawerP
             onMouseLeave={onClose}
             className="fixed right-0 top-0 z-50"
         >
-            {/* Invisible hover bridge */}
-            <div className="fixed right-0 top-[0px] w-[100px] h-[100px] z-50 " />
+            {/* Hover bridge removed to allow clicks on Cart Icon to pass through seamlessly */}
 
             <div
                 ref={drawerRef}

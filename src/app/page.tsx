@@ -15,6 +15,7 @@ import FinalCTA from '@/components/home/FinalCTA';
 import ProductSkeleton from '@/components/home/ProductSkeleton';
 import SectionSkeleton from '@/components/home/SectionSkeleton';
 import { mockProducts } from '@/lib/shopify/mock';
+import StyleGridServer from '@/components/home/style-grid/StyleGridServer';
 
 export const revalidate = 3600;
 
@@ -68,10 +69,12 @@ export default async function HomePage() {
       </Suspense> */}
 
       <PromoBanner />
+      <StyleGridServer />
+      <FinalCTA />
 
       <WhyChooseUs />
 
-      <FinalCTA />
+
       {/* {products.length > 0 && <FeaturedProduct product={products[0]} />} */}
       <Suspense fallback={<SectionSkeleton />}>
         <InstagramFeed />

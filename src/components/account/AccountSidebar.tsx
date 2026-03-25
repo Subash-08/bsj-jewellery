@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -34,7 +33,6 @@ const navItems: NavItem[] = [
 export default function AccountSidebar() {
     const pathname = usePathname();
     const router = useRouter();
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const { customer, isLoading, logout } = useAuth();
 
     const handleSignOut = async () => {
@@ -99,7 +97,6 @@ export default function AccountSidebar() {
                         <Link
                             key={item.href}
                             href={item.href}
-                            onClick={() => setIsMobileMenuOpen(false)}
                             className={cn(
                                 "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group",
                                 active
@@ -135,31 +132,38 @@ export default function AccountSidebar() {
                 <SidebarContent />
             </aside>
 
-            {/* Mobile Menu Button */}
-            <button
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="lg:hidden fixed bottom-6 right-6 z-40 p-4 bg-stone-900 text-white rounded-full shadow-lg hover:bg-stone-800 transition-colors"
-            >
-                <Menu size={22} />
-            </button>
+            {/* Mobile Navigation Bar */}
+            <div className="lg:hidden bg-white border-b border-stone-200/60 w-full overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <nav className="flex px-4 py-3 gap-2 w-max">
+                    {navItems.map((item) => {
+                        const Icon = item.icon;
+                        const active = isActive(item.href);
 
-            {/* Mobile Drawer */}
-            {isMobileMenuOpen && (
-                <div className="lg:hidden fixed inset-0 z-50 bg-gray-900/40 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)}>
-                    <div
-                        className="absolute left-0 top-0 h-full w-[85%] max-w-sm bg-white shadow-2xl flex flex-col"
-                        onClick={(e) => e.stopPropagation()}
+                        return (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className={cn(
+                                    "flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-200",
+                                    active
+                                        ? "bg-stone-900 text-white shadow-sm"
+                                        : "bg-stone-100 text-stone-600 hover:bg-stone-200 hover:text-stone-900"
+                                )}
+                            >
+                                <Icon size={16} strokeWidth={active ? 2.2 : 1.8} />
+                                <span className="font-medium text-sm whitespace-nowrap">{item.label}</span>
+                            </Link>
+                        );
+                    })}
+                    <button
+                        onClick={handleSignOut}
+                        className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition-all duration-200"
                     >
-                        <div className="flex justify-between items-center p-5 border-b border-stone-200/60">
-                            <h2 className="font-serif text-xl text-stone-900">My Account</h2>
-                            <button onClick={() => setIsMobileMenuOpen(false)} className="p-1 hover:bg-stone-100 rounded-full transition-colors">
-                                <X className="text-stone-500" size={20} />
-                            </button>
-                        </div>
-                        <SidebarContent />
-                    </div>
-                </div>
-            )}
+                        <LogOut size={16} strokeWidth={1.8} />
+                        <span className="font-medium text-sm whitespace-nowrap">Sign Out</span>
+                    </button>
+                </nav>
+            </div>
         </>
     );
 }
