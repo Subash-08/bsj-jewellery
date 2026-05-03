@@ -5,6 +5,11 @@ import CategorySlider from '@/components/home/CategorySlider';
 import FeaturedCollections from '@/components/home/FeaturedCollections';
 import SplitProductShowcase from '@/components/home/SplitProductShowcase';
 import ProductGrid from '@/components/features/ProductGrid';
+import BestSellers from '@/components/home/BestSellers';
+import LatestArrivals from '@/components/home/LatestArrivals';
+import ShopByGender from '@/components/home/ShopByGender';
+import AboutUs from '@/components/home/AboutUs';
+import HelpSection from '@/components/home/HelpSection';
 import PromoBanner from '@/components/home/PromoBanner';
 import WhyChooseUs from '@/components/home/WhyChooseUs';
 import FeaturedProduct from '@/components/home/FeaturedProduct';
@@ -53,7 +58,18 @@ export default async function HomePage() {
 
       <CategorySlider collections={collections} />
 
-      <FeaturedCollections collections={collections} />
+      {/* <FeaturedCollections collections={collections} /> */}
+
+      <Suspense fallback={<SectionSkeleton />}>
+        <LatestArrivals collections={collections} />
+      </Suspense>
+
+      <ShopByGender collections={collections} />
+      {/* Rebuild trigger */}
+
+      <Suspense fallback={<ProductSkeleton />}>
+        <BestSellers products={products} />
+      </Suspense>
 
       <Suspense fallback={<ProductSkeleton />}>
         <SplitProductShowcase
@@ -64,16 +80,14 @@ export default async function HomePage() {
         />
       </Suspense>
 
-      {/* <Suspense fallback={<ProductSkeleton />}>
-        <ProductGrid title="New Arrivals" products={allProducts.slice(0, 6)} />
-      </Suspense> */}
-
       <PromoBanner />
       <StyleGridServer />
       <FinalCTA />
 
       <WhyChooseUs />
 
+      <AboutUs />
+      <HelpSection />
 
       {/* {products.length > 0 && <FeaturedProduct product={products[0]} />} */}
       <Suspense fallback={<SectionSkeleton />}>

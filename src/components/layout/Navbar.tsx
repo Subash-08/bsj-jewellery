@@ -47,7 +47,7 @@ function MobileAccordion({
         <div className="border-b border-[#f1ece3]">
             <button
                 onClick={() => setOpen(!open)}
-                className="w-full flex justify-between items-center py-3 text-gray-800 font-medium"
+                className="w-full flex justify-between items-center py-3 text-white font-medium"
             >
                 {title}
                 <ChevronDown
@@ -118,18 +118,19 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
 
     return (
         <>
-            <TopBar />
+            {/* <TopBar /> */}
+
 
             <header
                 className={cn(
-                    "fixed w-full z-50 transition-all duration-300",
+                    "sticky top-0 w-full z-50 transition-all duration-300",
                     isScrolled
-                        ? "top-0 bg-[#faf8f4]/95 backdrop-blur-md shadow-md border-b border-[#e8e3d9]"
-                        : "top-[34px]"
+                        ? "bg-[#230532]/95 backdrop-blur-md shadow-md border-b border-[#e8e3d9]"
+                        : "bg-[#230532]"
                 )}
             >
                 {/* MAIN HEADER */}
-                <div className="bg-[#faf8f4] border-b border-[#e8e3d9]">
+                <div className="bg-[#230532] border-b border-[#e8e3d9]">
                     <div className="container mx-auto px-4">
                         <div className="grid grid-cols-[1fr_auto_1fr] lg:grid-cols-[200px_1fr_200px] items-center h-[58px] gap-4">
 
@@ -139,14 +140,14 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                     className="lg:hidden p-1"
                                     onClick={() => setIsMobileMenuOpen(true)}
                                 >
-                                    <Menu size={24} className="text-gray-700" />
+                                    <Menu size={24} className="text-white" />
                                 </button>
 
                                 <Link
                                     href="/"
                                     className="flex flex-col items-start group shrink-0"
                                 >
-                                    <Image src="/logo2.png" alt="Logo" width={100} height={100} />
+                                    <Image src="/logo.png" alt="Logo" width={100} height={100} />
                                 </Link>
                             </div>
 
@@ -164,7 +165,7 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                     className="lg:hidden p-2"
                                     onClick={() => setShowSearch(!showSearch)}
                                 >
-                                    <Search size={22} className="text-gray-700" />
+                                    <Search size={22} className="text-white" />
                                 </button>
 
                                 <div
@@ -175,7 +176,7 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                 >
                                     <User
                                         size={20}
-                                        className="text-gray-700 group-hover:text-amber-600 transition-colors"
+                                        className="text-white group-hover:text-amber-600 transition-colors"
                                     />
                                     <span className="text-[9px] uppercase tracking-widest font-medium mt-1 text-gray-500">
                                         {isAuthenticated ? (customer?.firstName ?? 'Account') : 'Sign In'}
@@ -188,7 +189,7 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                 >
                                     <Heart
                                         size={20}
-                                        className="text-gray-700 group-hover:text-amber-600 transition-colors"
+                                        className="text-white group-hover:text-amber-600 transition-colors"
                                     />
                                     <span className="text-[9px] uppercase tracking-widest font-medium mt-1 text-gray-500">
                                         Wishlist
@@ -203,7 +204,7 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                     <div className="relative">
                                         <ShoppingBag
                                             size={20}
-                                            className="text-gray-700 group-hover:text-amber-600 transition-colors"
+                                            className="text-white group-hover:text-amber-600 transition-colors"
                                         />
                                         {itemCount > 0 && (
                                             <span className="absolute -top-1 -right-1 h-4 w-4 bg-amber-500 text-white text-[10px] flex items-center justify-center rounded-full">
@@ -334,19 +335,19 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                     onClick={() => setIsMobileMenuOpen(false)}
                 >
                     <div
-                        className="absolute left-0 top-0 h-full w-[85%] max-w-sm bg-[#faf8f4] shadow-xl flex flex-col"
+                        className="absolute left-0 top-0 h-full w-[85%] max-w-sm bg-[#230532] shadow-xl flex flex-col"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* HEADER */}
                         <div className="flex justify-between items-center px-5 py-4 border-b border-[#e8e3d9]">
-                            <h2 className="font-serif text-xl text-gray-900">Menu</h2>
+                            <h2 className="font-serif text-xl text-white">Menu</h2>
                             <button onClick={() => setIsMobileMenuOpen(false)}>
                                 <X className="text-gray-600" />
                             </button>
                         </div>
 
                         {/* TOP ACTIONS */}
-                        <div className="grid grid-cols-3 border-b border-[#e8e3d9] text-center">
+                        <div className="grid grid-cols-3 text-white border-b border-[#e8e3d9] text-center">
                             <button
                                 onClick={() => {
                                     setIsMobileMenuOpen(false);
@@ -390,7 +391,7 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                             {/* HOME */}
                             <Link
                                 href="/"
-                                className="block py-3 px-2 text-gray-800 font-medium border-b border-[#f1ece3]"
+                                className="block py-3 px-2 text-white font-medium border-b border-[#f1ece3]"
                             >
                                 Home
                             </Link>
@@ -414,7 +415,7 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                             ) : (
                                 <Link
                                     href="/collections"
-                                    className="block py-3 px-2 text-gray-800 font-medium border-b border-[#f1ece3]"
+                                    className="block py-3 px-2 text-white font-medium border-b border-[#f1ece3]"
                                 >
                                     Shop By Category
                                 </Link>
@@ -464,21 +465,21 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                             {/* STATIC LINKS */}
                             <Link
                                 href="/about"
-                                className="block py-3 px-2 text-gray-800 font-medium border-b border-[#f1ece3]"
+                                className="block py-3 px-2 text-white font-medium border-b border-[#f1ece3]"
                             >
                                 About
                             </Link>
 
                             <Link
                                 href="/contact"
-                                className="block py-3 px-2 text-gray-800 font-medium border-b border-[#f1ece3]"
+                                className="block py-3 px-2 text-white font-medium border-b border-[#f1ece3]"
                             >
                                 Contact Us
                             </Link>
                         </nav>
 
                         {/* FOOTER */}
-                        <div className="px-5 py-5 border-t border-[#e8e3d9] space-y-3 text-sm text-gray-600">
+                        <div className="px-5 py-5 border-t border-[#e8e3d9] space-y-3 text-sm text-white">
                             <div className="flex items-center gap-2">
                                 <Phone size={16} />
                                 <span>+91 98765 43210</span>

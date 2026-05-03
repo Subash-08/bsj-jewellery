@@ -90,7 +90,7 @@ export default async function CollectionPage(props: Props) {
         <>
             <div
                 className="collection-page min-h-screen pb-24"
-                style={{ background: '#FAF8F5', paddingTop: '7rem' }}
+                style={{ background: '#FAF8F5', paddingTop: '4rem' }}
             >
                 <div
                     style={{

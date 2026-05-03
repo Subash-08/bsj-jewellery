@@ -5,7 +5,7 @@ export default function CollectionLoading() {
         <>
             <div
                 className="collection-page min-h-screen pb-24"
-                style={{ background: '#FAF8F5', paddingTop: '7rem' }}
+                style={{ background: '#ffffffff' }}
             >
                 <div
                     style={{
@@ -48,7 +48,7 @@ export default function CollectionLoading() {
 
                     {/* ── Body: sidebar + grid ── */}
                     <div className="cp-body-grid">
-                        
+
                         {/* Sidebar */}
                         <aside className="cp-sidebar cp-sidebar-skeleton">
                             <div style={{ width: '100%', height: 'calc(100vh - 12rem)', background: 'linear-gradient(180deg, #FFFFFF, #FAF8F5)', border: '1px solid #EDE8E0', borderRadius: 12, padding: '1.5rem' }}>
@@ -73,7 +73,7 @@ export default function CollectionLoading() {
                         <main className="cp-main" style={{ minWidth: 0 }}>
                             {/* Active filters bar height replacement */}
                             <div style={{ width: '100%', height: 46, background: '#FFFFFF', border: '1px solid #EDE8E0', borderRadius: 8, marginBottom: '1.25rem' }} className="animate-pulse" />
-                            
+
                             {/* Grid format mirrors the real Grid logic (2 cols mobile, 3 tablet, 4 desktop) */}
                             <div className="cp-skeleton-grid" style={{ display: 'grid', gap: '1rem' }}>
                                 {[...Array(8)].map((_, i) => (

@@ -44,19 +44,19 @@ const ABOUT_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#FAF8F5] pt-16 pb-8 border-t border-stone-200">
+    <footer className="bg-[#230532] text-white pt-16 pb-8 border-t border-white/20">
       <div className="container mx-auto px-4 lg:px-8 max-w-[1400px]">
 
         {/* 1. TOP TRUST BAR */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 pb-16 border-b border-stone-200">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 pb-16 border-b border-white/20">
           {TRUST_BADGES.map((badge, idx) => {
             const Icon = badge.icon;
             return (
               <div key={idx} className="flex flex-col items-center text-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-white/60 flex items-center justify-center border border-stone-200 shadow-sm">
-                  <Icon className="w-6 h-6 text-amber-600 stroke-[1.5]" />
+                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shadow-sm">
+                  <Icon className="w-6 h-6 text-amber-500 stroke-[1.5]" />
                 </div>
-                <span className="text-xs font-semibold text-stone-800 uppercase tracking-widest">{badge.label}</span>
+                <span className="text-xs font-semibold text-white uppercase tracking-widest">{badge.label}</span>
               </div>
             );
           })}
@@ -67,20 +67,20 @@ export default function Footer() {
 
           {/* Column 1 — Brand */}
           <div className="lg:col-span-4 flex flex-col gap-6">
-            <Link href="/" className="inline-block">
-              <Image src="/logo2.png" alt="BSJ Logo" width={120} height={120} className="w-auto h-16 object-contain" />
+            <Link href="/" className="">
+              <Image src="/logo.png" alt="BSJ Logo" width={120} height={120} className="w-auto h-12 object-contain" />
             </Link>
-            <p className="text-sm text-stone-600 leading-relaxed max-w-sm">
+            <p className="text-sm text-white/80 leading-relaxed max-w-sm">
               Crafting timeless luxury and exquisite diamond, gold, and silver jewellery tailored to celebrate your life's most precious moments.
             </p>
             <div className="flex items-center gap-4 mt-2">
-              <a href="#" className="w-10 h-10 rounded-full border border-stone-200 flex items-center justify-center text-stone-600 hover:text-amber-600 hover:border-amber-600 transition-colors">
+              <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-amber-500 hover:border-amber-500 transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-stone-200 flex items-center justify-center text-stone-600 hover:text-amber-600 hover:border-amber-600 transition-colors">
+              <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-amber-500 hover:border-amber-500 transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-stone-200 flex items-center justify-center text-stone-600 hover:text-amber-600 hover:border-amber-600 transition-colors">
+              <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-amber-500 hover:border-amber-500 transition-colors">
                 <MessageCircle className="w-5 h-5" />
               </a>
             </div>
@@ -88,11 +88,11 @@ export default function Footer() {
 
           {/* Column 2 — Shop */}
           <div className="lg:col-span-2 flex flex-col gap-6">
-            <h3 className="text-sm font-serif font-medium text-stone-900 uppercase tracking-widest">Shop</h3>
+            <h3 className="text-sm font-serif font-medium text-white uppercase tracking-widest">Shop</h3>
             <ul className="flex flex-col gap-4">
               {SHOP_LINKS.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-stone-600 hover:text-amber-600 transition-colors">
+                  <Link href={link.href} className="text-sm text-white/80 hover:text-amber-500 transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -102,11 +102,11 @@ export default function Footer() {
 
           {/* Column 3 — Customer Care */}
           <div className="lg:col-span-2 flex flex-col gap-6">
-            <h3 className="text-sm font-serif font-medium text-stone-900 uppercase tracking-widest">Customer Care</h3>
+            <h3 className="text-sm font-serif font-medium text-white uppercase tracking-widest">Customer Care</h3>
             <ul className="flex flex-col gap-4">
               {CUSTOMER_CARE_LINKS.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-stone-600 hover:text-amber-600 transition-colors">
+                  <Link href={link.href} className="text-sm text-white/80 hover:text-amber-500 transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -116,11 +116,11 @@ export default function Footer() {
 
           {/* Column 4 — About */}
           <div className="lg:col-span-2 flex flex-col gap-6">
-            <h3 className="text-sm font-serif font-medium text-stone-900 uppercase tracking-widest">About</h3>
+            <h3 className="text-sm font-serif font-medium text-white uppercase tracking-widest">About</h3>
             <ul className="flex flex-col gap-4">
               {ABOUT_LINKS.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-stone-600 hover:text-amber-600 transition-colors">
+                  <Link href={link.href} className="text-sm text-white/80 hover:text-amber-500 transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -130,8 +130,8 @@ export default function Footer() {
 
           {/* Column 5 — Newsletter */}
           <div className="lg:col-span-2 flex flex-col gap-6">
-            <h3 className="text-sm font-serif font-medium text-stone-900 uppercase tracking-widest">Newsletter</h3>
-            <p className="text-sm text-stone-600 leading-relaxed">
+            <h3 className="text-sm font-serif font-medium text-white uppercase tracking-widest">Newsletter</h3>
+            <p className="text-sm text-white/80 leading-relaxed">
               Subscribe to receive updates, access to exclusive deals, and more.
             </p>
             <form className="flex flex-col gap-3 mt-2">
@@ -139,12 +139,12 @@ export default function Footer() {
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="w-full bg-white border border-stone-200 text-stone-800 text-sm px-4 py-3 outline-none focus:border-amber-600 transition-colors placeholder:text-stone-400"
+                  className="w-full bg-white/10 border border-white/20 text-white text-sm px-4 py-3 outline-none focus:border-amber-500 transition-colors placeholder:text-white/50"
                   required
                 />
                 <button
                   type="submit"
-                  className="absolute right-0 top-0 bottom-0 px-4 text-stone-500 hover:text-amber-600 transition-colors flex items-center justify-center"
+                  className="absolute right-0 top-0 bottom-0 px-4 text-white/70 hover:text-amber-500 transition-colors flex items-center justify-center"
                   aria-label="Subscribe"
                 >
                   <ArrowRight className="w-5 h-5" />
@@ -156,15 +156,15 @@ export default function Footer() {
         </div>
 
         {/* 3. BOTTOM BAR */}
-        <div className="pt-8 border-t border-stone-200 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-stone-500">
+        <div className="pt-8 border-t border-white/20 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-white/70">
             BSJ Jewellers &copy; {new Date().getFullYear()}. All Rights Reserved.
           </p>
-          <div className="flex items-center gap-3 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+          <div className="flex items-center gap-3 opacity-60 hover:opacity-100 transition-all duration-300">
             {/* Payment Placeholders */}
-            <div className="h-6 w-10 bg-stone-200 rounded flex items-center justify-center text-[8px] font-bold text-stone-500">VISA</div>
-            <div className="h-6 w-10 bg-stone-200 rounded flex items-center justify-center text-[8px] font-bold text-stone-500">MC</div>
-            <div className="h-6 w-10 bg-stone-200 rounded flex items-center justify-center text-[8px] font-bold text-stone-500">UPI</div>
+            <div className="h-6 w-10 bg-white/20 rounded flex items-center justify-center text-[8px] font-bold text-white/90">VISA</div>
+            <div className="h-6 w-10 bg-white/20 rounded flex items-center justify-center text-[8px] font-bold text-white/90">MC</div>
+            <div className="h-6 w-10 bg-white/20 rounded flex items-center justify-center text-[8px] font-bold text-white/90">UPI</div>
           </div>
         </div>
 
