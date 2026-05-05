@@ -27,9 +27,9 @@ export default function ShopByGender({ collections }: { collections: Collection[
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-4 md:py-8 bg-white">
       <div className="max-w-6xl mx-auto px-4 md:px-8">
-        
+
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-10 md:mb-16">
           <div className="flex items-center gap-3 md:gap-4">
@@ -45,8 +45,8 @@ export default function ShopByGender({ collections }: { collections: Collection[
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
           {genders.map((gender, idx) => (
-            <Link 
-              href={`/collections/${gender.handle}`} 
+            <Link
+              href={`/collections/${gender.handle}`}
               key={idx}
               className="group flex flex-col items-center"
             >

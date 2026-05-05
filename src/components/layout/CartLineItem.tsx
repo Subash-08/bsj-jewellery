@@ -11,7 +11,7 @@ interface CartLineItemProps {
 
 export function CartLineItem({ line, onQuantityChange, onRemove }: CartLineItemProps) {
     return (
-        <div className="flex gap-3 p-3 bg-stone-50 rounded-lg hover:bg-stone-100 transition-colors group">
+        <div className="flex gap-3 p-3 bg-stone-50 rounded-lg bg-stone-200 hover:bg-stone-300 transition-colors group">
             {/* Product Image */}
             <div className="w-20 h-20 bg-white rounded-md overflow-hidden flex-shrink-0 border border-stone-200">
                 {line.merchandise.product.featuredImage ? (
@@ -41,7 +41,7 @@ export function CartLineItem({ line, onQuantityChange, onRemove }: CartLineItemP
                     <div className="flex items-center border border-stone-300 rounded-md bg-white">
                         <button
                             onClick={() => onQuantityChange(line.id, line.quantity, -1)}
-                            className="p-1 hover:bg-stone-100 transition-colors"
+                            className="p-1 bg-stone-200 hover:bg-stone-400 rounded-l-md transition-colors"
                             aria-label="Decrease quantity"
                         >
                             <Minus size={14} className="text-stone-600" />
@@ -51,7 +51,7 @@ export function CartLineItem({ line, onQuantityChange, onRemove }: CartLineItemP
                         </span>
                         <button
                             onClick={() => onQuantityChange(line.id, line.quantity, 1)}
-                            className="p-1 hover:bg-stone-100 transition-colors"
+                            className="p-1 bg-stone-200 hover:bg-stone-400 rounded-r-md transition-colors"
                             aria-label="Increase quantity"
                         >
                             <Plus size={14} className="text-stone-600" />

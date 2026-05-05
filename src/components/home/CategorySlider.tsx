@@ -28,13 +28,13 @@ interface BannerData {
    Colour schemes — warm jewellery palette
 ───────────────────────────────────────────────────────────────────── */
 const SCHEMES = [
-  { ring: "#C9A96E", bg: "#FBF7F0", glow: "rgba(201,169,110,0.4)" },
-  { ring: "#B07D57", bg: "#FAF4EF", glow: "rgba(176,125,87,0.35)" },
-  { ring: "#9B8EA8", bg: "#F5F2F8", glow: "rgba(155,142,168,0.35)" },
-  { ring: "#7EADA6", bg: "#F0F7F6", glow: "rgba(126,173,166,0.35)" },
-  { ring: "#C98B8B", bg: "#FAF0F0", glow: "rgba(201,139,139,0.35)" },
-  { ring: "#A09060", bg: "#F8F5EC", glow: "rgba(160,144,96,0.35)" },
-  { ring: "#8A8A6E", bg: "#F5F5EE", glow: "rgba(138,138,110,0.35)" },
+  { ring: "#6A00A0", bg: "#F8F5FA", glow: "rgba(106,0,160,0.35)" },
+  { ring: "#8A33B5", bg: "#FAF7FC", glow: "rgba(138,51,181,0.35)" },
+  { ring: "#451B5A", bg: "#F5F2F8", glow: "rgba(69,27,90,0.35)" },
+  { ring: "#9D55C4", bg: "#FBF9FD", glow: "rgba(157,85,196,0.35)" },
+  { ring: "#552175", bg: "#F7F4FA", glow: "rgba(85,33,117,0.35)" },
+  { ring: "#230532", bg: "#F3EEF5", glow: "rgba(35,5,50,0.35)" },
+  { ring: "#742C9A", bg: "#F9F6FB", glow: "rgba(116,44,154,0.35)" },
 ];
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -43,7 +43,7 @@ const SCHEMES = [
 const DEFAULT_BANNERS: BannerData[] = [
   {
     bg: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slilde3.avif?v=1773641440",
-    bgColor: "#EDE0D4",
+    bgColor: "#EADBF5",
     tag: "20% Off",
     title: "Fine rings\nfor every occasion",
     subtitle: "Get 20% off your first purchase",
@@ -52,7 +52,7 @@ const DEFAULT_BANNERS: BannerData[] = [
   },
   {
     bg: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slilde3.avif?v=1773641440",
-    bgColor: "#DDDAF5",
+    bgColor: "#DCD2E6",
     tag: "New Arrivals",
     title: "Layered\nnecklaces",
     subtitle: "New arrivals — limited edition",
@@ -61,7 +61,7 @@ const DEFAULT_BANNERS: BannerData[] = [
   },
   {
     bg: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slilde3.avif?v=1773641440",
-    bgColor: "#C8DDD8",
+    bgColor: "#F3EEF5",
     tag: "Handcrafted",
     title: "Statement\nearrings",
     subtitle: "Handcrafted with natural stones",
@@ -112,7 +112,7 @@ const CategoryBubble = ({
             zIndex: 20,
           }}
         >
-          <Sparkles size={15} style={{ color: "#C9A96E" }} className="animate-pulse" />
+          <Sparkles size={15} style={{ color: "#6A00A0" }} className="animate-pulse" />
         </div>
 
         {/* Circle stack */}
@@ -154,8 +154,8 @@ const CategoryBubble = ({
               borderRadius: "50%",
               padding: 2.5,
               background: hov
-                ? `linear-gradient(135deg, ${scheme.ring} 0%, #F0E0C0 50%, ${scheme.ring} 100%)`
-                : "linear-gradient(135deg, #E2D9CE, #CEC4B8)",
+                ? `linear-gradient(135deg, ${scheme.ring} 0%, #DDC2F0 50%, ${scheme.ring} 100%)`
+                : "linear-gradient(135deg, #EBE5F0, #DCD2E6)",
               transition: "background 0.5s",
             }}
           >
@@ -222,7 +222,7 @@ const CategoryBubble = ({
               fontWeight: 600,
               fontSize: "0.88rem",
               letterSpacing: "0.05em",
-              color: hov ? "#2C2218" : "#4A3F35",
+              color: hov ? "#230532" : "#3B2545",
               transition: "color 0.3s",
             }}
           >
@@ -317,10 +317,10 @@ const PromoBannerCard = ({
                 fontWeight: 700,
                 letterSpacing: "0.22em",
                 textTransform: "uppercase",
-                color: "#2C2218",
+                color: "#230532",
                 background: "rgba(255,255,255,0.65)",
                 backdropFilter: "blur(6px)",
-                border: "1px solid rgba(44,34,24,0.1)",
+                border: "1px solid rgba(35,5,50,0.1)",
                 borderRadius: 999,
                 padding: "0.3rem 0.85rem",
               }}
@@ -337,7 +337,7 @@ const PromoBannerCard = ({
                 fontWeight: 700,
                 fontSize: "clamp(1.4rem, 2.6vw, 2.2rem)",
                 lineHeight: 1.1,
-                color: "#2C2218",
+                color: "#230532",
                 letterSpacing: "-0.025em",
                 marginBottom: "0.55rem",
               }}
@@ -354,7 +354,7 @@ const PromoBannerCard = ({
               style={{
                 fontFamily: "'DM Sans', sans-serif",
                 fontSize: "0.76rem",
-                color: "rgba(44,34,24,0.52)",
+                color: "rgba(35,5,50,0.52)",
                 letterSpacing: "0.01em",
                 marginBottom: "1.3rem",
                 lineHeight: 1.65,
@@ -374,11 +374,11 @@ const PromoBannerCard = ({
                 fontWeight: 700,
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                color: "#2C2218",
-                borderBottom: "1.5px solid rgba(44,34,24,0.5)",
+                color: "#230532",
+                borderBottom: "1.5px solid rgba(35,5,50,0.5)",
                 paddingBottom: 2,
                 transition: "gap 0.25s, border-color 0.25s",
-                borderColor: hov ? "#2C2218" : "rgba(44,34,24,0.5)",
+                borderColor: hov ? "#230532" : "rgba(35,5,50,0.5)",
               }}
             >
               {banner.cta}
@@ -446,7 +446,7 @@ const PromoBannerCard = ({
             fontSize: "5.5rem",
             fontWeight: 700,
             lineHeight: 1,
-            color: "rgba(44,34,24,0.055)",
+            color: "rgba(35,5,50,0.055)",
             pointerEvents: "none",
             userSelect: "none",
             zIndex: 1,
@@ -486,16 +486,16 @@ const CategorySlider = ({
     <>
       <section
         className="relative overflow-hidden py-16 md:py-24"
-        style={{ background: "#FAF7F2" }}
+        style={{ background: "#ffffffff" }}
       >
         {/* Ambient blobs */}
         <div
           className="pointer-events-none absolute -top-20 -left-20 rounded-full animate-pulse"
-          style={{ width: 320, height: 320, background: "#F0DEC8", filter: "blur(60px)", opacity: 0.4 }}
+          style={{ width: 320, height: 320, background: "#E2D4F0", filter: "blur(60px)", opacity: 0.4 }}
         />
         <div
           className="pointer-events-none absolute bottom-12 right-0 rounded-full animate-pulse"
-          style={{ width: 360, height: 360, background: "#DDD4EA", filter: "blur(70px)", opacity: 0.3, animationDelay: "1.3s" }}
+          style={{ width: 360, height: 360, background: "#D4BBE8", filter: "blur(70px)", opacity: 0.3, animationDelay: "1.3s" }}
         />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-10">
@@ -507,11 +507,11 @@ const CategorySlider = ({
               style={{
                 background: "rgba(255,255,255,0.88)",
                 backdropFilter: "blur(8px)",
-                border: "1px solid rgba(201,169,110,0.22)",
+                border: "1px solid rgba(106,0,160,0.22)",
                 boxShadow: "0 1px 8px rgba(0,0,0,0.05)",
               }}
             >
-              <Sparkles size={13} style={{ color: "#C9A96E" }} />
+              <Sparkles size={13} style={{ color: "#6A00A0" }} />
               <span
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
@@ -519,7 +519,7 @@ const CategorySlider = ({
                   letterSpacing: "0.24em",
                   textTransform: "uppercase",
                   fontWeight: 600,
-                  color: "#8A7260",
+                  color: "#4A1E66",
                 }}
               >
                 Curated Collections
@@ -531,7 +531,7 @@ const CategorySlider = ({
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontSize: "clamp(2.6rem, 5.5vw, 4rem)",
                 fontWeight: 700,
-                color: "#2C2218",
+                color: "#230532",
                 letterSpacing: "-0.025em",
                 lineHeight: 1.1,
                 marginBottom: "0.75rem",
@@ -540,7 +540,7 @@ const CategorySlider = ({
               Shop by{" "}
               <span
                 style={{
-                  background: "linear-gradient(135deg, #C9A96E 0%, #A0784A 55%, #C9A96E 100%)",
+                  background: "linear-gradient(135deg, #6A00A0 0%, #230532 55%, #6A00A0 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -553,7 +553,7 @@ const CategorySlider = ({
             <p
               style={{
                 fontFamily: "'DM Sans', sans-serif",
-                color: "#8A7A6C",
+                color: "#5E4B6E",
                 fontSize: "0.98rem",
                 maxWidth: 420,
                 margin: "0 auto",
@@ -565,7 +565,7 @@ const CategorySlider = ({
           </div>
 
           {/* ── Category bubbles ── */}
-          <div className="flex flex-wrap justify-center gap-8 md:gap-12 lg:gap-14 mb-10` md:mb-28">
+          <div className="flex flex-wrap justify-center gap-8 md:gap-12 lg:gap-14 mb-` md:mb-12">
             {collections.slice(0, 8).map((cat, i) => (
               <CategoryBubble
                 key={cat.handle || i}

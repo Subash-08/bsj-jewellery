@@ -151,37 +151,43 @@ export default function ProductPageClient({
     const shortTitle = breadcrumb.shortTitle || product.title.replace(/\s*\|\s*BSJ Jewellery/i, '').slice(0, 60);
 
     return (
-        <div className="bg-[#FAF8F5] mt-14 sm:mt-24">
+        <div className="bg-[#FAF8F5]">
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+                .font-montserrat { font-family: 'Montserrat', sans-serif; }
+                .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+                .font-playfair { font-family: 'Playfair Display', serif; }
+            `}</style>
             <div className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4">
 
                 {/* ══════════════════════════════════════════════════════════
                     SECTION: BREADCRUMB
                 ══════════════════════════════════════════════════════════ */}
                 <nav className="pt-4 pb-2 border-b border-stone-100" aria-label="Breadcrumb">
-                    <ol className="flex items-center gap-2 text-xs text-stone-400 tracking-wide">
+                    <ol className="flex items-center gap-2 text-[16px] font-montserrat font-medium text-[#6b6b6b] tracking-wide">
                         <li>
-                            <Link href="/" className="hover:text-amber-700 transition-colors">Home</Link>
+                            <Link href="/" className="text-[#230532] hover:opacity-80 transition-opacity">Home</Link>
                         </li>
-                        <li className="select-none">/</li>
+                        <li className="select-none text-[#230532]">/</li>
                         {breadcrumb.collectionHandle ? (
                             <>
                                 <li>
                                     <Link
                                         href={`/collections/${breadcrumb.collectionHandle}`}
-                                        className="hover:text-amber-700 transition-colors"
+                                        className="text-[#230532] hover:opacity-80 transition-opacity"
                                     >
                                         {breadcrumb.collectionTitle}
                                     </Link>
                                 </li>
-                                <li className="select-none">/</li>
+                                <li className="select-none text-[#230532]">/</li>
                             </>
                         ) : product.productType ? (
                             <>
-                                <li className="text-stone-400">{product.productType}</li>
-                                <li className="select-none">/</li>
+                                <li className="text-[#230532]">{product.productType}</li>
+                                <li className="select-none text-[#230532]">/</li>
                             </>
                         ) : null}
-                        <li className="text-stone-600 font-medium truncate max-w-[200px] sm:max-w-none">
+                        <li className="text-[#6b6b6b] font-medium truncate max-w-[200px] sm:max-w-none">
                             {shortTitle}
                         </li>
                     </ol>
@@ -219,18 +225,18 @@ export default function ProductPageClient({
                         </div>
 
                         {/* Product Title */}
-                        <h1 className="font-serif text-3xl lg:text-3xl font-bold text-stone-900 leading-tight tracking-tight">
+                        <h1 className="font-jakarta text-[28px] font-bold text-[#18181b] leading-[38px] tracking-normal">
                             {product.title}
                         </h1>
 
                         {/* Price Row */}
                         <div className="flex items-baseline gap-3 flex-wrap">
-                            <span className="font-serif text-3xl font-bold text-amber-700">
+                            <span className="font-jakarta text-[28px] font-bold text-[#18181b] leading-[38px]">
                                 {price}
                             </span>
                             {compareAtPrice && (
                                 <>
-                                    <del className="text-lg text-stone-400">{compareAtPrice}</del>
+                                    <del className="font-montserrat text-[14px] font-normal text-[#8c8c8c] line-through">{compareAtPrice}</del>
                                     {savings && savings > 0 && (
                                         <span className="text-[10px] font-bold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-sm tracking-wider">
                                             Save {savings}%
@@ -291,11 +297,11 @@ export default function ProductPageClient({
                         {/* ── Description (moved from tabs → inline) ──────── */}
                         {(product.descriptionHtml || product.description) && (
                             <div className="mt-6 max-w-xl border-t border-stone-100 pt-6">
-                                <h2 className="font-serif text-base font-semibold text-stone-800 tracking-tight">
-                                    About This Piece
+                                <h2 className="font-jakarta text-[16px] font-bold text-[#18181b] leading-[24px]">
+                                    Highlights
                                 </h2>
                                 <div
-                                    className="prose prose-sm text-stone-600 leading-relaxed"
+                                    className="font-jakarta text-[16px] font-medium text-[#52525b] leading-[25px] mt-2"
                                     dangerouslySetInnerHTML={{ __html: product.descriptionHtml || product.description }}
                                 />
                             </div>

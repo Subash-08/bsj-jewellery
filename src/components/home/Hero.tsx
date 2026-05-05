@@ -142,6 +142,13 @@ const Hero = () => {
   const [direction, setDirection] = useState(1); // 1 = forward, -1 = back
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Track image loading state for skeleton animations
+  const [imagesLoaded, setImagesLoaded] = useState<Record<number, boolean>>({});
+
+  const handleImageLoad = (idx: number) => {
+    setImagesLoaded((prev) => ({ ...prev, [idx]: true }));
+  };
+
   // Parallax mouse tracking
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
@@ -176,35 +183,11 @@ const Hero = () => {
 
   return (
     <>
-      {/* ── Google Font import (Playfair Display + DM Sans) ── */}
+      {/* ── Google Font import (Playfair Display + Montserrat) ── */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap');
-        .hero-title { font-family: 'Playfair Display', Georgia, serif; }
-        .hero-body  { font-family: 'DM Sans', system-ui, sans-serif; }
-
-        /* Gold shimmer button */
-        @keyframes goldShimmer {
-          0%   { background-position: -200% center; }
-          100% { background-position: 200% center; }
-        }
-        .btn-gold {
-          background: linear-gradient(
-            105deg,
-            #D4A843 0%,
-            #F5D47A 30%,
-            #E8B84B 50%,
-            #F5D47A 70%,
-            #D4A843 100%
-          );
-          background-size: 200% auto;
-          transition: background-position 0.5s ease, transform 0.25s ease, box-shadow 0.25s ease;
-        }
-        .btn-gold:hover {
-          background-position: right center;
-          transform: translateY(-2px) scale(1.03);
-          box-shadow: 0 12px 32px rgba(212, 168, 67, 0.45);
-        }
-        .btn-gold:active { transform: translateY(0) scale(0.99); }
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Montserrat:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+        .hero-title { font-family: 'Playfair Display', serif; }
+        .hero-subtitle  { font-family: 'Montserrat', sans-serif; }
 
         /* Nav arrow buttons */
         .nav-arrow {
@@ -218,7 +201,7 @@ const Hero = () => {
       `}</style>
 
       <section
-        className="relative w-full overflow-hidden hero-body"
+        className="relative w-full overflow-hidden hero-subtitle"
         style={{ height: "82vh", minHeight: 580, maxHeight: 820 }}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsPaused(true)}
@@ -229,18 +212,57 @@ const Hero = () => {
         }}
       >
 
-        {/* ── Background image layer with parallax ── */}
+        {/* ── Background image layer with loading animation ── */}
         <AnimatePresence initial={false} custom={direction}>
-
-          <Image
-            src={slide.image}
-            alt={slide.title}
-            fill
-            priority={currentSlide === 0}
-            className="object-cover object-center"
-            sizes="100vw"
-          />
+          <motion.div
+            key={`slide-bg-${currentSlide}`}
+            className="absolute inset-0 z-0 bg-[#230532]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2 }}
+          >
+            <Image
+              src={slide.image}
+              alt={slide.title}
+              fill
+              priority={currentSlide === 0}
+              className={`object-cover object-center transition-opacity duration-1000 ${imagesLoaded[currentSlide] ? 'opacity-100' : 'opacity-0'}`}
+              sizes="100vw"
+              onLoad={() => handleImageLoad(currentSlide)}
+            />
+          </motion.div>
         </AnimatePresence>
+
+        {/* ── Skeleton Overlay (visible when NOT loaded) ── */}
+        {!imagesLoaded[currentSlide] && (
+          <div className="absolute inset-0 z-30 flex flex-col justify-center pointer-events-none">
+            <div className="w-full max-w-7xl mx-auto px-6 md:px-[62px]">
+              <div className="max-w-lg flex flex-col items-start">
+                {/* Label skeleton */}
+                <div className="h-[18px] w-[140px] bg-white/20 rounded animate-pulse mb-3" />
+                {/* Heading skeleton */}
+                <div className="h-[56px] w-[90%] bg-white/20 rounded animate-pulse mb-[8px]" />
+                <div className="h-[56px] w-[65%] bg-white/20 rounded animate-pulse mb-[16px]" />
+                {/* Subtitle skeleton */}
+                <div className="h-[22px] w-[85%] bg-white/20 rounded animate-pulse mb-[24px]" />
+                {/* Button skeleton */}
+                <div className="h-[48px] w-[200px] bg-white/20 rounded-[4px] animate-pulse" />
+              </div>
+            </div>
+            {/* Trust Badges skeleton */}
+            <div className="absolute bottom-[60px] md:bottom-[80px] left-0 right-0">
+              <div className="max-w-7xl mx-auto px-6 md:px-[62px] flex flex-wrap gap-x-[30px] md:gap-x-[44px] gap-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="flex items-center gap-[8px]">
+                    <div className="w-[26px] h-[26px] rounded-full bg-white/20 animate-pulse" />
+                    <div className="w-[110px] h-[16px] rounded bg-white/20 animate-pulse" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* ── Animated gradient overlay (purple-tinted like screenshot) ── */}
         <AnimatePresence>
@@ -271,8 +293,8 @@ const Hero = () => {
           style={{ background: "linear-gradient(to top, rgba(10,2,20,0.65) 0%, transparent 100%)" }} />
 
         {/* ── Main content ── */}
-        <div className="absolute inset-0 z-20 flex flex-col justify-center">
-          <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
+        <div className={`absolute inset-0 z-20 flex flex-col justify-center transition-opacity duration-1000 ${imagesLoaded[currentSlide] ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="w-full max-w-7xl mx-auto px-6 md:px-[62px]">
 
             <AnimatePresence mode="wait">
               <motion.div
@@ -283,21 +305,13 @@ const Hero = () => {
                 exit="exit"
               >
                 {/* Label */}
-                <motion.div variants={labelVariants} className="flex items-center gap-2 mb-4">
-                  {/* Decorative line */}
-                  <motion.span
-                    className="block h-px bg-[#F5D47A] opacity-80"
-                    initial={{ width: 0 }}
-                    animate={{ width: 28 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                  />
+                <motion.div variants={labelVariants} className="mb-3">
                   <span
-                    className="text-[11px] md:text-xs font-medium"
+                    className="font-montserrat italic"
                     style={{
-                      letterSpacing: "0.22em",
-                      color: "rgba(245,212,122,0.92)",
+                      color: "#B6B6B6",
+                      fontSize: "18px",
                       textTransform: "uppercase",
-                      fontStyle: "italic",
                     }}
                   >
                     {slide.label}
@@ -306,12 +320,11 @@ const Hero = () => {
 
                 {/* Heading — word-by-word stagger */}
                 <motion.h1
-                  className="hero-title text-white leading-[1.08] mb-5"
+                  className="hero-title leading-tight mb-[12px]"
                   style={{
-                    fontSize: "clamp(2.6rem, 6vw, 4.2rem)",
+                    color: "#FFFFFF",
+                    fontSize: "clamp(3rem, 5vw, 56px)",
                     fontWeight: 700,
-                    textShadow: "0 2px 24px rgba(0,0,0,0.35)",
-                    letterSpacing: "-0.01em",
                   }}
                   variants={headingVariants}
                 >
@@ -333,8 +346,13 @@ const Hero = () => {
                 {/* Subtitle */}
                 <motion.p
                   variants={subtitleVariants}
-                  className="text-white/85 font-light leading-relaxed mb-8"
-                  style={{ fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)", maxWidth: "88%" }}
+                  className="font-montserrat mb-[24px]"
+                  style={{
+                    color: "#B6B6B6",
+                    fontSize: "clamp(1rem, 2vw, 22px)",
+                    fontWeight: 500,
+                    maxWidth: "502px"
+                  }}
                 >
                   {slide.subtitle}
                 </motion.p>
@@ -343,16 +361,9 @@ const Hero = () => {
                 <motion.div variants={ctaVariants}>
                   <Link
                     href="/shop"
-                    className="btn-gold inline-flex items-center gap-2 px-7 py-3 rounded-md font-semibold text-stone-900 text-sm"
-                    style={{ letterSpacing: "0.03em" }}
+                    className="inline-flex items-center justify-center bg-[#FACE7A] text-[#230532] font-montserrat font-bold text-[18px] rounded-[4px] px-[20px] py-[10px] transition-transform duration-300 hover:scale-105 shadow-md"
                   >
                     Explore Collection
-                    <motion.span
-                      animate={{ x: [0, 4, 0] }}
-                      transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut", delay: 1.5 }}
-                    >
-                      →
-                    </motion.span>
                   </Link>
                 </motion.div>
               </motion.div>
@@ -361,25 +372,26 @@ const Hero = () => {
         </div>
 
         {/* ── Trust badges — bottom left ── */}
-        <div className="absolute bottom-16 left-0 right-0 z-20">
-          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
+        <div className={`absolute bottom-[60px] md:bottom-[80px] left-0 right-0 z-20 transition-opacity duration-1000 ${imagesLoaded[currentSlide] ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="max-w-7xl mx-auto px-6 md:px-[62px]">
             <motion.div
               variants={badgeContainerVariants}
               initial="hidden"
               animate="visible"
-              className="flex flex-wrap items-center gap-x-6 gap-y-2"
+              className="flex flex-wrap items-center gap-x-[30px] md:gap-x-[44px] gap-y-4"
             >
               {TRUST_BADGES.map((badge, i) => (
                 <motion.div
                   key={i}
                   variants={badgeVariant}
-                  className="flex items-center gap-2 text-white/90"
-                  style={{ fontSize: "0.82rem", letterSpacing: "0.01em" }}
+                  className="flex items-center gap-[8px]"
                 >
-                  <span className="text-[#F5D47A]">
-                    <CheckCircle size={15} />
+                  <span className="text-white">
+                    <CheckCircle size={26} />
                   </span>
-                  <span className="font-light">{badge}</span>
+                  <span className="font-montserrat font-medium text-[16px] text-white whitespace-nowrap">
+                    {badge}
+                  </span>
                 </motion.div>
               ))}
             </motion.div>
@@ -406,40 +418,24 @@ const Hero = () => {
           <ChevronRight />
         </button>
 
-        {/* ── Bottom indicator strip ── */}
-        <div className="absolute bottom-0 left-0 right-0 z-30">
-          <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 pb-4">
-            <div className="flex items-center gap-3">
-              {slides.map((s, idx) => (
-                <div key={idx} className="flex-1 max-w-[56px]">
-                  <ProgressBar active={currentSlide === idx} duration={6000} />
-                </div>
-              ))}
-              {/* Slide counter */}
-              <span className="text-white/50 text-xs ml-2 font-light tabular-nums">
-                {String(currentSlide + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
-              </span>
-            </div>
-          </div>
-        </div>
+        {/* ── Bottom indicator strip (removed as per new Figma layout) ── */}
 
-        {/* ── Dot indicators (centered, above progress strip) ── */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30">
+        {/* ── Dot indicators (centered) ── */}
+        <div className="absolute bottom-[23px] left-1/2 -translate-x-1/2 flex items-center gap-[6px] z-30">
           {slides.map((_, idx) => (
             <button
               key={idx}
               onClick={() => goToSlide(idx)}
               aria-label={`Go to slide ${idx + 1}`}
-              className="group p-1.5 focus:outline-none"
+              className="group p-[2px] focus:outline-none flex items-center justify-center"
             >
               <motion.span
                 animate={{
-                  width: currentSlide === idx ? 20 : 6,
-                  opacity: currentSlide === idx ? 1 : 0.4,
+                  backgroundColor: currentSlide === idx ? "#230532" : "#FFFFFF",
+                  borderColor: currentSlide === idx ? "#b012ff" : "#FFFFFF",
                 }}
                 transition={{ duration: 0.35, ease: "easeInOut" }}
-                className="block h-[3px] rounded-full bg-white"
-                style={{ display: "block" }}
+                className="block w-[12px] h-[12px] rounded-[6px] border-[0.4px] border-solid"
               />
             </button>
           ))}

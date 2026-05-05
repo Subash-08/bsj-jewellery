@@ -7,12 +7,11 @@ export default function LatestArrivals({ collections }: { collections: any[] }) 
   let displayItems = collections && collections.length > 0 ? [...collections] : [];
 
   if (displayItems.length > 0) {
-    while (displayItems.length < 6) {
+    while (displayItems.length < 12) {
       displayItems = [...displayItems, ...collections];
     }
-    displayItems = displayItems.slice(0, 6);
   } else {
-    displayItems = Array(6).fill({
+    displayItems = Array(12).fill({
       title: "Latest Collection",
       handle: "all",
       image: {
@@ -21,95 +20,115 @@ export default function LatestArrivals({ collections }: { collections: any[] }) 
     });
   }
 
-  // 🔥 Updated transforms (REAL curve effect)
-  const transforms = [
-    "rotateY(25deg) scale(0.9, 0.75) translateX(15%) translateY(30px)",
-    "rotateY(15deg) scale(0.95, 0.85) translateX(5%) translateY(15px)",
-    "rotateY(5deg) scale(1, 1) translateX(1%) translateY(0px)",
-    "rotateY(-5deg) scale(1, 1) translateX(-1%) translateY(0px)",
-    "rotateY(-15deg) scale(0.95, 0.85) translateX(-5%) translateY(15px)",
-    "rotateY(-25deg) scale(0.9, 0.75) translateX(-15%) translateY(30px)",
-  ];
+  // To make a smooth infinite marquee, we double the list
+  const marqueeItems = [...displayItems, ...displayItems];
 
-  return (<section className="py-16 md:py-24 bg-white overflow-hidden flex flex-col items-center"> <style>{`         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600&family=Montserrat:wght@400;500;600;700&display=swap');
-        .font-serif-title { font-family: 'Cormorant Garamond', serif; }
+  return (
+    <section
+      className="relative mx-auto max-w-[1300px] py-6 md:py-8 bg-white overflow-hidden flex flex-col items-center"
+      aria-labelledby="latest-arrival-heading"
+    >
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;1,400&family=Playfair+Display:wght@500;700&display=swap');
+        
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        
+        @keyframes scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-scroll {
+          animation: scroll 40s linear infinite;
+        }
+        .animate-scroll:hover {
+          animation-play-state: paused;
+        }
       `}</style>
 
-    {/* Header */}
-    <div className="flex flex-col items-center text-center mb-10 md:mb-16">
-      <div className="flex items-center gap-3 md:gap-4">
-        <span className="text-[#230532] text-xl md:text-2xl">✦</span>
-        <h2 className="text-[#230532] text-3xl md:text-[42px] font-serif-title font-bold tracking-wide">
-          Latest Arrival
-        </h2>
-        <span className="text-[#230532] text-xl md:text-2xl">✦</span>
+      {/* Header */}
+      <header className="flex flex-col items-center text-center px-4 mb-10 md:mb-12 z-20">
+        <div className="inline-flex items-center gap-[10px] relative">
+          <svg className="w-[23px] h-[23px] text-[#230532]" viewBox="0 0 23 23" fill="currentColor" aria-hidden="true">
+            <path d="M11.5 0L14.5939 8.40615L23 11.5L14.5939 14.5939L11.5 23L8.40615 14.5939L0 11.5L8.40615 8.40615L11.5 0Z" />
+          </svg>
+          <div className="p-[10px] inline-flex items-center justify-center">
+            <h2
+              id="latest-arrival-heading"
+              className="text-[#230532] text-[36px] font-playfair font-bold mt-[-1px]"
+            >
+              Latest Arrival
+            </h2>
+          </div>
+          <svg className="w-[23px] h-[23px] text-[#230532]" viewBox="0 0 23 23" fill="currentColor" aria-hidden="true">
+            <path d="M11.5 0L14.5939 8.40615L23 11.5L14.5939 14.5939L11.5 23L8.40615 14.5939L0 11.5L8.40615 8.40615L11.5 0Z" />
+          </svg>
+        </div>
+        <p className="text-black mt-2 font-montserrat italic font-normal text-[18px] max-w-[531px] text-center">
+          Discover our newest designs, crafted for modern elegance
+        </p>
+      </header>
+
+      {/* Marquee Gallery with Exact Curved Masking */}
+      <div className="w-full relative h-[271px] overflow-hidden my-4 z-10 flex justify-center bg-white">
+
+        {/* The scrolling track */}
+        <div className="absolute inset-0 flex animate-scroll w-max gap-[15px] items-center px-[15px]">
+          {marqueeItems.map((item, i) => {
+            const imageUrl =
+              item?.image?.url ||
+              item?.image?.src ||
+              item?.featuredImage?.url ||
+              "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=800";
+
+            return (
+              <Link
+                href={`/collections/${item.handle || "all"}`}
+                key={i}
+                className="relative w-[261px] h-[261px] flex-shrink-0 group overflow-hidden block"
+              >
+                <Image
+                  src={imageUrl}
+                  alt={item.title || "Latest arrival product"}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  sizes="261px"
+                />
+
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+                  <span className="text-white font-montserrat font-medium text-[16px] drop-shadow-md text-center translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    {item.title}
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Top white ellipse mask */}
+        <div
+          className="absolute left-1/2 -translate-x-1/2 w-[150vw] min-w-[1885px] max-w-[3000px] bg-white rounded-[50%] z-10 pointer-events-none"
+          style={{ height: '142px', top: '-115px' }}
+        ></div>
+
+        {/* Bottom white ellipse mask */}
+        <div
+          className="absolute left-1/2 -translate-x-1/2 w-[150vw] min-w-[1885px] max-w-[3000px] bg-white rounded-[50%] z-10 pointer-events-none"
+          style={{ height: '142px', bottom: '-102px' }}
+        ></div>
       </div>
-      <p className="text-[#230532] italic font-serif-title text-lg md:text-[22px] mt-2 md:mt-3 font-medium opacity-90">
-        Discover our newest designs, crafted for modern elegance
-      </p>
-    </div>
 
-    {/* 3D Curved Layout */}
-    <div
-      className="relative w-full max-w-[1400px] h-[240px] sm:h-[340px] md:h-[460px] flex justify-center items-center px-4"
-      style={{
-        perspective: "1500px",
-        transformStyle: "preserve-3d",
-      }}
-    >
-      {displayItems.map((item, i) => {
-        const imageUrl =
-          item?.image?.url ||
-          item?.image?.src ||
-          item?.featuredImage?.url ||
-          "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=800";
+      {/* Button */}
+      <div className="mt-[40px] z-20">
+        <Link
+          href="/collections"
+          className="inline-flex items-center justify-center px-[10px] py-[10px] min-w-[200px] bg-[#230532] text-white rounded-[4px] font-montserrat font-bold text-[18px] hover:bg-[#3a1e4a] transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
+        >
+          Explore All Collection
+        </Link>
+      </div>
 
-        return (
-          <Link
-            href={`/collections/${item.handle || "all"}`}
-            key={i}
-            className="relative w-[16.66%] h-full block group -mx-2"
-            style={{
-              transform: transforms[i],
-              transformOrigin: "center center",
-              transition:
-                "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
-              boxShadow: "0 15px 40px rgba(0,0,0,0.2)",
-            }}
-          >
-            <Image
-              src={imageUrl}
-              alt={item.title || "Collection"}
-              fill
-              className="object-cover rounded-md"
-              sizes="(max-width: 768px) 16vw, 250px"
-            />
-
-            {/* Hover overlay */}
-            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center p-2 text-center">
-              <span className="text-white font-medium text-xs sm:text-sm md:text-base font-sans drop-shadow-md">
-                {item.title}
-              </span>
-            </div>
-
-            {/* Hover lift effect */}
-            <div className="absolute inset-0 transition-transform duration-500 group-hover:-translate-y-3 group-hover:scale-105" />
-          </Link>
-        );
-      })}
-    </div>
-
-    {/* Button */}
-    <div className="mt-12 md:mt-16">
-      <Link
-        href="/collections"
-        className="bg-[#230532] text-white px-8 md:px-10 py-3 md:py-3.5 rounded text-sm md:text-base font-sans font-medium tracking-wide hover:bg-[#3a1e4a] hover:scale-105 transition-all duration-300 inline-block shadow-md"
-      >
-        Explore All Collection
-      </Link>
-    </div>
-  </section>
-
-
+    </section>
   );
 }

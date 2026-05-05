@@ -59,12 +59,17 @@ export default function CartDrawer({ isOpen, onClose, onCartClick }: CartDrawerP
             onMouseLeave={onClose}
             className="fixed right-0 top-0 z-50"
         >
-            {/* Hover bridge removed to allow clicks on Cart Icon to pass through seamlessly */}
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+                .font-montserrat { font-family: 'Montserrat', sans-serif; }
+                .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+                .font-playfair { font-family: 'Playfair Display', serif; }
+            `}</style>
 
             <div
                 ref={drawerRef}
                 className={cn(
-                    "fixed right-0 top-[80px] w-full sm:w-[420px] bg-[#FAF8F5] shadow-2xl border-l border-stone-200 z-50 transition-all duration-300 ease-in-out flex flex-col",
+                    "fixed right-0 top-[80px] w-full sm:w-[420px] bg-white shadow-2xl border-l border-stone-100 z-50 transition-all duration-300 ease-in-out flex flex-col",
                     isOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
                 )}
                 style={{
@@ -74,15 +79,15 @@ export default function CartDrawer({ isOpen, onClose, onCartClick }: CartDrawerP
                 }}
             >
                 {/* ── Header ── */}
-                <div className="flex items-center justify-between px-6 py-5 border-b border-stone-200 flex-shrink-0">
+                <div className="flex items-center justify-between px-6 py-5 border-b border-stone-100 flex-shrink-0">
                     <div className="flex items-center gap-3">
-                        <ShoppingBag size={18} className="text-stone-400" strokeWidth={1.5} />
+                        <ShoppingBag size={18} className="text-[#230532] opacity-70" strokeWidth={1.5} />
                         <div>
-                            <h3 className="text-sm font-bold uppercase tracking-[0.15em] text-stone-900">
+                            <h3 className="font-jakarta text-[13px] font-bold uppercase tracking-[0.15em] text-[#18181b]">
                                 Shopping Bag
                             </h3>
                             {itemCount > 0 && (
-                                <p className="text-[10px] text-stone-400 uppercase tracking-widest mt-0.5">
+                                <p className="font-montserrat text-[11px] text-[#6b6b6b] mt-0.5">
                                     {itemCount} {itemCount === 1 ? 'item' : 'items'}
                                 </p>
                             )}
@@ -90,10 +95,10 @@ export default function CartDrawer({ isOpen, onClose, onCartClick }: CartDrawerP
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-stone-100 rounded-full transition-colors"
+                        className="p-2 hover:bg-stone-50 rounded-full transition-colors"
                         aria-label="Close cart"
                     >
-                        <X size={18} className="text-stone-500" />
+                        <X size={18} className="text-[#6b6b6b]" />
                     </button>
                 </div>
 
@@ -102,21 +107,21 @@ export default function CartDrawer({ isOpen, onClose, onCartClick }: CartDrawerP
                     {!cart || itemCount === 0 ? (
                         /* Empty state */
                         <div className="flex flex-col items-center justify-center py-20 text-center space-y-6">
-                            <div className="text-stone-200">
+                            <div className="text-[#EADBF5]">
                                 <ShoppingBag size={80} strokeWidth={0.5} />
                             </div>
                             <div className="space-y-2">
-                                <p className="font-serif font-light text-xl text-stone-700">
+                                <p className="font-playfair font-semibold text-[20px] text-[#230532]">
                                     Your bag is empty
                                 </p>
-                                <p className="text-xs text-stone-400 tracking-widest uppercase">
+                                <p className="font-montserrat text-[12px] text-[#6b6b6b] italic">
                                     Discover our collections
                                 </p>
                             </div>
                             <Link
                                 href="/shop"
                                 onClick={onClose}
-                                className="px-8 py-3 bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-bold hover:bg-stone-800 transition-colors"
+                                className="px-8 py-3 bg-[#230532] text-white font-jakarta text-[13px] uppercase tracking-[0.15em] font-semibold hover:opacity-90 transition-opacity rounded-[4px]"
                             >
                                 Start Shopping
                             </Link>
@@ -139,24 +144,24 @@ export default function CartDrawer({ isOpen, onClose, onCartClick }: CartDrawerP
 
                 {/* ── Footer ── */}
                 {cart && itemCount > 0 && (
-                    <div className="border-t border-stone-200 px-6 pt-5 pb-6 bg-[#FAF8F5] flex-shrink-0 space-y-4">
+                    <div className="border-t border-stone-100 px-6 pt-5 pb-6 bg-white flex-shrink-0 space-y-4">
 
                         {/* Subtotal row */}
                         <div className="flex justify-between items-center">
-                            <span className="text-xs uppercase tracking-[0.15em] font-bold text-stone-400">
+                            <span className="font-jakarta text-[12px] uppercase tracking-[0.15em] font-bold text-[#6b6b6b]">
                                 Subtotal
                             </span>
-                            <span className="text-lg font-bold tracking-widest text-stone-900">
+                            <span className="font-jakarta text-[18px] font-bold text-[#230532]">
                                 ₹{parseFloat(cart.cost.subtotalAmount.amount).toLocaleString('en-IN')}
                             </span>
                         </div>
 
                         {/* Shipping note */}
                         <div className="flex justify-between items-center">
-                            <span className="text-xs uppercase tracking-[0.15em] font-bold text-stone-400">
+                            <span className="font-jakarta text-[12px] uppercase tracking-[0.15em] font-bold text-[#6b6b6b]">
                                 Shipping
                             </span>
-                            <span className="text-[10px] uppercase tracking-widest font-bold text-rose-500">
+                            <span className="font-jakarta text-[11px] uppercase tracking-widest font-bold text-[#230532]">
                                 Complimentary
                             </span>
                         </div>
@@ -170,16 +175,16 @@ export default function CartDrawer({ isOpen, onClose, onCartClick }: CartDrawerP
                             <Link
                                 href="/cart"
                                 onClick={onClose}
-                                className="flex justify-center w-full py-3 border border-stone-200 text-stone-600 text-xs uppercase tracking-[0.15em] font-bold hover:border-stone-400 transition-colors"
+                                className="flex justify-center items-center w-full py-3 border border-[#230532] text-[#230532] font-jakarta text-[12px] uppercase tracking-[0.15em] font-bold hover:bg-stone-50 transition-colors rounded-[4px]"
                             >
                                 View Full Bag
-                                <ChevronRight size={14} className="ml-2 mt-0.5" />
+                                <ChevronRight size={14} className="ml-2" />
                             </Link>
                         </div>
 
                         {/* Trust line */}
-                        <div className="flex items-center justify-center gap-2 pt-1 text-[10px] text-stone-400 uppercase tracking-widest font-medium">
-                            <Lock size={11} />
+                        <div className="flex items-center justify-center gap-2 pt-1 font-montserrat text-[10px] text-[#6b6b6b] uppercase tracking-widest font-medium">
+                            <Lock size={11} className="text-[#230532] opacity-60" />
                             <span>Secure Checkout Guaranteed</span>
                         </div>
                     </div>

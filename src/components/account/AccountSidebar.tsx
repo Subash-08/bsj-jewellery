@@ -128,7 +128,7 @@ export default function AccountSidebar() {
     return (
         <>
             {/* Desktop Sidebar */}
-            <aside className="hidden lg:flex lg:flex-col w-72 bg-white/80 backdrop-blur-sm border-r border-stone-200/60 h-[calc(100vh-120px)] sticky top-[120px]">
+            <aside className="hidden lg:flex lg:flex-col w-72 bg-white/80 backdrop-blur-sm border-r border-stone-200/60 sticky top-[120px]">
                 <SidebarContent />
             </aside>
 

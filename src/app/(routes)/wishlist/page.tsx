@@ -33,13 +33,19 @@ export default function WishlistPage() {
 
     if (!isMounted) {
         return (
-            <main className="min-h-screen bg-[#FAF8F5] pt-32 pb-20">
-                <div className="max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="text-left mb-16">
-                        <h1 className="text-5xl font-serif font-light text-stone-900 mb-4 pb-4">
+            <main className="min-h-screen bg-white pt-32 pb-20">
+                <style>{`
+                    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+                    .font-montserrat { font-family: 'Montserrat', sans-serif; }
+                    .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+                    .font-playfair { font-family: 'Playfair Display', serif; }
+                `}</style>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-16">
+                        <h1 className="text-4xl md:text-5xl font-playfair font-semibold text-[#230532] mb-4">
                             My Wishlist
                         </h1>
-                        <p className="text-stone-400 text-xs uppercase tracking-[0.2em]">
+                        <p className="font-montserrat text-[#52525b] text-[14px]">
                             Loading...
                         </p>
                     </div>
@@ -55,39 +61,31 @@ export default function WishlistPage() {
 
     if (wishlistItems.length === 0) {
         return (
-            <main className="min-h-screen bg-[#FAF8F5] pt-32 pb-20">
-                <div className="max-w-md mx-auto px-4  space-y-8">
-                    <div className="flex justify-center text-stone-200">
-                        <Heart size={120} strokeWidth={0.5} className="fill-stone-50" />
+            <main className="min-h-screen bg-white pt-48 pb-20 flex flex-col items-center">
+                <style>{`
+                    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+                    .font-montserrat { font-family: 'Montserrat', sans-serif; }
+                    .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+                    .font-playfair { font-family: 'Playfair Display', serif; }
+                `}</style>
+                <div className="max-w-2xl mx-auto px-4 text-center space-y-6">
+                    <div className="flex justify-center items-center gap-4 text-[#230532] mb-2">
+                        <span className="text-2xl">✦</span>
+                        <h1 className="text-[32px] md:text-[40px] font-playfair font-semibold">
+                            No Treasures Saved Yet
+                        </h1>
+                        <span className="text-2xl">✦</span>
                     </div>
-                    <h1 className="text-4xl font-serif font-light text-stone-900">
-                        Your wishlist is empty
-                    </h1>
-                    <p className="text-sm text-stone-500 font-light tracking-widest leading-relaxed">
-                        Save your favourite jewellery pieces to find them later.
+                    <p className="text-[#52525b] font-montserrat italic text-[16px] leading-[24px]">
+                        Start exploring and save your favourite jewellery pieces to<br className="hidden sm:block" /> view them here anytime.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
+                    <div className="flex justify-center pt-4">
                         <Link
                             href="/collections/all"
-                            className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-bold hover:bg-stone-800 transition-colors"
+                            className="inline-flex items-center justify-center px-8 py-3 bg-[#230532] text-white font-jakarta text-[15px] font-semibold rounded hover:opacity-90 transition-opacity"
                         >
-                            Explore Collections
+                            Explore Collection
                         </Link>
-                    </div>
-
-                    {/* Trust strips */}
-                    <div className="grid grid-cols-3 gap-4 mt-16 pt-8 border-t border-stone-200">
-                        {[
-                            { icon: Truck, label: 'Free Shipping', sub: 'On orders above ₹10,000' },
-                            { icon: Shield, label: 'Certified', sub: '100% authentic' },
-                            { icon: Tag, label: 'Best Prices', sub: 'Market rates' },
-                        ].map(({ icon: Icon, label, sub }) => (
-                            <div key={label} className="flex flex-col items-center gap-2 text-center">
-                                <Icon size={24} className="text-stone-400" strokeWidth={1.5} />
-                                <span className="text-xs font-bold text-stone-700 uppercase tracking-widest">{label}</span>
-                                <span className="text-[10px] text-stone-500">{sub}</span>
-                            </div>
-                        ))}
                     </div>
                 </div>
             </main>
@@ -95,13 +93,19 @@ export default function WishlistPage() {
     }
 
     return (
-        <main className="min-h-screen bg-[#FAF8F5] pt-48 pb-32">
+        <main className="min-h-screen bg-white pt-32 pb-32">
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+                .font-montserrat { font-family: 'Montserrat', sans-serif; }
+                .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+                .font-playfair { font-family: 'Playfair Display', serif; }
+            `}</style>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                    <h1 className="text-5xl font-serif font-light text-stone-900 mb-4 text-center">
+                    <h1 className="text-4xl md:text-5xl font-playfair font-semibold text-[#230532] mb-4">
                         My Wishlist
                     </h1>
-                    <p className="text-stone-400 text-xs uppercase tracking-[0.2em]">
+                    <p className="font-montserrat text-[#52525b] text-[14px]">
                         {wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'} saved
                     </p>
                 </div>
