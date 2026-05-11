@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -30,10 +31,22 @@ const navItems: NavItem[] = [
     { label: 'Wishlist', href: '/wishlist', icon: Heart },
 ];
 
+const mobileMainNavItems: NavItem[] = [
+    { label: 'Dashboard', href: '/account', icon: LayoutDashboard },
+    { label: 'Orders', href: '/account/orders', icon: Package },
+    { label: 'Wishlist', href: '/wishlist', icon: Heart },
+    { label: 'Profile', href: '/account/profile', icon: User },
+];
+
+const mobileMoreNavItems: NavItem[] = [
+    { label: 'Addresses', href: '/account/addresses', icon: MapPin },
+];
+
 export default function AccountSidebar() {
     const pathname = usePathname();
     const router = useRouter();
     const { customer, isLoading, logout } = useAuth();
+    const [isMoreOpen, setIsMoreOpen] = useState(false);
 
     const handleSignOut = async () => {
         await logout();
@@ -65,7 +78,7 @@ export default function AccountSidebar() {
     const SidebarContent = () => (
         <>
             {/* User Profile Header */}
-            <div className="p-6 border-b border-stone-200/60">
+            <div className="p-6 border-b border-stone-200/60 flex-shrink-0">
                 {isLoading ? (
                     <div className="flex items-center gap-4">
                         <div className="w-14 h-14 rounded-full bg-stone-200 animate-pulse"></div>
@@ -88,7 +101,7 @@ export default function AccountSidebar() {
             </div>
 
             {/* Navigation Links */}
-            <nav className="p-3 space-y-0.5 flex-1">
+            <nav className="p-3 space-y-0.5 flex-1 overflow-y-auto">
                 {navItems.map((item) => {
                     const Icon = item.icon;
                     const active = isActive(item.href);
@@ -113,7 +126,7 @@ export default function AccountSidebar() {
             </nav>
 
             {/* Sign Out Button */}
-            <div className="p-3 border-t border-stone-200/60 mt-auto">
+            <div className="p-3 border-t border-stone-200/60 mt-auto flex-shrink-0">
                 <button
                     onClick={handleSignOut}
                     className="flex items-center gap-3 px-4 py-3 rounded-lg text-stone-500 hover:text-red-600 hover:bg-red-50/60 transition-all duration-200 w-full"
@@ -127,15 +140,15 @@ export default function AccountSidebar() {
 
     return (
         <>
-            {/* Desktop Sidebar */}
-            <aside className="hidden lg:flex lg:flex-col w-72 bg-white/80 backdrop-blur-sm border-r border-stone-200/60 sticky top-[120px]">
+            {/* Desktop Sidebar: Sticky, full height minus header */}
+            <aside className="hidden lg:flex lg:flex-col w-72 bg-white/80 backdrop-blur-sm border-r border-stone-200/60 sticky top-[120px] h-[calc(100vh-120px)]">
                 <SidebarContent />
             </aside>
 
-            {/* Mobile Navigation Bar */}
-            <div className="lg:hidden bg-white border-b border-stone-200/60 w-full overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                <nav className="flex px-4 py-3 gap-2 w-max">
-                    {navItems.map((item) => {
+            {/* Mobile Bottom Navigation Bar */}
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-stone-200 shadow-[0_-4px_15px_rgba(0,0,0,0.03)] pb-[env(safe-area-inset-bottom)]">
+                <nav className="flex justify-around items-center px-1 py-1.5">
+                    {mobileMainNavItems.map((item) => {
                         const Icon = item.icon;
                         const active = isActive(item.href);
 
@@ -144,26 +157,81 @@ export default function AccountSidebar() {
                                 key={item.href}
                                 href={item.href}
                                 className={cn(
-                                    "flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-200",
-                                    active
-                                        ? "bg-stone-900 text-white shadow-sm"
-                                        : "bg-stone-100 text-stone-600 hover:bg-stone-200 hover:text-stone-900"
+                                    "flex flex-col items-center justify-center w-[20%] h-14 transition-colors",
+                                    active ? "text-stone-900" : "text-stone-500 hover:text-stone-900"
                                 )}
                             >
-                                <Icon size={16} strokeWidth={active ? 2.2 : 1.8} />
-                                <span className="font-medium text-sm whitespace-nowrap">{item.label}</span>
+                                <Icon size={20} strokeWidth={active ? 2.5 : 1.8} className="mb-1" />
+                                <span className="text-[10px] font-medium leading-none tracking-wide">{item.label}</span>
                             </Link>
                         );
                     })}
                     <button
-                        onClick={handleSignOut}
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition-all duration-200"
+                        onClick={() => setIsMoreOpen(!isMoreOpen)}
+                        className={cn(
+                            "flex flex-col items-center justify-center w-[20%] h-14 transition-colors",
+                            isMoreOpen ? "text-stone-900" : "text-stone-500 hover:text-stone-900"
+                        )}
                     >
-                        <LogOut size={16} strokeWidth={1.8} />
-                        <span className="font-medium text-sm whitespace-nowrap">Sign Out</span>
+                        <Menu size={20} strokeWidth={isMoreOpen ? 2.5 : 1.8} className="mb-1" />
+                        <span className="text-[10px] font-medium leading-none tracking-wide">More</span>
                     </button>
                 </nav>
             </div>
+
+            {/* Mobile "More" Slide-up Menu */}
+            {isMoreOpen && (
+                <div 
+                    className="lg:hidden fixed inset-0 z-40 bg-black/30 backdrop-blur-[2px] flex flex-col justify-end transition-opacity" 
+                    onClick={() => setIsMoreOpen(false)}
+                >
+                    <div 
+                        className="bg-white rounded-t-3xl w-full pt-5 px-4 shadow-xl animate-in slide-in-from-bottom-full duration-300"
+                        style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 80px)' }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="flex justify-between items-center mb-5 px-2">
+                            <h3 className="font-serif font-medium text-lg text-stone-900">More Options</h3>
+                            <button onClick={() => setIsMoreOpen(false)} className="p-2 -mr-2 text-stone-400 hover:text-stone-600 bg-stone-50 rounded-full">
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <div className="space-y-1">
+                            {mobileMoreNavItems.map((item) => {
+                                const Icon = item.icon;
+                                const active = isActive(item.href);
+                                return (
+                                    <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        onClick={() => setIsMoreOpen(false)}
+                                        className={cn(
+                                            "flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-colors",
+                                            active ? "bg-stone-100 text-stone-900 font-semibold" : "text-stone-700 hover:bg-stone-50"
+                                        )}
+                                    >
+                                        <Icon size={18} strokeWidth={active ? 2.2 : 1.8} />
+                                        <span className="font-medium text-sm">{item.label}</span>
+                                    </Link>
+                                );
+                            })}
+                            
+                            <div className="h-px bg-stone-100 my-2 mx-2"></div>
+                            
+                            <button
+                                onClick={() => {
+                                    setIsMoreOpen(false);
+                                    handleSignOut();
+                                }}
+                                className="flex items-center gap-3 px-4 py-3.5 rounded-2xl w-full text-red-600 hover:bg-red-50 transition-colors"
+                            >
+                                <LogOut size={18} strokeWidth={1.8} />
+                                <span className="font-medium text-sm">Sign Out</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 }

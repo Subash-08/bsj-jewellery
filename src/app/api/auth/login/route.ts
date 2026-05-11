@@ -17,8 +17,18 @@ export async function POST(req: NextRequest) {
         const { customerAccessToken, customerUserErrors } = await createCustomerAccessToken(email, password);
 
         if (customerUserErrors?.length > 0) {
+            const mappedErrors = customerUserErrors.map((err: any) => {
+                if (err.message === 'Unidentified customer' || err.code === 'UNIDENTIFIED_CUSTOMER') {
+                    return { 
+                        ...err, 
+                        message: 'Invalid credentials, or account not found. Please sign up or check for an activation email.' 
+                    };
+                }
+                return err;
+            });
+
             return NextResponse.json(
-                { errors: customerUserErrors },
+                { errors: mappedErrors },
                 { status: 400 }
             );
         }
