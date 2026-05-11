@@ -19,9 +19,9 @@ export async function POST(req: NextRequest) {
         if (customerUserErrors?.length > 0) {
             const mappedErrors = customerUserErrors.map((err: any) => {
                 if (err.message === 'Unidentified customer' || err.code === 'UNIDENTIFIED_CUSTOMER') {
-                    return { 
-                        ...err, 
-                        message: 'Invalid credentials, or account not found. Please sign up or check for an activation email.' 
+                    return {
+                        ...err,
+                        message: 'Invalid credentials, or account not found. Please sign up or check for an activation email.'
                     };
                 }
                 return err;
