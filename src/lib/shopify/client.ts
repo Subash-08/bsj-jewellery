@@ -18,6 +18,7 @@ import {
     customerAddressUpdateMutation,
     customerAddressDeleteMutation,
     customerDefaultAddressUpdateMutation,
+    customerActivateByUrlMutation,
 } from './auth-mutations';
 import {
     getProductQuery,
@@ -539,4 +540,19 @@ export async function setDefaultCustomerAddress(customerAccessToken: string, add
         cache: 'no-store',
     });
     return res.body.customerDefaultAddressUpdate;
+}
+
+export async function activateCustomerByUrl(activationUrl: string, password: string) {
+    const res = await shopifyFetch<{
+        customerActivateByUrl: {
+            customer: any;
+            customerAccessToken: { accessToken: string; expiresAt: string };
+            customerUserErrors: { code: string; field: string; message: string }[];
+        };
+    }>({
+        query: customerActivateByUrlMutation,
+        variables: { activationUrl, password },
+        cache: 'no-store',
+    });
+    return res.body.customerActivateByUrl;
 }

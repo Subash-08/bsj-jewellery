@@ -22,7 +22,7 @@ export function RegisterForm() {
 
         if (result.success) {
             if (result.requireLogin) {
-                router.push('/login?message=registered');
+                router.push('/register/success');
             } else {
                 router.push('/account');
             }
