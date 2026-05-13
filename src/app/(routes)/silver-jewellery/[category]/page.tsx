@@ -5,19 +5,21 @@ import InfiniteProductGrid from '@/components/collection/InfiniteProductGrid';
 import { ActiveFilterBar } from '@/components/filters/ActiveFilterBar';
 import { SortDropdown } from '@/components/filters/SortDropdown';
 import type { Metadata } from 'next';
+import { getShopifyHandle, getProductUrl } from '@/lib/routes';
 import { Suspense } from 'react';
 
 export const dynamic = 'force-dynamic';
 
 type Props = {
-    params: Promise<{ collection: string }>;
+    params: Promise<{ category: string }>;
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
     const params = await props.params;
     try {
-        const collection = await getCollection(params.collection);
+        const shopifyHandle = getShopifyHandle(params.category);
+        const collection = await getCollection(shopifyHandle);
         if (!collection) return {};
         return generateSeo({
             title: `${collection.seo.title || collection.title} | BSJ Jewellers`,
@@ -69,8 +71,10 @@ export default async function CollectionPage(props: Props) {
     else if (sortParam === 'newest') { sortKey = 'CREATED_AT'; reverse = true; }
     else if (sortParam === 'best-selling') { sortKey = 'BEST_SELLING'; reverse = false; }
 
+    const shopifyHandle = getShopifyHandle(params.category);
+
     const collectionData = await getCollectionProducts({
-        handle: params.collection,
+        handle: shopifyHandle,
         filters: filters.length > 0 ? filters : undefined,
         sortKey,
         reverse,
@@ -81,7 +85,7 @@ export default async function CollectionPage(props: Props) {
     const hasMore = collectionData?.pageInfo.hasNextPage;
 
     // Format collection title nicely
-    const collectionTitle = params.collection
+    const collectionTitle = shopifyHandle
         .split('-')
         .map(w => w.charAt(0).toUpperCase() + w.slice(1))
         .join(' ');
@@ -280,7 +284,7 @@ export default async function CollectionPage(props: Props) {
                                             Try adjusting or removing some filters to see more pieces.
                                         </p>
                                         <a
-                                            href={`/collections/${params.collection}`}
+                                            href={`/silver-jewellery/${params.category}`}
                                             style={{
                                                 marginTop: '0.25rem',
                                                 display: 'inline-block',
@@ -312,7 +316,7 @@ export default async function CollectionPage(props: Props) {
                                                     itemListElement: collectionData.products.map((product: any, index: number) => ({
                                                         '@type': 'ListItem',
                                                         position: index + 1,
-                                                        url: `https://www.bsjjewellers.com/products/${product.handle}`,
+                                                        url: `https://www.bsjjewellers.com${getProductUrl(product.handle, shopifyHandle)}`,
                                                     })),
                                                 }),
                                             }}
@@ -320,7 +324,7 @@ export default async function CollectionPage(props: Props) {
                                         <InfiniteProductGrid
                                             initialProducts={collectionData.products}
                                             initialPageInfo={collectionData.pageInfo}
-                                            collectionHandle={params.collection}
+                                            collectionHandle={shopifyHandle}
                                         />
                                     </>
                                 )}

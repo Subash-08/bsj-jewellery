@@ -56,7 +56,7 @@ export default function TrackOrderPage() {
                     </div>
 
                     <div className="mt-8 text-center">
-                        <Link href="/collections" className="inline-flex items-center gap-2 text-rose-600 hover:text-rose-700 font-medium">
+                        <Link href="/silver-jewellery" className="inline-flex items-center gap-2 text-rose-600 hover:text-rose-700 font-medium">
                             Continue Shopping
                             <ArrowRight size={16} />
                         </Link>

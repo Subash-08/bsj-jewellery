@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Search, Loader2, ArrowRight, Clock, TrendingUp, X } from 'lucide-react';
 import type { PredictiveSearchResults } from '@/hooks/useShopifySearch';
+import { getCollectionUrl, getSearchUrl } from '@/lib/routes';
 
 const TRENDING_SEARCHES = ['Diamond Ring', 'Gold Chain', 'Silver Bracelet', 'Temple Jewellery', 'Bridal Necklace'];
 
@@ -92,7 +93,7 @@ export default function SearchDropdown({
                 </div>
                 <div className="mt-4 pt-3 border-t border-stone-100">
                     <Link
-                        href={`/search?q=${encodeURIComponent(query)}`}
+                        href={getSearchUrl(query)}
                         className="flex items-center justify-center gap-1 text-sm text-rose-600 hover:text-rose-700 font-medium"
                     >
                         Search all products <ArrowRight className="w-3.5 h-3.5" />
@@ -191,7 +192,7 @@ export default function SearchDropdown({
                             return (
                                 <Link
                                     key={product.id}
-                                    href={`/search?q=${encodeURIComponent(product.title)}`}
+                                    href={getSearchUrl(product.title)}
                                     data-search-index={idx}
                                     className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${
                                         highlightedIndex === idx
@@ -238,7 +239,7 @@ export default function SearchDropdown({
                         return (
                             <Link
                                 key={collection.id}
-                                href={`/collections/${collection.handle}`}
+                                href={getCollectionUrl(collection.handle)}
                                 data-search-index={idx}
                                 className={`block px-3 py-2 text-sm rounded-md transition-colors ${
                                     highlightedIndex === idx
@@ -281,7 +282,7 @@ export default function SearchDropdown({
             {/* View All Results */}
             <div className="p-3 border-t border-stone-100">
                 <Link
-                    href={`/search?q=${encodeURIComponent(query)}`}
+                    href={getSearchUrl(query)}
                     className="flex items-center justify-center gap-2 w-full py-2.5 bg-stone-900 text-white text-sm font-medium rounded-md hover:bg-stone-800 transition-colors"
                 >
                     View all results for &ldquo;{query}&rdquo;

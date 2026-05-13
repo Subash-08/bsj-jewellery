@@ -2,40 +2,33 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Playfair_Display, Montserrat } from 'next/font/google';
+import { getCollectionUrl } from '@/lib/routes';
 
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '500', '600'] });
 
-const SILVER_CATEGORIES = [
-  { name: 'Anklet', image: 'https://images.unsplash.com/photo-1602752250013-1a067ed776c8?auto=format&fit=crop&q=80&w=600', handle: 'silver-anklets' },
-  { name: 'Bracelet', image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=600', handle: 'silver-bracelets' },
-  { name: 'Chain', image: 'https://images.unsplash.com/photo-1599643478514-4a4e0f69a1ba?auto=format&fit=crop&q=80&w=600', handle: 'silver-chains' },
-  { name: 'Pendants', image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80&w=600', handle: 'silver-pendants' },
-  { name: 'Rings', image: 'https://images.unsplash.com/photo-1605100804763-247f67b6348e?auto=format&fit=crop&q=80&w=600', handle: 'silver-rings' },
+const EVERYDAY_ESSENTIALS = [
+  { name: 'Anklets', image: 'https://images.unsplash.com/photo-1602752250013-1a067ed776c8?auto=format&fit=crop&q=80&w=600', handle: 'anklet' },
+  { name: 'Bracelets', image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=600', handle: 'bracelet' },
+  { name: 'Chains', image: 'https://images.unsplash.com/photo-1599643478514-4a4e0f69a1ba?auto=format&fit=crop&q=80&w=600', handle: 'chain' },
+  { name: 'Pendants', image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80&w=600', handle: 'pendant' },
+  { name: 'Rings', image: 'https://images.unsplash.com/photo-1605100804763-247f67b6348e?auto=format&fit=crop&q=80&w=600', handle: 'ring' },
 ];
 
-const GOLD_CATEGORIES = [
-  { name: 'Necklace', image: 'https://images.unsplash.com/photo-1599643478514-4a4e0f69a1ba?auto=format&fit=crop&q=80&w=600', handle: 'gold-necklace' },
-  { name: 'Ring', image: 'https://images.unsplash.com/photo-1605100804763-247f67b6348e?auto=format&fit=crop&q=80&w=600', handle: 'gold-ring' },
-  { name: 'Bangles', image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=600', handle: 'gold-bangles' },
-  { name: 'Earrings', image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=600', handle: 'gold-earrings' },
-  { name: 'Mangalsutra', image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80&w=600', handle: 'gold-mangalsutra' },
+const STATEMENT_PIECES = [
+  { name: 'Necklaces', image: 'https://images.unsplash.com/photo-1599643478514-4a4e0f69a1ba?auto=format&fit=crop&q=80&w=600', handle: 'necklace' },
+  { name: 'Earrings', image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=600', handle: 'earring' },
+  { name: 'Bangles', image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=600', handle: 'bangle' },
+  { name: 'Jewellery Sets', image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80&w=600', handle: 'set' },
+  { name: 'Silver Coins', image: 'https://images.unsplash.com/photo-1605100804763-247f67b6348e?auto=format&fit=crop&q=80&w=600', handle: 'coin' },
 ];
 
-const DIAMOND_CATEGORIES = [
-  { name: 'Pendants', image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80&w=600', handle: 'diamond-pendants' },
-  { name: 'Ring', image: 'https://images.unsplash.com/photo-1605100804763-247f67b6348e?auto=format&fit=crop&q=80&w=600', handle: 'diamond-ring' },
-  { name: 'Bracelets', image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=600', handle: 'diamond-bracelets' },
-  { name: 'Necklace', image: 'https://images.unsplash.com/photo-1599643478514-4a4e0f69a1ba?auto=format&fit=crop&q=80&w=600', handle: 'diamond-necklace' },
-  { name: 'Earrings', image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=600', handle: 'diamond-earrings' },
-];
-
-const NEW_COLLECTIONS = [
-  { name: 'Solitaire', image: 'https://images.unsplash.com/photo-1605100804763-247f67b6348e?auto=format&fit=crop&q=80&w=600', handle: 'solitaire' },
-  { name: 'Antique', image: 'https://images.unsplash.com/photo-1602752250013-1a067ed776c8?auto=format&fit=crop&q=80&w=600', handle: 'antique' },
-  { name: 'Temple Wear', image: 'https://images.unsplash.com/photo-1599643478514-4a4e0f69a1ba?auto=format&fit=crop&q=80&w=600', handle: 'temple' },
-  { name: 'Floral', image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=600', handle: 'floral' },
-  { name: 'Office Wear', image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=600', handle: 'office' },
+const TRADITIONAL_WEAR = [
+  { name: 'Mangalsutras', image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80&w=600', handle: 'mangalsutra' },
+  { name: 'Toe Rings', image: 'https://images.unsplash.com/photo-1605100804763-247f67b6348e?auto=format&fit=crop&q=80&w=600', handle: 'toe-ring' },
+  { name: 'Nose Pins', image: 'https://images.unsplash.com/photo-1602752250013-1a067ed776c8?auto=format&fit=crop&q=80&w=600', handle: 'nose-pin' },
+  { name: 'Nose Rings', image: 'https://images.unsplash.com/photo-1599643478514-4a4e0f69a1ba?auto=format&fit=crop&q=80&w=600', handle: 'nose-ring' },
+  { name: 'Temple Wear', image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=600', handle: 'temple' },
 ];
 
 export default function CollectionsPage() {
@@ -49,12 +42,12 @@ export default function CollectionsPage() {
         
         <div className="relative z-10 flex flex-col items-center">
            <div className="flex items-center gap-4 mb-2">
-             <span className="text-[#F1D380] text-lg">✦</span>
-             <h1 className={`${playfair.className} text-white text-3xl md:text-[44px] font-bold tracking-wider`}>Shop by Category</h1>
-             <span className="text-[#F1D380] text-lg">✦</span>
+             <span className="text-[#EAE2F0] text-lg">✦</span>
+             <h1 className={`${playfair.className} text-white text-3xl md:text-[44px] font-bold tracking-wider`}>Shop Pure Silver</h1>
+             <span className="text-[#EAE2F0] text-lg">✦</span>
            </div>
-           <p className={`${montserrat.className} text-[#F1D380] text-xs md:text-sm font-light tracking-widest uppercase mt-2`}>
-             Discover our handcrafted luxury collections
+           <p className={`${montserrat.className} text-[#EAE2F0] text-xs md:text-sm font-light tracking-widest uppercase mt-2`}>
+             Discover our handcrafted 92.5 pure silver collections
            </p>
         </div>
       </div>
@@ -65,56 +58,43 @@ export default function CollectionsPage() {
         <div className={`${montserrat.className} text-[11px] md:text-[12px] text-stone-400 mb-10 flex items-center gap-2 uppercase tracking-wider`}>
           <Link href="/" className="hover:text-[#230532] transition-colors">Home</Link>
           <span>&gt;</span>
-          <span className="text-[#230532] font-semibold">Collections</span>
+          <span className="text-[#230532] font-semibold">Silver Jewellery</span>
         </div>
 
-        {/* ── SECTION 1: SILVER ── */}
+        {/* ── SECTION 1: EVERYDAY ESSENTIALS ── */}
         <div className="mb-16 md:mb-20">
-          <SectionTitle title="Silver Jewellery" subtitle="Find out the perfect one for your beloved" />
-          <CategoryGrid items={SILVER_CATEGORIES} />
+          <SectionTitle title="Everyday Essentials" subtitle="Timeless pure silver pieces for your daily wear" />
+          <CategoryGrid items={EVERYDAY_ESSENTIALS} />
           <PromoBanner 
             image="https://images.unsplash.com/photo-1596460107916-430662021049?auto=format&fit=crop&q=80&w=2000"
             title="Simple. Stylish. Silver."
-            subtitle="Elevate your everyday with pure elegance."
+            subtitle="Elevate your everyday with pure 92.5 elegance."
             align="left"
           />
         </div>
 
-        {/* ── SECTION 2: GOLD ── */}
+        {/* ── SECTION 2: STATEMENT PIECES ── */}
         <div className="mb-16 md:mb-20">
-          <SectionTitle title="Golden Jewellery" subtitle="Find out the perfect one for your beloved" />
-          <CategoryGrid items={GOLD_CATEGORIES} />
+          <SectionTitle title="Statement Pieces" subtitle="Bold and elegant silver designs for special occasions" />
+          <CategoryGrid items={STATEMENT_PIECES} />
           <PromoBanner 
             image="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80&w=2000"
-            title="Celebrate in Gold"
-            subtitle="Embrace luxury with our timeless gold collections."
-            discount="0% Making Charges"
+            title="Silver that Speaks"
+            subtitle="Embrace luxury with our statement silver collections."
+            discount="Authentic 92.5 Silver"
             align="right"
           />
         </div>
 
-        {/* ── SECTION 3: DIAMOND ── */}
+        {/* ── SECTION 3: TRADITIONAL WEAR ── */}
         <div className="mb-16 md:mb-20">
-          <SectionTitle title="Diamond Jewellery" subtitle="Shine bright with every step you take" />
-          <CategoryGrid items={DIAMOND_CATEGORIES} />
+          <SectionTitle title="Traditional & Bridal" subtitle="Heritage silver designs inspired by culture" />
+          <CategoryGrid items={TRADITIONAL_WEAR} />
           <PromoBanner 
             image="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=2000"
-            title="Shine with Every Moment."
-            subtitle="Diamonds that celebrate your eternal love."
-            discount="Flat 20% Off"
+            title="Timeless Tradition"
+            subtitle="Beautiful heritage silver designs for the modern bride."
             align="left"
-          />
-        </div>
-
-        {/* ── SECTION 4: NEW COLLECTIONS ── */}
-        <div className="mb-16 md:mb-20">
-          <SectionTitle title="New Collections" subtitle="Explore our latest arrivals" />
-          <CategoryGrid items={NEW_COLLECTIONS} />
-          <PromoBanner 
-            image="https://images.unsplash.com/photo-1602752250013-1a067ed776c8?auto=format&fit=crop&q=80&w=2000"
-            title="Timeless Antique Elegance"
-            subtitle="Beautiful heritage designs for the modern bride."
-            align="right"
           />
         </div>
 
@@ -142,7 +122,7 @@ function CategoryGrid({ items }: { items: any[] }) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-10 md:mb-12">
       {items.map((item, i) => (
-        <Link href={`/collections/${item.handle}`} key={i} className="group relative w-full aspect-[4/5] md:aspect-square overflow-hidden rounded shadow-[0_2px_12px_rgba(0,0,0,0.06)] border border-[#e0c06b]/30 hover:border-[#FACE7A] transition-colors">
+        <Link href={getCollectionUrl(item.handle)} key={i} className="group relative w-full aspect-[4/5] md:aspect-square overflow-hidden rounded shadow-[0_2px_12px_rgba(0,0,0,0.06)] border border-[#D1D5DB]/50 hover:border-[#9CA3AF] transition-colors">
           <Image
             src={item.image}
             alt={item.name}
@@ -176,12 +156,12 @@ function PromoBanner({ image, title, subtitle, discount, align }: { image: strin
         <div className="max-w-[500px]">
           <h3 className={`${playfair.className} text-white text-2xl md:text-[40px] font-bold leading-tight mb-2 md:mb-3`}>{title}</h3>
           <p className={`${montserrat.className} text-white/90 text-[13px] md:text-[16px] font-light mb-4 md:mb-5`}>{subtitle}</p>
-          {discount && <p className={`${montserrat.className} text-[#FACE7A] text-2xl md:text-[34px] font-bold mb-4 md:mb-5 tracking-wider leading-none`}>{discount}</p>}
+          {discount && <p className={`${montserrat.className} text-[#E5E7EB] text-[18px] md:text-[24px] font-bold mb-4 md:mb-5 tracking-wider leading-none`}>{discount}</p>}
           <Link
-            href="/collections/all"
-            className={`${montserrat.className} inline-block bg-[#F1D380] text-[#230532] px-6 py-2.5 text-[12px] md:text-[13px] font-bold uppercase tracking-[0.1em] hover:bg-white transition-colors shadow-md`}
+            href="/silver-jewellery"
+            className={`${montserrat.className} inline-block bg-[#EAE2F0] text-[#230532] px-6 py-2.5 text-[12px] md:text-[13px] font-bold uppercase tracking-[0.1em] hover:bg-white transition-colors shadow-md`}
           >
-            Explore All Collection
+            Explore All Silver
           </Link>
         </div>
       </div>
@@ -194,11 +174,11 @@ function MatchCTA() {
     <div className="w-full bg-[#EAE2F0] py-16 md:py-20 flex flex-col items-center justify-center text-center px-6">
       <div className="flex items-center gap-3 md:gap-4 mb-4">
         <span className="text-[#230532] text-xl">✦</span>
-        <h2 className={`${playfair.className} text-[#230532] text-[26px] md:text-[34px] font-bold tracking-wide`}>Find Your Perfect Match — We're Here to Help</h2>
+        <h2 className={`${playfair.className} text-[#230532] text-[26px] md:text-[34px] font-bold tracking-wide`}>Find Your Perfect Silver Match — We're Here to Help</h2>
         <span className="text-[#230532] text-xl">✦</span>
       </div>
       <p className={`${montserrat.className} text-[#230532] text-[14px] md:text-[16px] max-w-2xl mx-auto mb-8 md:mb-10 opacity-80 leading-relaxed`}>
-        Have questions about diamonds, customizing a design, or tracking your order? We're just a message away.
+        Have questions about our pure silver collections, customizing a design, or tracking your order? We're just a message away.
       </p>
 
       <div className={`${montserrat.className} bg-white/60 backdrop-blur-sm px-6 py-3 rounded-full border border-[#230532]/20 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 shadow-sm`}>

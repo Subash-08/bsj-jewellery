@@ -30,6 +30,26 @@ const nextConfig = {
                 destination: '/',
                 permanent: true,
             },
+            {
+                source: '/collections',
+                destination: '/silver-jewellery',
+                permanent: true,
+            },
+            {
+                source: '/collections/all',
+                destination: '/silver-jewellery',
+                permanent: true,
+            },
+            {
+                source: '/collections/:path*',
+                destination: '/silver-jewellery/:path*',
+                permanent: true,
+            },
+            {
+                source: '/products/:path*',
+                destination: '/silver-jewellery/all/:path*',
+                permanent: true,
+            }
         ];
     },
     typescript: {

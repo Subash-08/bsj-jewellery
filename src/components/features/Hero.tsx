@@ -17,13 +17,13 @@ export default function Hero() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link
-                        href="/collections"
+                        href="/silver-jewellery"
                         className="px-8 py-4 bg-black text-white text-sm font-semibold uppercase tracking-widest hover:bg-gray-800 transition-all duration-300"
                     >
                         Shop Collections
                     </Link>
                     <Link
-                        href="/products/compare"
+                        href="/silver-jewellery"
                         className="px-8 py-4 border border-black text-black text-sm font-semibold uppercase tracking-widest hover:bg-black hover:text-white transition-all duration-300"
                     >
                         New Arrivals

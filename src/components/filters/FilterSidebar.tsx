@@ -5,6 +5,7 @@ import { useCallback, useState, useEffect } from 'react';
 import { X, SlidersHorizontal } from 'lucide-react';
 import { cn } from '@/components/ui/Badge';
 import type { Filter } from '@/types/shopify/product';
+import { getCollectionUrl } from '@/lib/routes';
 import FilterGroup from './FilterGroup';
 import PriceSlider from './PriceSlider';
 
@@ -42,7 +43,7 @@ export default function FilterSidebar({ filters, currentParams, collections = []
     }, [isOpen]);
 
     const updateCollection = useCallback((handle: string) => {
-        router.push(`/collections/${handle}`);
+        router.push(getCollectionUrl(handle));
     }, [router]);
 
     const updateFilter = useCallback(

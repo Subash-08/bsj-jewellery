@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRef } from 'react';
 import { cn } from '@/lib/utils';
 import type { Collection } from './CollectionsServer';
+import { getCollectionUrl } from '@/lib/routes';
 
 interface CollectionsClientProps {
     large: Collection;
@@ -42,7 +43,7 @@ function LargeCard({ collection }: { collection: Collection }) {
                     {collection.subtitle}
                 </p>
                 <Link
-                    href={`/collections/${collection.handle}`}
+                    href={getCollectionUrl(collection.handle)}
                     className={cn(
                         'inline-flex items-center px-8 py-3 rounded-full',
                         'bg-white/80 backdrop-blur-md text-stone-800',
@@ -101,7 +102,7 @@ function SmallCard({
                     {collection.subtitle}
                 </p>
                 <Link
-                    href={`/collections/${collection.handle}`}
+                    href={getCollectionUrl(collection.handle)}
                     className={cn(
                         'inline-flex items-center px-8 py-3 rounded-full',
                         'bg-white/80 backdrop-blur-md text-stone-800',

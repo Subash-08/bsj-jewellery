@@ -6,6 +6,7 @@ import type { Product } from '@/types/shopify/product';
 import { usePriceFormatter } from '@/hooks/usePriceFormatter';
 import { Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
+import { getProductUrl } from '@/lib/routes';
 
 import { useWishlist } from '@/hooks/useWishlist';
 
@@ -24,7 +25,7 @@ function BestSellerCard({ product }: { product: Product }) {
   const wish = isInWishlist(product.id);
 
   return (
-    <Link href={`/collections/${collection}/${product.handle}`} className="group flex flex-col relative block w-full">
+    <Link href={getProductUrl(product.handle, collection)} className="group flex flex-col relative block w-full">
       <div className="relative aspect-square overflow-hidden bg-[#f1eeea]">
         {image && (
           <Image

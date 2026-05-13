@@ -185,7 +185,7 @@ export default function AccountDashboard() {
                     <h3 className="text-xl font-serif text-stone-800 mb-2">No Orders Yet</h3>
                     <p className="text-stone-500 text-sm mb-6 max-w-sm mx-auto">Begin your jewellery journey — explore our curated collections</p>
                     <Link
-                        href="/collections"
+                        href="/silver-jewellery"
                         className="inline-block px-8 py-3 bg-stone-900 text-white text-xs uppercase tracking-widest font-bold hover:bg-stone-800 transition-colors"
                     >
                         Start Shopping

@@ -414,7 +414,7 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                 <MobileCategoryMenu categories={mobileCategories} />
                             ) : (
                                 <Link
-                                    href="/collections"
+                                    href="/silver-jewellery"
                                     className="block py-3 px-2 text-white font-medium border-b border-[#f1ece3]"
                                 >
                                     Shop By Category

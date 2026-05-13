@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { getCollectionUrl } from "@/lib/routes";
 
 export default function LatestArrivals({ collections }: { collections: any[] }) {
   let displayItems = collections && collections.length > 0 ? [...collections] : [];
@@ -83,7 +84,7 @@ export default function LatestArrivals({ collections }: { collections: any[] }) 
 
             return (
               <Link
-                href={`/collections/${item.handle || "all"}`}
+                href={getCollectionUrl(item.handle || "all")}
                 key={i}
                 className="relative w-[261px] h-[261px] flex-shrink-0 group overflow-hidden block"
               >
@@ -122,7 +123,7 @@ export default function LatestArrivals({ collections }: { collections: any[] }) 
       {/* Button */}
       <div className="mt-[40px] z-20">
         <Link
-          href="/collections"
+          href="/silver-jewellery"
           className="inline-flex items-center justify-center px-[10px] py-[10px] min-w-[200px] bg-[#230532] text-white rounded-[4px] font-montserrat font-bold text-[18px] hover:bg-[#3a1e4a] transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
         >
           Explore All Collection

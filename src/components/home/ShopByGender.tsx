@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { getCollectionUrl } from "@/lib/routes";
 
 interface Collection {
   title: string;
@@ -46,7 +47,7 @@ export default function ShopByGender({ collections }: { collections: Collection[
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
           {genders.map((gender, idx) => (
             <Link
-              href={`/collections/${gender.handle}`}
+              href={getCollectionUrl(gender.handle)}
               key={idx}
               className="group flex flex-col items-center"
             >

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { NavCategory } from "@/types/shopify/collection";
+import { getCollectionUrl } from "@/lib/routes";
 
 interface Props {
     categories: NavCategory[];
@@ -83,7 +84,7 @@ export default function MobileCategoryMenu({ categories }: Props) {
                                     <div className="pl-5 pr-2 pb-3 space-y-4">
                                         {/* View all link */}
                                         <Link
-                                            href={`/collections/${cat.handle}`}
+                                            href={getCollectionUrl(cat.handle)}
                                             className="inline-block text-xs font-semibold text-amber-600 uppercase tracking-wider mt-2 hover:underline"
                                         >
                                             View all {cat.name}
@@ -99,7 +100,7 @@ export default function MobileCategoryMenu({ categories }: Props) {
                                                         {items.map((item) => (
                                                             <Link
                                                                 key={item}
-                                                                href={`/collections/${cat.handle}?${param}=${encodeURIComponent(item)}`}
+                                                                href={`${getCollectionUrl(cat.handle)}?${param}=${encodeURIComponent(item)}`}
                                                                 className="block py-1 text-sm text-gray-600 hover:text-amber-600 transition-colors"
                                                             >
                                                                 {item}

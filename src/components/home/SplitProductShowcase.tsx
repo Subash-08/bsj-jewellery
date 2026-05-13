@@ -8,6 +8,7 @@ import { Heart, ShoppingBag, Check } from 'lucide-react';
 import { useState, useTransition } from 'react';
 import { useCart } from '@/context/CartProvider';
 import { useWishlist } from '@/hooks/useWishlist';
+import { getProductUrl } from '@/lib/routes';
 
 function SimpleProductCard({ product }: { product: Product }) {
   const { format } = usePriceFormatter(product.priceRange.minVariantPrice.currencyCode);
@@ -53,7 +54,7 @@ function SimpleProductCard({ product }: { product: Product }) {
 
   return (
     <Link
-      href={`/collections/${collection}/${product.handle}`}
+      href={getProductUrl(product.handle, collection)}
       className="spc-card group"
     >
       {/* Image area */}
@@ -157,7 +158,7 @@ export default function SplitProductShowcase({
 
           {/* CTA */}
           <div className="sps-cta-wrap">
-            <Link href="/collections" className="sps-cta">
+            <Link href="/silver-jewellery" className="sps-cta">
               <span>Explore All</span>
               <span className="sps-cta-arrow">→</span>
             </Link>
@@ -230,7 +231,7 @@ export default function SplitProductShowcase({
           font-weight: 500;
           letter-spacing: 0.22em;
           text-transform: uppercase;
-          color: #C9A96E;
+          color: #9CA3AF;
         }
 
         .sps-title {
@@ -248,7 +249,7 @@ export default function SplitProductShowcase({
         .sps-title-rule {
           width: 48px;
           height: 2px;
-          background: linear-gradient(90deg, #C9A96E, transparent);
+          background: linear-gradient(90deg, #9CA3AF, #D1D5DB);
           margin: 0.35rem 0 0.1rem;
         }
 
@@ -299,7 +300,7 @@ export default function SplitProductShowcase({
           bottom: 0; left: 0;
           height: 2px;
           width: 0;
-          background: linear-gradient(90deg, #C9A96E, #E8C97A);
+          background: linear-gradient(90deg, #9CA3AF, #D1D5DB);
           transition: width 0.35s ease;
           border-radius: 0 0 10px 10px;
         }
@@ -380,8 +381,8 @@ export default function SplitProductShowcase({
         }
 
         .spc-atc:hover {
-          background: rgba(201,169,110,0.95);
-          color: #1C1510;
+          background: #EAE2F0;
+          color: #230532;
         }
 
         .spc-atc--added {
@@ -440,7 +441,7 @@ export default function SplitProductShowcase({
           text-transform: uppercase;
           color: #2C2218;
           text-decoration: none;
-          border: 1.5px solid #C9A96E;
+          border: 1.5px solid #230532;
           padding: 0.7rem 2rem;
           border-radius: 4px;
           transition: background 0.25s, color 0.25s;
@@ -497,7 +498,7 @@ export default function SplitProductShowcase({
         .sps-corner {
           position: absolute;
           width: 28px; height: 28px;
-          border-color: #C9A96E;
+          border-color: #9CA3AF;
           border-style: solid;
           z-index: 2;
           pointer-events: none;

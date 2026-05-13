@@ -6,6 +6,7 @@ import { ShoppingBag, X } from 'lucide-react';
 import type { Product } from '@/types/shopify/product';
 import { PriceDisplay } from '@/components/ui/PriceDisplay';
 import AddToCart from '@/components/product/AddToCart';
+import { getProductUrl } from '@/lib/routes';
 
 interface WishlistItemCardProps {
     product: Product;
@@ -33,10 +34,8 @@ export function WishlistItemCard({ product, onRemove }: WishlistItemCardProps) {
     const metadata = product.jewelryMetafields;
 
     // Build the link
-    const collectionHandle = metadata?.['Collection Name']
-        ? metadata['Collection Name'].toLowerCase().replace(/\s+/g, '-')
-        : 'all';
-    const productUrl = `/collections/${collectionHandle}/${product.handle}`;
+    const collectionHandle = product.collections?.edges?.[0]?.node?.handle || 'all';
+    const productUrl = getProductUrl(product.handle, collectionHandle);
 
     return (
         <div className="group relative flex flex-col md:flex-row bg-white border border-stone-200 p-4 transition-all duration-300 hover:border-stone-300 w-full gap-6">

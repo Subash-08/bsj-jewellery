@@ -20,6 +20,7 @@ import StickyBuyBar from './StickyBuyBar';
 import ReviewSection from '@/components/reviews/ReviewSection';
 import type { Product, ProductVariant } from '@/types/shopify/product';
 import type { JudgeMeReview, ReviewSummaryData } from '@/types/review';
+import { getCollectionUrl, getProductUrl } from '@/lib/routes';
 
 // ─── Types ───────────────────────────────────────────────────────────────
 interface SpecItem {
@@ -175,7 +176,7 @@ export default function ProductPageClient({
                             <>
                                 <li>
                                     <Link
-                                        href={`/collections/${breadcrumb.collectionHandle}`}
+                                        href={getCollectionUrl(breadcrumb.collectionHandle)}
                                         className="text-[#230532] hover:opacity-80 transition-opacity"
                                     >
                                         {breadcrumb.collectionTitle}
@@ -478,7 +479,7 @@ export default function ProductPageClient({
                             {relatedProducts.map((rp) => {
                                 const wish = isInWishlist(rp.id);
                                 return (
-                                <Link key={rp.id} href={`/products/${rp.handle}`} className="group flex flex-col relative block w-full">
+                                <Link key={rp.id} href={getProductUrl(rp.handle)} className="group flex flex-col relative block w-full">
                                     <div className="relative aspect-square overflow-hidden bg-[#f1eeea]">
                                         {rp.images[0] ? (
                                         <Image
@@ -527,7 +528,7 @@ export default function ProductPageClient({
                         <div className="text-center py-8">
                             <p className="text-sm text-stone-400 mb-4">Explore our curated collections</p>
                             <Link
-                                href="/collections"
+                                href="/silver-jewellery"
                                 className="inline-block px-6 py-3 border border-stone-300 text-stone-700 text-xs uppercase tracking-[0.2em] font-bold hover:border-amber-400 hover:text-amber-700 transition-colors rounded-sm"
                             >
                                 View All Collections

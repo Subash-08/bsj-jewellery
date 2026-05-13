@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Product } from '@/types/shopify/product';
 import { Section } from '@/components/layout/Section';
+import { getProductUrl } from '@/lib/routes';
 
 export default function FeaturedProduct({ product }: { product: Product }) {
   if (!product) return null;
@@ -35,7 +36,7 @@ export default function FeaturedProduct({ product }: { product: Product }) {
             </p>
             
             <Link 
-              href={`/products/${product.handle}`} 
+              href={getProductUrl(product.handle)} 
               className="inline-flex items-center gap-3 bg-stone-900 text-white px-10 py-4 text-sm font-semibold uppercase tracking-[0.15em] hover:bg-amber-600 transition-colors self-start shadow-md"
             >
               Discover Piece <span aria-hidden="true">&rarr;</span>

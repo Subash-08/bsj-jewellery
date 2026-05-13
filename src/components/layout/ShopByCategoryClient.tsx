@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ChevronDown, ChevronRight, ArrowRight } from 'lucide-react';
 import type { NavCategory } from '@/types/shopify/collection';
 import { cn } from '@/lib/utils';
+import { getCollectionUrl } from '@/lib/routes';
 
 interface Props {
   categories: NavCategory[];
@@ -70,7 +71,7 @@ export default function ShopByCategoryClient({ categories }: Props) {
             </ul>
             <div className="mt-8 px-8">
               <Link
-                href="/collections"
+                href="/silver-jewellery"
                 className="text-xs font-bold uppercase text-rose-600 hover:underline flex items-center gap-1"
               >
                 View All Categories <ArrowRight size={12} />
@@ -82,12 +83,14 @@ export default function ShopByCategoryClient({ categories }: Props) {
           <div className="w-3/4 p-8 bg-white animate-fade-in">
             <div className="mb-6 pb-4 border-b border-stone-100 flex justify-between items-end">
               <h3 className="font-serif text-2xl text-stone-800">{activeCategory.name}</h3>
-              <Link
-                href={`/collections/${activeCategory.handle}`}
-                className="text-xs font-bold text-rose-600 uppercase tracking-widest hover:text-rose-700"
-              >
-                Explore {activeCategory.name}
-              </Link>
+              <div className="flex justify-center mb-10">
+                <Link
+                  href={getCollectionUrl(activeCategory.handle)}
+                  className="inline-flex items-center gap-2 px-8 py-3.5 bg-amber-600 text-white text-sm font-semibold tracking-wider uppercase rounded-full hover:bg-amber-700 transition-all shadow-lg shadow-amber-600/20"
+                >
+                  Explore {activeCategory.name}
+                </Link>
+              </div>
             </div>
 
             <div className="grid grid-cols-3 gap-y-8 gap-x-12">
@@ -102,7 +105,7 @@ export default function ShopByCategoryClient({ categories }: Props) {
                       {activeCategory.subCategories.map((item) => (
                         <li key={item}>
                           <Link
-                            href={`/collections/${activeCategory.handle}?sub_category=${encodeURIComponent(item)}`}
+                            href={`${getCollectionUrl(activeCategory.handle)}?sub_category=${encodeURIComponent(item)}`}
                             className="text-sm text-gray-600 hover:text-rose-600 hover:translate-x-1 transition-all inline-block"
                           >
                             {item}
@@ -118,11 +121,11 @@ export default function ShopByCategoryClient({ categories }: Props) {
                       Gender
                     </h4>
                     <div className="flex flex-wrap gap-2">
-                      {activeCategory.gender.map((item) => (
+                      {activeCategory.gender.map((item, idx) => (
                         <Link
-                          key={item}
-                          href={`/collections/${activeCategory.handle}?gender=${encodeURIComponent(item)}`}
-                          className="text-xs border border-stone-200 px-2 py-1 rounded-sm text-stone-600 hover:border-rose-400 hover:text-rose-600 cursor-pointer transition-colors inline-block"
+                          key={idx}
+                          href={`${getCollectionUrl(activeCategory.handle)}?gender=${encodeURIComponent(item)}`}
+                          className="flex flex-col items-center gap-3 p-4 rounded-xl border border-[#efe8dc] bg-[#faf8f5] hover:border-amber-200 hover:shadow-md transition-all group"
                         >
                           {item}
                         </Link>
@@ -140,11 +143,12 @@ export default function ShopByCategoryClient({ categories }: Props) {
                       Occasion
                     </h4>
                     <ul className="space-y-2">
-                      {activeCategory.occasion.map((item) => (
+                      {activeCategory.occasion.map((item, idx) => (
                         <li key={item}>
                           <Link
-                            href={`/collections/${activeCategory.handle}?occasion=${encodeURIComponent(item)}`}
-                            className="text-sm text-stone-600 hover:text-rose-600 transition-colors"
+                            key={idx}
+                            href={`${getCollectionUrl(activeCategory.handle)}?occasion=${encodeURIComponent(item)}`}
+                            className="text-sm text-gray-600 hover:text-amber-600 transition-colors"
                           >
                             {item}
                           </Link>
@@ -159,11 +163,12 @@ export default function ShopByCategoryClient({ categories }: Props) {
                       Collections
                     </h4>
                     <ul className="space-y-2">
-                      {activeCategory.collection.map((item) => (
+                      {activeCategory.collection.map((item, idx) => (
                         <li key={item}>
                           <Link
-                            href={`/collections/${activeCategory.handle}?collection_name=${encodeURIComponent(item)}`}
-                            className="text-sm text-stone-600 hover:text-rose-600 transition-colors"
+                            key={idx}
+                            href={`${getCollectionUrl(activeCategory.handle)}?collection_name=${encodeURIComponent(item)}`}
+                            className="block p-4 rounded-xl border border-[#efe8dc] hover:border-amber-300 hover:shadow-md transition-all group bg-gradient-to-br from-white to-[#faf8f5]"
                           >
                             {item}
                           </Link>
@@ -182,11 +187,12 @@ export default function ShopByCategoryClient({ categories }: Props) {
                       Design Style
                     </h4>
                     <ul className="space-y-2">
-                      {activeCategory.design.map((item) => (
+                      {activeCategory.design.map((item, idx) => (
                         <li key={item}>
                           <Link
-                            href={`/collections/${activeCategory.handle}?design_style=${encodeURIComponent(item)}`}
-                            className="text-sm text-stone-600 hover:text-rose-600 transition-colors"
+                            key={idx}
+                            href={`${getCollectionUrl(activeCategory.handle)}?design_style=${encodeURIComponent(item)}`}
+                            className="text-sm text-gray-600 hover:text-amber-600 hover:bg-amber-50 px-3 py-1.5 rounded-md transition-colors"
                           >
                             {item}
                           </Link>

@@ -162,7 +162,7 @@ export default function AboutPage() {
           </motion.h1>
 
           <motion.p variants={fadeInUp} className="font-cormorant italic text-[var(--stone-light)] text-xl md:text-2xl max-w-2xl mx-auto mb-14 leading-relaxed">
-            For over two decades, Bagyalakshmi Jewellers has adorned families across Tamil Nadu with handcrafted gold, diamond, and silver jewellery — built on purity, pride, and tradition.
+            For over two decades, Bagyalakshmi Jewellers has adorned families across Tamil Nadu with handcrafted pure silver jewellery — built on purity, pride, and tradition.
           </motion.p>
 
           <motion.div variants={fadeInUp} className="mb-14 opacity-80">
@@ -182,7 +182,7 @@ export default function AboutPage() {
               Explore Our Story
             </Link>
             <Link 
-              href="/collections" 
+              href="/silver-jewellery" 
               className="px-8 py-4 border border-[var(--gold)] text-[var(--gold)] font-medium tracking-wide hover:bg-[var(--gold)]/10 transition-all duration-300 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-[var(--gold)] focus:ring-offset-2 focus:ring-offset-[var(--noir)]"
               aria-label="View Collections"
             >
@@ -306,7 +306,7 @@ export default function AboutPage() {
               {
                 icon: <ShieldCheck size={32} className="text-[var(--noir)]" strokeWidth={1.5} />,
                 title: "100% BIS Hallmarked",
-                desc: "Every piece of gold jewellery is certified under India's Bureau of Indian Standards, guaranteeing purity you can trust.",
+                desc: "Every piece of silver jewellery is certified under India's Bureau of Indian Standards, guaranteeing purity you can trust.",
               },
               {
                 icon: <Tag size={32} className="text-[var(--noir)]" strokeWidth={1.5} />,
@@ -316,7 +316,7 @@ export default function AboutPage() {
               {
                 icon: <Gem size={32} className="text-[var(--noir)]" strokeWidth={1.5} />,
                 title: "IGI/GIA Certified Stones",
-                desc: "All diamonds and precious gemstones come with independent certification for authenticity, cut, and carat.",
+                desc: "All precious gemstones come with independent certification for authenticity, cut, and carat.",
               },
               {
                 icon: <RefreshCw size={32} className="text-[var(--noir)]" strokeWidth={1.5} />,
@@ -369,7 +369,7 @@ export default function AboutPage() {
                   {
                     num: "2",
                     title: "Material Selection",
-                    desc: "Only 22KT and 18KT gold sourced from verified refineries. Gemstones hand-selected for colour, clarity and brilliance."
+                    desc: "Only authentic 92.5 pure silver sourced from verified refineries. Gemstones hand-selected for colour, clarity and brilliance."
                   },
                   {
                     num: "3",
@@ -466,7 +466,7 @@ export default function AboutPage() {
             className="text-center"
           >
             <Link 
-              href="/collections" 
+              href="/silver-jewellery" 
               className="inline-block px-10 py-4 bg-[var(--gold)] text-[var(--noir)] font-medium tracking-wide hover:bg-[var(--gold-light)] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--gold)] focus:ring-offset-2 focus:ring-offset-[var(--ivory-deep)]"
               aria-label="Browse full collections"
             >
@@ -510,11 +510,11 @@ export default function AboutPage() {
                 name: "Meenakshi R.", loc: "Tirunelveli", init: "MR"
               },
               {
-                text: "Got my bridal set made here. Every single piece was perfect — pure gold, beautiful design, and delivered on time. Couldn't be happier.",
+                text: "Got my bridal set made here. Every single piece was perfect — pure silver, beautiful design, and delivered on time. Couldn't be happier.",
                 name: "Kavitha S.", loc: "Nagercoil", init: "KS"
               },
               {
-                text: "Transparent pricing and genuine hallmarked gold. I've checked multiple shops — nobody comes close to the trust and value Bagyalakshmi offers.",
+                text: "Transparent pricing and genuine hallmarked silver. I've checked multiple shops — nobody comes close to the trust and value Bagyalakshmi offers.",
                 name: "Rajendran M.", loc: "Madurai", init: "RM"
               }
             ].map((review, i) => (
@@ -572,7 +572,7 @@ export default function AboutPage() {
 
             {/* Right side: Heritage Content */}
             <motion.div variants={fadeInUp} className="w-full lg:w-[55%] mt-12 lg:mt-0">
-              <span className="text-[var(--gold)] uppercase tracking-[0.2em] text-sm font-semibold mb-6 block">THE PEOPLE BEHIND THE GOLD</span>
+              <span className="text-[var(--gold)] uppercase tracking-[0.2em] text-sm font-semibold mb-6 block">THE PEOPLE BEHIND THE SILVER</span>
               <h2 className="font-playfair text-4xl md:text-5xl text-[var(--noir)] mb-8 leading-tight">
                 A Family Business <br/>Built on Values
               </h2>
@@ -632,7 +632,7 @@ export default function AboutPage() {
               Visit Our Store
             </Link>
             <Link 
-              href="/collections" 
+              href="/silver-jewellery" 
               className="w-full sm:w-auto px-8 py-4 bg-white text-[var(--noir)] font-medium tracking-wide hover:bg-gray-50 transition-colors focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[var(--gold)]"
             >
               Shop Collections

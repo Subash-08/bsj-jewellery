@@ -15,7 +15,7 @@ const COLLECTIONS: Collection[] = [
     {
         id: '1',
         title: 'Wedding Collection',
-        subtitle: 'Timeless gold pieces for your special day.',
+        subtitle: 'Timeless silver pieces for your special day.',
         handle: 'wedding-collection',
         image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=1200',
         overlay: 'from-rose-200/90 via-rose-100/40 to-transparent',

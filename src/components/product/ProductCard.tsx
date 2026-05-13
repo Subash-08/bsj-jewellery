@@ -8,6 +8,7 @@ import { PriceDisplay } from '@/components/ui/PriceDisplay';
 import { WishlistButton } from '@/components/ui/WishlistButton';
 import AddToCart from '@/components/product/AddToCart';
 import { useState } from 'react';
+import { getProductUrl } from '@/lib/routes';
 
 interface ProductCardProps {
     product: Product;
@@ -80,7 +81,7 @@ export function ProductCard({ product, collectionHandle = 'all' }: ProductCardPr
 
             {/* ── Image area ── */}
             <Link
-                href={`/collections/${collectionHandle}/${product.handle}`}
+                href={getProductUrl(product.handle, collectionHandle)}
                 className="relative block overflow-hidden"
                 style={{
                     aspectRatio: '1 / 1',
@@ -188,7 +189,7 @@ export function ProductCard({ product, collectionHandle = 'all' }: ProductCardPr
             >
                 {/* Title + metadata */}
                 <Link
-                    href={`/collections/${collectionHandle}/${product.handle}`}
+                    href={getProductUrl(product.handle, collectionHandle)}
                     className="flex-1 block"
                 >
                     <h3

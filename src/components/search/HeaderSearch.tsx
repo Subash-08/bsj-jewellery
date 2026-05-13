@@ -6,6 +6,7 @@ import { Search, X } from 'lucide-react';
 import { useShopifySearch } from '@/hooks/useShopifySearch';
 import { useRecentSearches } from '@/hooks/useRecentSearches';
 import SearchDropdown from './SearchDropdown';
+import { getShopifyHandle, getSearchUrl } from '@/lib/routes';
 
 interface HeaderSearchProps {
     variant?: 'desktop' | 'mobile';
@@ -55,12 +56,23 @@ export default function HeaderSearch({ variant = 'desktop', onClose }: HeaderSea
         setQuery('');
         clearResults();
 
-        let targetUrl = `/search?q=${encodeURIComponent(trimmed)}`;
-
-        if (pathname?.startsWith('/collections/') && pathname !== '/collections/all') {
-            const handle = pathname.replace('/collections/', '');
-            targetUrl += `&collection=${encodeURIComponent(handle)}`;
+        let handle = '';
+        if (pathname?.startsWith('/silver-jewellery/') && pathname !== '/silver-jewellery/all') {
+            const parts = pathname.split('/');
+            // Expected format: /silver-jewellery/[category] or /silver-jewellery/[category]/[product]
+            if (parts.length >= 3) {
+                const categorySlug = parts[2];
+                handle = getShopifyHandle(categorySlug);
+            }
+        } else if (pathname?.startsWith('/collections/') && pathname !== '/collections/all') {
+             // Fallback for old routes
+             const parts = pathname.split('/');
+             if (parts.length >= 3) {
+                 handle = parts[2];
+             }
         }
+
+        const targetUrl = getSearchUrl(trimmed, handle);
 
         router.push(targetUrl);
         onClose?.();

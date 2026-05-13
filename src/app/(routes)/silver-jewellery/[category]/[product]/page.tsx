@@ -5,17 +5,18 @@ import type { Product } from '@/types/shopify/product';
 import type { ReviewSummaryData, JudgeMeReview } from '@/types/review';
 import ProductPageClient from '@/components/product/ProductPageClient';
 import { getReviews, getReviewSummary, extractNumericProductId } from '@/lib/judgeme';
+import { getShopifyHandle, getProductUrl } from '@/lib/routes';
 
 // Enable dynamic rendering for this route
 export const dynamic = 'force-dynamic';
 
 type Props = {
-    params: Promise<{ handle: string }>;
+    params: Promise<{ category: string; product: string }>;
 };
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
     const params = await props.params;
-    const product = await getProductByHandle(params.handle);
+    const product = await getProductByHandle(params.product);
     if (!product) return {};
     return {
         title: product.seo?.title || product.title,
@@ -25,9 +26,20 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function ProductPage(props: Props) {
     const params = await props.params;
-    const product = await getProductByHandle(params.handle);
+    const product = await getProductByHandle(params.product);
 
     if (!product) {
+        notFound();
+    }
+
+    const shopifyCollectionHandle = getShopifyHandle(params.category);
+
+    // Validate if product belongs to this category
+    const belongsToCategory = product.collections?.edges.some(
+        (edge) => edge.node.handle === shopifyCollectionHandle
+    );
+
+    if (!belongsToCategory && shopifyCollectionHandle !== 'all') {
         notFound();
     }
 
@@ -61,10 +73,10 @@ export default async function ProductPage(props: Props) {
     };
 
     // ── Breadcrumb ─────────────────────────────────────────────────────
-    const firstCollection = product.collections?.edges?.[0]?.node;
+    const currentCollectionNode = product.collections?.edges.find(e => e.node.handle === shopifyCollectionHandle)?.node;
     const breadcrumb = {
-        collectionTitle: firstCollection?.title || product.productType || '',
-        collectionHandle: firstCollection?.handle || '',
+        collectionTitle: currentCollectionNode?.title || (shopifyCollectionHandle === 'all' ? 'All Jewellery' : product.productType || ''),
+        collectionHandle: shopifyCollectionHandle,
         shortTitle: product.title.replace(/\s*\|\s*BSJ Jewellery/i, '').slice(0, 60),
     };
 
@@ -75,8 +87,8 @@ export default async function ProductPage(props: Props) {
         relatedProducts = await getComplementaryProducts(product.handle);
 
         // Optional fallback (ONLY if empty)
-        if (!relatedProducts.length && firstCollection?.handle) {
-            const result = await getCollectionProducts({ handle: firstCollection.handle });
+        if (!relatedProducts.length && shopifyCollectionHandle) {
+            const result = await getCollectionProducts({ handle: shopifyCollectionHandle });
 
             relatedProducts = result?.products
                 ?.filter((p) => p.id !== product.id)
@@ -102,7 +114,7 @@ export default async function ProductPage(props: Props) {
         },
         offers: {
             '@type': 'Offer',
-            url: `https://bsjjewellery.com/products/${product.handle}`,
+            url: `https://bsjjewellery.com${getProductUrl(product.handle, shopifyCollectionHandle)}`,
             priceCurrency: minPrice.currencyCode,
             price: minPrice.amount,
             availability: product.availableForSale
@@ -138,7 +150,7 @@ export default async function ProductPage(props: Props) {
         reviewData = await Promise.race([fetchReviews, timeout]);
     } catch (err) {
         console.error('[Reviews] SSR fetch failed', {
-            handle: params.handle,
+            handle: params.product,
             productId: product.id,
             error: err instanceof Error ? err.message : String(err),
         });

@@ -106,7 +106,7 @@ export default function OrdersPage() {
                         {searchQuery ? 'Try adjusting your search' : 'You haven\'t placed any orders yet'}
                     </p>
                     <Link
-                        href="/collections"
+                        href="/silver-jewellery"
                         className="inline-block px-8 py-3 bg-stone-900 text-white text-xs uppercase tracking-widest font-bold hover:bg-stone-800 transition-colors"
                     >
                         Start Shopping

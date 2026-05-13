@@ -6,6 +6,7 @@ import type { Product } from "@/types/shopify/product";
 import { usePriceFormatter } from "@/hooks/usePriceFormatter";
 import { Heart, ShoppingCart } from "lucide-react";
 import { useState } from "react";
+import { getProductUrl } from "@/lib/routes";
 
 /* ─────────────────────────────────────────────
    PRODUCT CARD (fixed spacing + clean UI)
@@ -39,7 +40,7 @@ function ProductCard({
 
   return (
     <Link
-      href={`/collections/${collection}/${product.handle}`}
+      href={getProductUrl(product.handle, collection)}
       className="block"
       style={{
         animation: "fadeUp 0.4s ease both",
@@ -260,7 +261,7 @@ export default function ProductGrid({
             {/* BUTTON */}
             <div style={{ textAlign: "center" }}>
               <Link
-                href="/collections"
+                href="/silver-jewellery"
                 style={{
                   border: "1px solid #222",
                   padding: "0.7rem 2.8rem",

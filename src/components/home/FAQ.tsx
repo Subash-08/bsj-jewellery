@@ -15,7 +15,7 @@ const FAQS = [
   },
   {
     question: "Is the jewellery authentic?",
-    answer: "Yes, every piece of BSJ Jewellery is Hallmark certified. Our gold and diamond pieces come with a certificate of authenticity."
+    answer: "Yes, every piece of BSJ Jewellery is Hallmark certified. Our pure silver pieces come with a certificate of authenticity."
   },
   {
     question: "Are my payments safe?",

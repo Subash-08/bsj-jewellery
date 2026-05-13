@@ -21,11 +21,11 @@ const TRUST_BADGES = [
 ];
 
 const SHOP_LINKS = [
-  { label: "Rings", href: "/collections/ring" },
-  { label: "Chains", href: "/collections/chain" },
-  { label: "Bracelets", href: "/collections/bracelet" },
-  { label: "Pendants", href: "/collections/pendant" },
-  { label: "Anklets", href: "/collections/anklet" },
+  { label: "Rings", href: "/silver-jewellery/rings" },
+  { label: "Chains", href: "/silver-jewellery/chains" },
+  { label: "Bracelets", href: "/silver-jewellery/bracelets" },
+  { label: "Pendants", href: "/silver-jewellery/pendants" },
+  { label: "Anklets", href: "/silver-jewellery/anklets" },
 ];
 
 const CUSTOMER_CARE_LINKS = [
@@ -71,7 +71,7 @@ export default function Footer() {
               <Image src="/logo.png" alt="BSJ Logo" width={120} height={120} className="w-auto h-12 object-contain" />
             </Link>
             <p className="text-sm text-white/80 leading-relaxed max-w-sm">
-              Crafting timeless luxury and exquisite diamond, gold, and silver jewellery tailored to celebrate your life's most precious moments.
+              Crafting timeless luxury and exquisite pure silver jewellery tailored to celebrate your life's most precious moments.
             </p>
             <div className="flex items-center gap-4 mt-2">
               <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-amber-500 hover:border-amber-500 transition-colors">

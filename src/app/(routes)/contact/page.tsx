@@ -264,7 +264,7 @@ export default function ContactPage() {
                                 </span>
                             </summary>
                             <p className="mt-4 text-stone-600 leading-relaxed font-light">
-                                Yes, all our gold, diamond, and precious stone jewellery pieces come with proper certification from recognized gemological laboratories to guarantee authenticity and quality.
+                                Yes, all our pure silver and precious stone jewellery pieces come with proper certification from recognized laboratories to guarantee authenticity and quality.
                             </p>
                         </details>
 

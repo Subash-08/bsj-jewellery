@@ -15,7 +15,7 @@ export default function FinalCTA() {
           Explore our complete collection and find the perfect piece that speaks to your unique style.
         </p>
         <Link
-          href="/collections"
+          href="/silver-jewellery"
           className="inline-block bg-stone-900 text-white px-14 py-5 text-sm font-bold uppercase tracking-[0.2em] font-sans hover:bg-amber-600 transition-colors shadow-xl shadow-amber-600/10"
         >
           Shop Now

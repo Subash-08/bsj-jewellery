@@ -316,7 +316,7 @@ export default function OrderDetailsPage() {
 
                     {/* Reorder Button */}
                     <Link
-                        href="/collections"
+                        href="/silver-jewellery"
                         className="flex items-center justify-center gap-2 w-full px-5 py-3 bg-stone-900 text-white text-xs uppercase tracking-widest font-bold hover:bg-stone-800 transition-colors rounded-xl"
                     >
                         <RefreshCw size={14} />

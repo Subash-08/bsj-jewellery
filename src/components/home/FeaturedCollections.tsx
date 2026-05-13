@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Collection } from '@/types/shopify/collection';
 import { Section } from '@/components/layout/Section';
+import { getCollectionUrl } from '@/lib/routes';
 
 export default function FeaturedCollections({ collections }: { collections: Collection[] }) {
   if (!collections || collections.length < 3) return null;
@@ -18,7 +19,7 @@ export default function FeaturedCollections({ collections }: { collections: Coll
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8 h-auto md:h-[600px]">
           {/* Large Left Card */}
-          <Link href={`/collections/${featured[0]?.handle}`} className="relative group block overflow-hidden rounded-lg h-[400px] md:h-full">
+          <Link href={getCollectionUrl(featured[0]?.handle || "all")} className="relative group block overflow-hidden rounded-lg h-[400px] md:h-full">
             {featured[0]?.image?.url ? (
               <Image 
                 src={featured[0].image.url} 
@@ -41,7 +42,7 @@ export default function FeaturedCollections({ collections }: { collections: Coll
           {/* Right Stack */}
           <div className="flex flex-col gap-4 lg:gap-8 h-full">
             {featured.slice(1, 3).map((cat, idx) => (
-              <Link key={idx} href={`/collections/${cat.handle}`} className="relative group block overflow-hidden rounded-lg h-[300px] md:h-[calc(50%-1rem)] lg:h-[calc(50%-1.25rem)] flex-1">
+              <Link key={idx} href={getCollectionUrl(cat.handle)} className="relative group block overflow-hidden rounded-lg h-[300px] md:h-[calc(50%-1rem)] lg:h-[calc(50%-1.25rem)] flex-1">
                 {cat.image?.url ? (
                   <Image 
                     src={cat.image.url} 

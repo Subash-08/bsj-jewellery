@@ -10,7 +10,7 @@ import StyleGridClient from './StyleGridClient';
 const styles = [
   {
     title: "Casual Wear",
-    href: "/collections/casual-wear",
+    href: "/silver-jewellery/casual-wear",
     col: 1, row: 1, rowSpan: 1,
     mobileImg: "//www.giva.co/cdn/shop/files/1_16_1.webp?v=1759233026&width=1250",
     desktopImg: "//www.giva.co/cdn/shop/files/1_16_1.webp?v=1759233026&width=2000",
@@ -18,7 +18,7 @@ const styles = [
   },
   {
     title: "Traditional",
-    href: "/collections/traditional-wear",
+    href: "/silver-jewellery/traditional-wear",
     col: 1, row: 2, rowSpan: 1,
     mobileImg: "//www.giva.co/cdn/shop/files/2_15.webp?v=1759233027&width=1250",
     desktopImg: "//www.giva.co/cdn/shop/files/2_15.webp?v=1759233027&width=2000",
@@ -26,7 +26,7 @@ const styles = [
   },
   {
     title: "Party Wear",
-    href: "/collections/party-wear",
+    href: "/silver-jewellery/party-wear",
     col: 2, row: 1, rowSpan: 2,
     mobileImg: "//www.giva.co/cdn/shop/files/twinning_1.webp?v=1768476478&width=1250",
     desktopImg: "//www.giva.co/cdn/shop/files/partywear_d671d3cc-d553-4b17-a929-79f536708ee4.webp?v=1773727032&width=2000",
@@ -42,7 +42,7 @@ const styles = [
   },
   {
     title: "Minimalistic",
-    href: "/collections/minimalistic",
+    href: "/silver-jewellery/minimalistic",
     col: 3, row: 2, rowSpan: 1,
     mobileImg: "//www.giva.co/cdn/shop/files/7_3_1.webp?v=1759233026&width=1250",
     desktopImg: "//www.giva.co/cdn/shop/files/7_3_1.webp?v=1759233026&width=2000",
@@ -50,7 +50,7 @@ const styles = [
   },
   {
     title: "Twinning",
-    href: "/collections/twinning",
+    href: "/silver-jewellery/twinning",
     col: 4, row: 1, rowSpan: 2,
     mobileImg: "//www.giva.co/cdn/shop/files/6_5_c2b734c4-e915-466a-a9ea-7c374b11e607.webp?v=1759233026&width=1250",
     desktopImg: "//www.giva.co/cdn/shop/files/6_5_c2b734c4-e915-466a-a9ea-7c374b11e607.webp?v=1759233026&width=2000",
@@ -58,7 +58,7 @@ const styles = [
   },
   {
     title: "Traditional",
-    href: "/collections/wedding-picks",
+    href: "/silver-jewellery/wedding-picks",
     col: 5, row: 1, rowSpan: 1,
     mobileImg: "//www.giva.co/cdn/shop/files/4_10.webp?v=1759233026&width=1250",
     desktopImg: "//www.giva.co/cdn/shop/files/4_10.webp?v=1759233026&width=2000",
@@ -66,7 +66,7 @@ const styles = [
   },
   {
     title: "Date Nights",
-    href: "/collections/date-night",
+    href: "/silver-jewellery/date-night",
     col: 5, row: 2, rowSpan: 1,
     mobileImg: "//www.giva.co/cdn/shop/files/8_1_1_140a5f9a-79ae-46c8-91ec-801bb41bfef8.webp?v=1759233026&width=1250",
     desktopImg: "//www.giva.co/cdn/shop/files/8_1_1_140a5f9a-79ae-46c8-91ec-801bb41bfef8.webp?v=1759233026&width=2000",

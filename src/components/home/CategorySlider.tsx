@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Collection } from "@/types/shopify/collection";
 import { Sparkles, ArrowRight, Image as ImageIcon } from "lucide-react";
+import { getCollectionUrl } from "@/lib/routes";
 
 /* ─────────────────────────────────────────────────────────────────────
    Types
@@ -48,7 +49,7 @@ const DEFAULT_BANNERS: BannerData[] = [
     title: "Fine rings\nfor every occasion",
     subtitle: "Get 20% off your first purchase",
     cta: "Shop Now",
-    href: "/collections/rings",
+    href: "/silver-jewellery/rings",
   },
   {
     bg: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slilde3.avif?v=1773641440",
@@ -57,7 +58,7 @@ const DEFAULT_BANNERS: BannerData[] = [
     title: "Layered\nnecklaces",
     subtitle: "New arrivals — limited edition",
     cta: "Shop Now",
-    href: "/collections/necklaces",
+    href: "/silver-jewellery/necklaces",
   },
   {
     bg: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slilde3.avif?v=1773641440",
@@ -66,7 +67,7 @@ const DEFAULT_BANNERS: BannerData[] = [
     title: "Statement\nearrings",
     subtitle: "Handcrafted with natural stones",
     cta: "Shop Now",
-    href: "/collections/earrings",
+    href: "/silver-jewellery/earrings",
   },
 ];
 
@@ -86,7 +87,7 @@ const CategoryBubble = ({
   const image = collection.image?.url || "";
 
   return (
-    <Link href={`/collections/${collection.handle}`} className="block focus:outline-none">
+    <Link href={getCollectionUrl(collection.handle)} className="block focus:outline-none">
       <div
         className="relative flex flex-col items-center gap-4"
         style={{

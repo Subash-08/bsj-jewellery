@@ -50,8 +50,8 @@ const slides = [
   {
     id: 1,
     label: "NEW ARRIVALS",
-    title: "The Golden\nHour",
-    subtitle: "18KT gold plated essentials to elevate your everyday style.",
+    title: "The Silver\nLining",
+    subtitle: "Authentic 92.5 pure silver essentials to elevate your everyday style.",
     image: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide1.avif?v=1778489012",
     mobileImage: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide1.avif?v=1778489012",
     overlayFrom: "rgba(45, 18, 65, 0.75)",
@@ -326,7 +326,7 @@ const Hero = () => {
                 {/* CTA */}
                 <motion.div variants={ctaVariants}>
                   <Link
-                    href="/collections"
+                    href="/silver-jewellery"
                     className="inline-flex items-center justify-center bg-[#FACE7A] text-[#230532] font-montserrat font-bold text-[18px] rounded-[4px] px-[20px] py-[10px] transition-transform duration-300 hover:scale-105 shadow-md"
                   >
                     Explore Collection

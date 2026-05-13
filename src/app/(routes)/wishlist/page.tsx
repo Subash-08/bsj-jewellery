@@ -81,7 +81,7 @@ export default function WishlistPage() {
                     </p>
                     <div className="flex justify-center pt-4">
                         <Link
-                            href="/collections/all"
+                            href="/silver-jewellery"
                             className="inline-flex items-center justify-center px-8 py-3 bg-[#230532] text-white font-jakarta text-[15px] font-semibold rounded hover:opacity-90 transition-opacity"
                         >
                             Explore Collection
