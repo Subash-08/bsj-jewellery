@@ -200,7 +200,6 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                     className="flex flex-col items-center cursor-pointer group relative"
                                     onClick={() => router.push('/cart')}
                                     onMouseEnter={() => setIsCartHovered(true)}
-                                    onMouseLeave={() => setIsCartHovered(false)}
                                 >
                                     <div className="relative">
                                         <ShoppingBag

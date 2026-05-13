@@ -80,7 +80,7 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
     ------------------------------------------*/
     if (!images.length) {
         return (
-            <div className="aspect-[4/5] max-h-[550px] w-full bg-[#FAF8F5] rounded-xl flex items-center justify-center shadow-sm border border-stone-100">
+            <div className="aspect-square w-full bg-[#FAF8F5] rounded-xl flex items-center justify-center shadow-sm border border-stone-100">
                 <Gem size={48} className="text-stone-300" strokeWidth={1} />
             </div>
         );
@@ -127,14 +127,14 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
                         </>
                     )}
 
-                    <div className="relative max-h-[550px] max-w-[90vw]">
+                    <div className="relative aspect-square w-full max-w-[85vh] max-h-[85vh]">
                         <Image
                             src={selectedImage.url}
                             alt={selectedImage.altText || "Product Image"}
-                            width={selectedImage.width || 1200}
-                            height={selectedImage.height || 1600}
-                            className="object-contain max-h-[550px]"
+                            fill
+                            className="object-contain"
                             priority
+                            sizes="(max-width: 1024px) 90vw, 800px"
                         />
                     </div>
 
@@ -199,7 +199,7 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
                 {/* Main image */}
                 <div
                     ref={mainImageRef}
-                    className="relative flex-1 aspect-[4/5] max-h-[500px] bg-[#FAF8F5] rounded-md overflow-hidden shadow-sm border border-stone-100 group cursor-zoom-in"
+                    className="relative w-full lg:w-auto flex-1 aspect-square bg-[#FAF8F5] rounded-md overflow-hidden shadow-sm border border-stone-100 group cursor-zoom-in"
                     onClick={() => setIsFullscreen(true)}
                     onMouseEnter={() => setIsZoomed(true)}
                     onMouseLeave={() => setIsZoomed(false)}

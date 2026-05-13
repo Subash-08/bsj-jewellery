@@ -1,9 +1,13 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Playfair_Display, Montserrat } from 'next/font/google';
+
+const playfair = Playfair_Display({ subsets: ['latin'], weight: ['500', '700'] });
+const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '500', '700'], style: ['normal', 'italic'] });
 
 // ── Inline SVG icons (no external deps) ──────────────────────────────────────
 const CheckCircle = ({ size = 16 }: { size?: number }) => (
@@ -35,7 +39,10 @@ const slides = [
     label: "TRENDING NOW",
     title: "Shine in Every\nMoment",
     subtitle: "Discover lightweight, stylish silver jewellery crafted for your everyday shine.",
-    image: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide1.avif?v=1773641439",
+    // Desktop Image (16:9 - 1920x1080)
+    image: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide2.avif?v=1778489159",
+    // Mobile Image (4:5 - 1080x1350)
+    mobileImage: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide2.avif?v=1778489159",
     // Deep violet/purple tinted overlay — matches screenshot exactly
     overlayFrom: "rgba(58, 20, 80, 0.72)",
     overlayTo: "rgba(30, 8, 50, 0.40)",
@@ -45,7 +52,8 @@ const slides = [
     label: "NEW ARRIVALS",
     title: "The Golden\nHour",
     subtitle: "18KT gold plated essentials to elevate your everyday style.",
-    image: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slilde3.avif?v=1773641440",
+    image: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide1.avif?v=1778489012",
+    mobileImage: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide1.avif?v=1778489012",
     overlayFrom: "rgba(45, 18, 65, 0.75)",
     overlayTo: "rgba(25, 8, 45, 0.38)",
   },
@@ -55,6 +63,7 @@ const slides = [
     title: "Timeless\nBonds",
     subtitle: "Gifts that last a lifetime, crafted with pure love.",
     image: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide2.avif?v=1777792796",
+    mobileImage: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide2.avif?v=1777792796",
     overlayFrom: "rgba(50, 15, 75, 0.72)",
     overlayTo: "rgba(28, 6, 48, 0.38)",
   },
@@ -149,19 +158,6 @@ const Hero = () => {
     setImagesLoaded((prev) => ({ ...prev, [idx]: true }));
   };
 
-  // Parallax mouse tracking
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-  const springX = useSpring(rawX, { stiffness: 40, damping: 25 });
-  const springY = useSpring(rawY, { stiffness: 40, damping: 25 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * -18;
-    const y = (e.clientY / window.innerHeight - 0.5) * -12;
-    rawX.set(x);
-    rawY.set(y);
-  };
-
   const goToSlide = (idx: number, dir?: number) => {
     setDirection(dir ?? (idx > currentSlide ? 1 : -1));
     setCurrentSlide(idx);
@@ -183,33 +179,10 @@ const Hero = () => {
 
   return (
     <>
-      {/* ── Google Font import (Playfair Display + Montserrat) ── */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Montserrat:ital,wght@0,400;0,500;0,700;1,400&display=swap');
-        .hero-title { font-family: 'Playfair Display', serif; }
-        .hero-subtitle  { font-family: 'Montserrat', sans-serif; }
-
-        /* Nav arrow buttons */
-        .nav-arrow {
-          backdrop-filter: blur(8px);
-          transition: background 0.2s, transform 0.2s;
-        }
-        .nav-arrow:hover {
-          background: rgba(255,255,255,0.25);
-          transform: scale(1.08);
-        }
-      `}</style>
-
       <section
-        className="relative w-full overflow-hidden hero-subtitle"
-        style={{ height: "82vh", minHeight: 580, maxHeight: 820 }}
-        onMouseMove={handleMouseMove}
+        className={`relative w-full overflow-hidden aspect-[4/5] md:aspect-[16/9] lg:aspect-[21/9] min-h-[480px] sm:min-h-[540px] md:min-h-0 ${montserrat.className}`}
         onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => {
-          setIsPaused(false);
-          rawX.set(0);
-          rawY.set(0);
-        }}
+        onMouseLeave={() => setIsPaused(false)}
       >
 
         {/* ── Background image layer with loading animation ── */}
@@ -222,15 +195,19 @@ const Hero = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 1.2 }}
           >
-            <Image
-              src={slide.image}
-              alt={slide.title}
-              fill
-              priority={currentSlide === 0}
-              className={`object-cover object-center transition-opacity duration-1000 ${imagesLoaded[currentSlide] ? 'opacity-100' : 'opacity-0'}`}
-              sizes="100vw"
-              onLoad={() => handleImageLoad(currentSlide)}
-            />
+            {/* ── Responsive Image ── */}
+            <picture>
+              <source media="(max-width: 767px)" srcSet={slide.mobileImage || slide.image} />
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                priority={currentSlide === 0}
+                className={`object-cover object-center transition-opacity duration-1000 ${imagesLoaded[currentSlide] ? 'opacity-100' : 'opacity-0'}`}
+                sizes="100vw"
+                onLoad={() => handleImageLoad(currentSlide)}
+              />
+            </picture>
           </motion.div>
         </AnimatePresence>
 
@@ -320,12 +297,7 @@ const Hero = () => {
 
                 {/* Heading — word-by-word stagger */}
                 <motion.h1
-                  className="hero-title leading-tight mb-[12px]"
-                  style={{
-                    color: "#FFFFFF",
-                    fontSize: "clamp(3rem, 5vw, 56px)",
-                    fontWeight: 700,
-                  }}
+                  className={`${playfair.className} leading-[1.05] mb-[12px] text-[42px] sm:text-[52px] lg:text-[64px] font-bold text-white`}
                   variants={headingVariants}
                 >
                   {slide.title.split("\n").map((line, li) => (
@@ -346,13 +318,7 @@ const Hero = () => {
                 {/* Subtitle */}
                 <motion.p
                   variants={subtitleVariants}
-                  className="font-montserrat mb-[24px]"
-                  style={{
-                    color: "#B6B6B6",
-                    fontSize: "clamp(1rem, 2vw, 22px)",
-                    fontWeight: 500,
-                    maxWidth: "502px"
-                  }}
+                  className="mb-[24px] text-[#B6B6B6] text-[16px] sm:text-[18px] lg:text-[22px] font-medium max-w-[502px]"
                 >
                   {slide.subtitle}
                 </motion.p>
@@ -360,7 +326,7 @@ const Hero = () => {
                 {/* CTA */}
                 <motion.div variants={ctaVariants}>
                   <Link
-                    href="/shop"
+                    href="/collections"
                     className="inline-flex items-center justify-center bg-[#FACE7A] text-[#230532] font-montserrat font-bold text-[18px] rounded-[4px] px-[20px] py-[10px] transition-transform duration-300 hover:scale-105 shadow-md"
                   >
                     Explore Collection
@@ -372,7 +338,7 @@ const Hero = () => {
         </div>
 
         {/* ── Trust badges — bottom left ── */}
-        <div className={`absolute bottom-[60px] md:bottom-[80px] left-0 right-0 z-20 transition-opacity duration-1000 ${imagesLoaded[currentSlide] ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`absolute bottom-6 md:bottom-20 left-0 right-0 z-20 transition-opacity duration-1000 ${imagesLoaded[currentSlide] ? 'opacity-100' : 'opacity-0'}`}>
           <div className="max-w-7xl mx-auto px-6 md:px-[62px]">
             <motion.div
               variants={badgeContainerVariants}
@@ -402,18 +368,20 @@ const Hero = () => {
         <button
           onClick={prev}
           aria-label="Previous slide"
-          className="nav-arrow absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-30
-                     w-10 h-10 rounded-full flex items-center justify-center
-                     text-white bg-white/10 border border-white/20"
+          className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-30
+                     w-12 h-12 md:w-10 md:h-10 rounded-full flex items-center justify-center
+                     text-white bg-white/10 border border-white/20
+                     backdrop-blur-md transition-all duration-200 hover:bg-white/25 hover:scale-110 focus:outline-none"
         >
           <ChevronLeft />
         </button>
         <button
           onClick={next}
           aria-label="Next slide"
-          className="nav-arrow absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-30
-                     w-10 h-10 rounded-full flex items-center justify-center
-                     text-white bg-white/10 border border-white/20"
+          className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-30
+                     w-12 h-12 md:w-10 md:h-10 rounded-full flex items-center justify-center
+                     text-white bg-white/10 border border-white/20
+                     backdrop-blur-md transition-all duration-200 hover:bg-white/25 hover:scale-110 focus:outline-none"
         >
           <ChevronRight />
         </button>

@@ -200,8 +200,8 @@ export default function SplitProductShowcase({
 
 @media (min-width: 1024px) {
   .sps-grid {
-    grid-template-columns: 60% 40%; /* Increase left to 60%, decrease right image to 40% */
-    min-height: 680px; /* Decrease this value to reduce the minimum height */
+    grid-template-columns: 1.6fr 1fr; /* Adjusted to give the right image more width & height */
+    min-height: 680px;
   }
 }
 
@@ -218,7 +218,7 @@ export default function SplitProductShowcase({
         }
 
         @media (min-width: 1024px) {
-          .sps-left { padding: 4rem 3rem 4rem 4rem; }
+          .sps-left { padding: 4rem 3rem 4rem 8vw; } /* Increased left padding */
         }
 
         /* ── Header ── */
@@ -470,18 +470,21 @@ export default function SplitProductShowcase({
 
         /* ── Right image panel ── */
         .sps-right {
-          position: relative;
-          min-height: 360px;
-          order: -1; /* image first on mobile */
+          display: none; /* Hidden on mobile and tablet */
         }
 
         @media (min-width: 1024px) {
-          .sps-right { order: 0; min-height: unset; }
+          .sps-right { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+          }
         }
 
         .sps-img-frame {
-          position: absolute;
-          inset: 0;
+          position: relative;
+          width: 100%;
+          aspect-ratio: 2 / 3;
           overflow: hidden;
         }
 

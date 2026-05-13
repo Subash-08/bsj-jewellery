@@ -39,10 +39,12 @@ function BestSellerCard({ product }: { product: Product }) {
         {/* Heart Icon */}
         <button
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(product); }}
-          className="absolute top-3 right-3 z-10 focus:outline-none"
+          className={`absolute top-[8px] right-[8px] z-10 w-[28px] h-[28px] rounded-full border-none flex items-center justify-center cursor-pointer backdrop-blur-[4px] shadow-[0_1px_4px_rgba(0,0,0,0.1)] transition-all duration-200 hover:bg-white hover:scale-110 focus:outline-none ${
+            wish ? "bg-[#fff4f4]" : "bg-[rgba(255,255,255,0.88)]"
+          }`}
           aria-label="Wishlist"
         >
-          <Heart size={20} strokeWidth={1.5} className={`transition-colors ${wish ? "fill-red-500 text-red-500" : "text-white/80 hover:text-black"}`} />
+          <Heart size={13} className={wish ? "fill-rose-500 text-rose-500" : "text-stone-400"} />
         </button>
 
         {/* Quick View */}

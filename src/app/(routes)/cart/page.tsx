@@ -61,7 +61,7 @@ export default function CartPage() {
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
                         <Link
-                            href="/shop"
+                            href="/collections"
                             className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-[#230532] text-white font-jakarta text-[15px] font-semibold rounded hover:opacity-90 transition-opacity"
                         >
                             <ShoppingBag size={18} />
@@ -292,7 +292,7 @@ export default function CartPage() {
 
                             {/* Continue shopping */}
                             <Link
-                                href="/shop"
+                                href="/collections"
                                 className="block w-full py-3 border border-[#230532] text-[#230532] font-jakarta text-[14px] uppercase tracking-widest font-bold text-center rounded hover:bg-stone-50 transition-colors"
                             >
                                 Continue Shopping

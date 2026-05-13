@@ -10,6 +10,7 @@ import {
 import { cn } from '@/lib/utils';
 import { usePriceFormatter } from '@/hooks/usePriceFormatter';
 import { WishlistButton } from '@/components/ui/WishlistButton';
+import { useWishlist } from '@/hooks/useWishlist';
 import ProductGallery from './ProductGallery';
 import VariantSelector from './VariantSelector';
 import QuantitySelector from './QuantitySelector';
@@ -87,6 +88,7 @@ export default function ProductPageClient({
     );
     const [quantity, setQuantity] = useState(1);
     const addToCartRef = useRef<HTMLDivElement>(null);
+    const { toggleWishlist, isInWishlist } = useWishlist();
 
     const { format } = usePriceFormatter(product.priceRange.minVariantPrice.currencyCode);
 
@@ -151,7 +153,7 @@ export default function ProductPageClient({
     const shortTitle = breadcrumb.shortTitle || product.title.replace(/\s*\|\s*BSJ Jewellery/i, '').slice(0, 60);
 
     return (
-        <div className="bg-[#FAF8F5]">
+        <div className="bg-[#ffffff]">
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
                 .font-montserrat { font-family: 'Montserrat', sans-serif; }
@@ -473,35 +475,53 @@ export default function ProductPageClient({
                     <h2 className="font-serif text-xl font-semibold text-stone-900 mb-8 text-center">You May Also Like</h2>
                     {relatedProducts.length > 0 ? (
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                            {relatedProducts.map((rp) => (
-                                <Link
-                                    key={rp.id}
-                                    href={`/products/${rp.handle}`}
-                                    className="group bg-white border border-stone-100 rounded-sm overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-                                >
-                                    <div className="relative aspect-[3/4] bg-stone-50">
+                            {relatedProducts.map((rp) => {
+                                const wish = isInWishlist(rp.id);
+                                return (
+                                <Link key={rp.id} href={`/products/${rp.handle}`} className="group flex flex-col relative block w-full">
+                                    <div className="relative aspect-square overflow-hidden bg-[#f1eeea]">
                                         {rp.images[0] ? (
-                                            <Image
-                                                src={rp.images[0].url}
-                                                alt={rp.images[0].altText || rp.title}
-                                                fill
-                                                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                                sizes="(max-width: 768px) 50vw, 25vw"
-                                            />
+                                        <Image
+                                            src={rp.images[0].url}
+                                            alt={rp.images[0].altText || rp.title}
+                                            fill
+                                            className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                                            sizes="(max-width: 768px) 50vw, 25vw"
+                                        />
                                         ) : (
                                             <div className="flex items-center justify-center h-full text-stone-300 text-xs">No Image</div>
                                         )}
+
+                                        {/* Heart Icon */}
+                                        <button
+                                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(rp); }}
+                                            className={`absolute top-[8px] right-[8px] z-10 w-[28px] h-[28px] rounded-full border-none flex items-center justify-center cursor-pointer backdrop-blur-[4px] shadow-[0_1px_4px_rgba(0,0,0,0.1)] transition-all duration-200 hover:bg-white hover:scale-110 focus:outline-none ${
+                                                wish ? "bg-[#fff4f4]" : "bg-[rgba(255,255,255,0.88)]"
+                                            }`}
+                                            aria-label="Wishlist"
+                                        >
+                                            <Heart size={13} className={wish ? "fill-rose-500 text-rose-500" : "text-stone-400"} />
+                                        </button>
+
+                                        {/* Quick View */}
+                                        <div className="absolute bottom-0 right-0 px-[10px] py-[4px] bg-[#ffffff66] backdrop-blur-sm rounded-tl-[24px] opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center cursor-pointer hover:bg-[#ffffff99]"
+                                            onClick={(e) => e.preventDefault()}>
+                                            <span className="text-[14px] font-medium font-sans text-white leading-normal">Quick View</span>
+                                        </div>
                                     </div>
-                                    <div className="p-3">
-                                        <h3 className="text-sm font-semibold text-stone-900 line-clamp-1 group-hover:text-amber-700 transition-colors">
-                                            {rp.title}
-                                        </h3>
-                                        <p className="text-sm font-serif font-bold text-amber-700 mt-1">
-                                            {format(rp.priceRange.minVariantPrice.amount)}
-                                        </p>
+
+                                    <div className="flex flex-col gap-[6px] pt-[16px]">
+                                        <div className="flex flex-col">
+                                        <h3 className="text-[14px] text-[#1a1a1a] font-medium truncate font-sans leading-[22px]">{rp.title}</h3>
+                                        <p className="text-[12px] text-[#777777] font-medium font-sans leading-[22px]">22K Gold • BIS Hallmarked</p>
+                                        </div>
+                                        <div className="flex flex-col">
+                                        <p className="text-[18px] font-bold text-[#230532] font-sans leading-[22px]">{format(rp.priceRange.minVariantPrice.amount)}</p>
+                                        </div>
                                     </div>
                                 </Link>
-                            ))}
+                                );
+                            })}
                         </div>
                     ) : (
                         <div className="text-center py-8">

@@ -119,7 +119,7 @@ export default function CartDrawer({ isOpen, onClose, onCartClick }: CartDrawerP
                                 </p>
                             </div>
                             <Link
-                                href="/shop"
+                                href="/collections"
                                 onClick={onClose}
                                 className="px-8 py-3 bg-[#230532] text-white font-jakarta text-[13px] uppercase tracking-[0.15em] font-semibold hover:opacity-90 transition-opacity rounded-[4px]"
                             >

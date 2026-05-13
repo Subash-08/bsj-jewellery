@@ -21,9 +21,9 @@ export default function ShopByGender({ collections }: { collections: Collection[
   };
 
   const genders = [
-    getGenderData("Women", "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=800"),
-    getGenderData("Men", "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=800"),
-    getGenderData("Kids", "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80&w=800")
+    getGenderData("Women", "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/gender-women.png?v=1778560943"),
+    getGenderData("Men", "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/gender-men.png?v=1778560873"),
+    getGenderData("Kids", "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/gender-kids.png?v=1778560908")
   ];
 
   return (
