@@ -76,7 +76,7 @@ export default async function HomePage() {
           title="Celebration Edit"
           description="Life is one big celebration. Dance, dazzle and enjoy with the finest festive jewellery designs."
           products={products.slice(0, 6)}
-          imageSrc="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=800"
+          imageSrc="https://cdn.shopify.com/s/files/1/0704/8554/0995/files/ChatGPT_Image_May_14_2026_12_43_53_PM.webp?v=1778747781"
         />
       </Suspense>
 

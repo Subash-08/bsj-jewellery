@@ -10,8 +10,8 @@ const playfair = Playfair_Display({ subsets: ['latin'], weight: ['500', '700'] }
 const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '500', '700'], style: ['normal', 'italic'] });
 
 // ── Inline SVG icons (no external deps) ──────────────────────────────────────
-const CheckCircle = ({ size = 16 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+const CheckCircle = ({ className, size }: { className?: string; size?: number }) => (
+  <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none"
     stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10" />
     <path d="m9 12 2 2 4-4" />
@@ -40,9 +40,9 @@ const slides = [
     title: "Shine in Every\nMoment",
     subtitle: "Discover lightweight, stylish silver jewellery crafted for your everyday shine.",
     // Desktop Image (16:9 - 1920x1080)
-    image: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide2.avif?v=1778489159",
+    image: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/hero-slide1.jpg?v=1778743993",
     // Mobile Image (4:5 - 1080x1350)
-    mobileImage: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide2.avif?v=1778489159",
+    mobileImage: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/WhatsApp_Image_2026-05-14_at_1.56.07_PM.jpg?v=1778747267",
     // Deep violet/purple tinted overlay — matches screenshot exactly
     overlayFrom: "rgba(58, 20, 80, 0.72)",
     overlayTo: "rgba(30, 8, 50, 0.40)",
@@ -52,8 +52,8 @@ const slides = [
     label: "NEW ARRIVALS",
     title: "The Silver\nLining",
     subtitle: "Authentic 92.5 pure silver essentials to elevate your everyday style.",
-    image: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide1.avif?v=1778489012",
-    mobileImage: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide1.avif?v=1778489012",
+    image: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/hero-slide2-_webp.webp?v=1778744185",
+    mobileImage: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/WhatsApp_Image_2026-05-14_at_1.56.07_PM_2.jpg?v=1778747267",
     overlayFrom: "rgba(45, 18, 65, 0.75)",
     overlayTo: "rgba(25, 8, 45, 0.38)",
   },
@@ -62,8 +62,8 @@ const slides = [
     label: "GIFTING",
     title: "Timeless\nBonds",
     subtitle: "Gifts that last a lifetime, crafted with pure love.",
-    image: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide2.avif?v=1777792796",
-    mobileImage: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/slide2.avif?v=1777792796",
+    image: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/hero-slide3-webp.webp?v=1778744246",
+    mobileImage: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/WhatsApp_Image_2026-05-14_at_1.56.07_PM_1.jpg?v=1778747266",
     overlayFrom: "rgba(50, 15, 75, 0.72)",
     overlayTo: "rgba(28, 6, 48, 0.38)",
   },
@@ -180,7 +180,7 @@ const Hero = () => {
   return (
     <>
       <section
-        className={`relative w-full overflow-hidden aspect-[4/5] md:aspect-[16/9] lg:aspect-[21/9] min-h-[480px] sm:min-h-[540px] md:min-h-0 ${montserrat.className}`}
+        className={`relative w-full overflow-hidden aspect-[4/5] md:aspect-[16/9] lg:aspect-[21/9] min-h-[680px] sm:min-h-[540px] md:min-h-0 ${montserrat.className}`}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
@@ -213,8 +213,8 @@ const Hero = () => {
 
         {/* ── Skeleton Overlay (visible when NOT loaded) ── */}
         {!imagesLoaded[currentSlide] && (
-          <div className="absolute inset-0 z-30 flex flex-col justify-center pointer-events-none">
-            <div className="w-full max-w-7xl mx-auto px-6 md:px-[62px]">
+          <div className="absolute inset-0 z-30 flex flex-col pointer-events-none py-6 md:py-20">
+            <div className="flex-1 flex flex-col justify-center w-full max-w-7xl mx-auto px-6 md:px-[62px]">
               <div className="max-w-lg flex flex-col items-start">
                 {/* Label skeleton */}
                 <div className="h-[18px] w-[140px] bg-white/20 rounded animate-pulse mb-3" />
@@ -228,12 +228,12 @@ const Hero = () => {
               </div>
             </div>
             {/* Trust Badges skeleton */}
-            <div className="absolute bottom-[60px] md:bottom-[80px] left-0 right-0">
-              <div className="max-w-7xl mx-auto px-6 md:px-[62px] flex flex-wrap gap-x-[30px] md:gap-x-[44px] gap-y-4">
+            <div className="w-full max-w-7xl mx-auto px-6 md:px-[62px] mt-8">
+              <div className="flex flex-wrap gap-x-[16px] sm:gap-x-[30px] md:gap-x-[44px] gap-y-4">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="flex items-center gap-[8px]">
-                    <div className="w-[26px] h-[26px] rounded-full bg-white/20 animate-pulse" />
-                    <div className="w-[110px] h-[16px] rounded bg-white/20 animate-pulse" />
+                  <div key={i} className="flex items-center gap-[6px] md:gap-[8px]">
+                    <div className="w-[20px] h-[20px] md:w-[26px] md:h-[26px] rounded-full bg-white/20 animate-pulse flex-shrink-0" />
+                    <div className="w-[90px] md:w-[110px] h-[14px] md:h-[16px] rounded bg-white/20 animate-pulse" />
                   </div>
                 ))}
               </div>
@@ -269,10 +269,9 @@ const Hero = () => {
         <div className="absolute inset-x-0 bottom-0 h-40 z-10"
           style={{ background: "linear-gradient(to top, rgba(10,2,20,0.65) 0%, transparent 100%)" }} />
 
-        {/* ── Main content ── */}
-        <div className={`absolute inset-0 z-20 flex flex-col justify-center transition-opacity duration-1000 ${imagesLoaded[currentSlide] ? 'opacity-100' : 'opacity-0'}`}>
-          <div className="w-full max-w-7xl mx-auto px-6 md:px-[62px]">
-
+        {/* ── Main content and Trust Badges ── */}
+        <div className={`absolute inset-0 z-20 flex flex-col py-6 md:py-20 transition-opacity duration-1000 ${imagesLoaded[currentSlide] ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="flex-1 flex flex-col justify-center w-full max-w-7xl mx-auto px-6 md:px-[62px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`content-${currentSlide}`}
@@ -335,27 +334,25 @@ const Hero = () => {
               </motion.div>
             </AnimatePresence>
           </div>
-        </div>
 
-        {/* ── Trust badges — bottom left ── */}
-        <div className={`absolute bottom-6 md:bottom-20 left-0 right-0 z-20 transition-opacity duration-1000 ${imagesLoaded[currentSlide] ? 'opacity-100' : 'opacity-0'}`}>
-          <div className="max-w-7xl mx-auto px-6 md:px-[62px]">
+          {/* ── Trust badges — bottom left ── */}
+          <div className="w-full max-w-7xl mx-auto px-6 md:px-[62px] mt-8">
             <motion.div
               variants={badgeContainerVariants}
               initial="hidden"
               animate="visible"
-              className="flex flex-wrap items-center gap-x-[30px] md:gap-x-[44px] gap-y-4"
+              className="flex flex-wrap items-center gap-x-[16px] sm:gap-x-[30px] md:gap-x-[44px] gap-y-3 md:gap-y-4"
             >
               {TRUST_BADGES.map((badge, i) => (
                 <motion.div
                   key={i}
                   variants={badgeVariant}
-                  className="flex items-center gap-[8px]"
+                  className="flex items-center gap-[6px] md:gap-[8px]"
                 >
-                  <span className="text-white">
-                    <CheckCircle size={26} />
+                  <span className="text-white flex-shrink-0 flex items-center justify-center">
+                    <CheckCircle className="w-[20px] h-[20px] md:w-[26px] md:h-[26px]" />
                   </span>
-                  <span className="font-montserrat font-medium text-[16px] text-white whitespace-nowrap">
+                  <span className="font-montserrat font-medium text-[13px] sm:text-[14px] md:text-[16px] text-white whitespace-nowrap">
                     {badge}
                   </span>
                 </motion.div>
@@ -369,7 +366,7 @@ const Hero = () => {
           onClick={prev}
           aria-label="Previous slide"
           className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-30
-                     w-12 h-12 md:w-10 md:h-10 rounded-full flex items-center justify-center
+                     w-10 h-10 rounded-full hidden md:flex items-center justify-center
                      text-white bg-white/10 border border-white/20
                      backdrop-blur-md transition-all duration-200 hover:bg-white/25 hover:scale-110 focus:outline-none"
         >
@@ -379,7 +376,7 @@ const Hero = () => {
           onClick={next}
           aria-label="Next slide"
           className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-30
-                     w-12 h-12 md:w-10 md:h-10 rounded-full flex items-center justify-center
+                     w-10 h-10 rounded-full hidden md:flex items-center justify-center
                      text-white bg-white/10 border border-white/20
                      backdrop-blur-md transition-all duration-200 hover:bg-white/25 hover:scale-110 focus:outline-none"
         >
