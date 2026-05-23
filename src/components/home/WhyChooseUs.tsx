@@ -28,6 +28,11 @@ const FEATURES = [
 export default function WhyChooseUs() {
   return (
     <Section className="bg-[#FAF8F5]">
+      <div className="flex justify-center items-center gap-3 md:gap-4 mb-12">
+        <span className="text-[#230532] text-[23px] leading-none">✦</span>
+        <h2 className="text-[#230532] text-[36px] font-playfair font-bold mt-[-1px]">Why Choose Us</h2>
+        <span className="text-[#230532] text-[23px] leading-none">✦</span>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
         {FEATURES.map((feature, idx) => {
           const Icon = feature.icon;

@@ -65,11 +65,11 @@ export default function HeaderSearch({ variant = 'desktop', onClose }: HeaderSea
                 handle = getShopifyHandle(categorySlug);
             }
         } else if (pathname?.startsWith('/collections/') && pathname !== '/collections/all') {
-             // Fallback for old routes
-             const parts = pathname.split('/');
-             if (parts.length >= 3) {
-                 handle = parts[2];
-             }
+            // Fallback for old routes
+            const parts = pathname.split('/');
+            if (parts.length >= 3) {
+                handle = parts[2];
+            }
         }
 
         const targetUrl = getSearchUrl(trimmed, handle);
@@ -167,7 +167,7 @@ export default function HeaderSearch({ variant = 'desktop', onClose }: HeaderSea
                         onKeyDown={handleKeyDown}
                         onFocus={handleFocus}
                         placeholder="Search jewellery..."
-                        className="flex-1 bg-transparent text-sm px-3 outline-none text-white placeholder:text-gray-400"
+                        className="flex-1 bg-transparent text-sm px-3 outline-none text-black placeholder:text-gray-400"
                         maxLength={100}
                         autoComplete="off"
                         autoCorrect="off"

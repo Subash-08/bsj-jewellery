@@ -1,12 +1,14 @@
 import { getCollection, getCollectionProducts } from '@/lib/shopify/client';
-import { generateSeo } from '@/lib/seo/metadata';
 import FilterSidebar from '@/components/filters/FilterSidebar';
 import InfiniteProductGrid from '@/components/collection/InfiniteProductGrid';
 import { ActiveFilterBar } from '@/components/filters/ActiveFilterBar';
 import { SortDropdown } from '@/components/filters/SortDropdown';
 import type { Metadata } from 'next';
-import { getShopifyHandle, getProductUrl } from '@/lib/routes';
+import { getShopifyHandle, getProductUrl } from '@/lib/routes/index';
 import { Suspense } from 'react';
+import { COLLECTIONS, COLLECTION_FAQS, SITE } from '@/lib/seo.config';
+import { SchemaScript } from '@/components/seo/SchemaScript';
+import { collectionPageSchema, faqSchema, breadcrumbSchema } from '@/lib/schema';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,18 +17,40 @@ type Props = {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
+type CollectionKey = keyof typeof COLLECTIONS;
+
+function getSeoConfig(category: string) {
+    const key = category as CollectionKey;
+    return COLLECTIONS[key] ?? null;
+}
+
 export async function generateMetadata(props: Props): Promise<Metadata> {
     const params = await props.params;
+    const seo = getSeoConfig(params.category);
+    if (seo) {
+        return {
+            title: seo.metaTitle,
+            description: seo.metaDescription,
+            keywords: [...seo.keywords],
+            alternates: { canonical: `${SITE.domain}/${seo.handle}` },
+            openGraph: {
+                title: seo.metaTitle,
+                description: seo.metaDescription,
+                url: `${SITE.domain}/${seo.handle}`,
+                type: 'website',
+            },
+        };
+    }
     try {
         const shopifyHandle = getShopifyHandle(params.category);
         const collection = await getCollection(shopifyHandle);
         if (!collection) return {};
-        return generateSeo({
-            title: `${collection.seo.title || collection.title} | BSJ Jewellers`,
-            description: collection.seo.description || collection.description,
-            image: collection.image?.url,
-        });
-    } catch (e) {
+        return {
+            title: `${collection.seo?.title || collection.title} | Bakya Silver Jewellery`,
+            description: collection.seo?.description || collection.description,
+            alternates: { canonical: `${SITE.domain}/silver-jewellery/${params.category}` },
+        };
+    } catch {
         return {};
     }
 }
@@ -84,14 +108,35 @@ export default async function CollectionPage(props: Props) {
     const productCount = collectionData?.products.length || 0;
     const hasMore = collectionData?.pageInfo.hasNextPage;
 
-    // Format collection title nicely
-    const collectionTitle = shopifyHandle
+    const seoConfig = getSeoConfig(params.category);
+    const collectionTitle = seoConfig?.title ?? shopifyHandle
         .split('-')
         .map(w => w.charAt(0).toUpperCase() + w.slice(1))
         .join(' ');
+    const h1Text = seoConfig?.h1 ?? collectionTitle;
+    const faqs = seoConfig ? COLLECTION_FAQS[params.category as keyof typeof COLLECTION_FAQS] ?? [] : [];
+    const pageUrl = `${SITE.domain}/silver-jewellery/${params.category}`;
+
+    const schemaProducts = (collectionData?.products ?? []).slice(0, 20).map((p: { title: string; handle: string; featuredImage?: { url: string }; priceRange?: { minVariantPrice?: { amount?: string } } }) => ({
+        name: p.title,
+        url: `${SITE.domain}${getProductUrl(p.handle, shopifyHandle)}`,
+        image: p.featuredImage?.url ?? '',
+        price: p.priceRange?.minVariantPrice?.amount ?? '0',
+    }));
 
     return (
         <>
+            {seoConfig && (
+                <SchemaScript schema={[
+                    collectionPageSchema({ name: h1Text, description: seoConfig.metaDescription, url: pageUrl, products: schemaProducts }),
+                    faqSchema(faqs),
+                    breadcrumbSchema([
+                        { name: 'Home', url: '/' },
+                        { name: 'Silver Jewellery', url: '/silver-jewellery' },
+                        { name: seoConfig.title, url: `/silver-jewellery/${params.category}` },
+                    ]),
+                ]} />
+            )}
             <div
                 className="collection-page min-h-screen pb-24"
                 style={{ background: '#FAF8F5', paddingTop: '1rem' }}
@@ -111,19 +156,25 @@ export default async function CollectionPage(props: Props) {
                             borderBottom: '1px solid #EDE8E0',
                         }}
                     >
-                        {/* Breadcrumb hint */}
-                        <p
-                            style={{
-                                fontFamily: "'DM Sans', sans-serif",
-                                fontSize: '0.68rem',
-                                letterSpacing: '0.14em',
-                                textTransform: 'uppercase',
-                                color: '#B0A090',
-                                marginBottom: '0.4rem',
-                            }}
-                        >
-                            Collections
-                        </p>
+                        {/* Breadcrumb */}
+                        <nav aria-label="Breadcrumb">
+                            <p
+                                style={{
+                                    fontFamily: "'DM Sans', sans-serif",
+                                    fontSize: '0.68rem',
+                                    letterSpacing: '0.14em',
+                                    textTransform: 'uppercase',
+                                    color: '#B0A090',
+                                    marginBottom: '0.4rem',
+                                }}
+                            >
+                                <a href="/" style={{ color: '#B0A090', textDecoration: 'none' }}>Home</a>
+                                {' › '}
+                                <a href="/silver-jewellery" style={{ color: '#B0A090', textDecoration: 'none' }}>Silver Jewellery</a>
+                                {' › '}
+                                {collectionTitle}
+                            </p>
+                        </nav>
 
                         <div
                             style={{
@@ -146,8 +197,22 @@ export default async function CollectionPage(props: Props) {
                                         marginBottom: '0.3rem',
                                     }}
                                 >
-                                    {collectionTitle}
+                                    {h1Text}
                                 </h1>
+                                {seoConfig?.definition && (
+                                    <p
+                                        style={{
+                                            fontFamily: "'DM Sans', sans-serif",
+                                            fontSize: '0.85rem',
+                                            color: '#4A3F35',
+                                            maxWidth: 620,
+                                            lineHeight: 1.6,
+                                            marginTop: '0.5rem',
+                                        }}
+                                    >
+                                        {seoConfig.definition}
+                                    </p>
+                                )}
                                 <p
                                     style={{
                                         fontFamily: "'DM Sans', sans-serif",
@@ -331,6 +396,137 @@ export default async function CollectionPage(props: Props) {
                             </Suspense>
                         </main>
                     </div>
+
+                    {/* SEO description */}
+                    {seoConfig?.description && (
+                        <section
+                            aria-label={`About ${seoConfig.title}`}
+                            style={{
+                                marginTop: '3rem',
+                                padding: '2rem',
+                                background: '#FFFFFF',
+                                border: '1px solid #EDE8E0',
+                                borderRadius: 12,
+                            }}
+                        >
+                            <h2
+                                style={{
+                                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                                    fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)',
+                                    fontWeight: 700,
+                                    color: '#1C1510',
+                                    marginBottom: '1rem',
+                                }}
+                            >
+                                About {seoConfig.title}
+                            </h2>
+                            {seoConfig.description.split('\n\n').map((para, i) => (
+                                <p
+                                    key={i}
+                                    style={{
+                                        fontFamily: "'DM Sans', sans-serif",
+                                        fontSize: '0.88rem',
+                                        color: '#4A3F35',
+                                        lineHeight: 1.8,
+                                        marginBottom: '1rem',
+                                    }}
+                                >
+                                    {para}
+                                </p>
+                            ))}
+                        </section>
+                    )}
+
+                    {/* Related collections */}
+                    {seoConfig && (
+                        <nav
+                            aria-label="Browse other collections"
+                            style={{ marginTop: '2rem' }}
+                        >
+                            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#B0A090', marginBottom: '0.6rem' }}>
+                                Browse More
+                            </p>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                {(['anklets', 'bracelets', 'chains', 'pendants', 'rings'] as const)
+                                    .filter(k => k !== params.category)
+                                    .map(k => (
+                                        <a
+                                            key={k}
+                                            href={`/silver-jewellery/${k}`}
+                                            style={{
+                                                fontFamily: "'DM Sans', sans-serif",
+                                                fontSize: '0.72rem',
+                                                fontWeight: 600,
+                                                color: '#2C2218',
+                                                border: '1px solid #C9A96E',
+                                                borderRadius: 20,
+                                                padding: '0.35rem 0.9rem',
+                                                textDecoration: 'none',
+                                                whiteSpace: 'nowrap',
+                                            }}
+                                        >
+                                            {COLLECTIONS[k].title}
+                                        </a>
+                                    ))}
+                            </div>
+                        </nav>
+                    )}
+
+                    {/* FAQ section */}
+                    {faqs.length > 0 && (
+                        <section
+                            aria-label={seoConfig?.faqTitle ?? 'Frequently Asked Questions'}
+                            style={{ marginTop: '2.5rem' }}
+                        >
+                            <h2
+                                style={{
+                                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                                    fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)',
+                                    fontWeight: 700,
+                                    color: '#1C1510',
+                                    marginBottom: '1.25rem',
+                                }}
+                            >
+                                {seoConfig?.faqTitle ?? 'Frequently Asked Questions'}
+                            </h2>
+                            <dl style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                {faqs.map((faq) => (
+                                    <div
+                                        key={faq.q}
+                                        style={{
+                                            background: '#FFFFFF',
+                                            border: '1px solid #EDE8E0',
+                                            borderRadius: 10,
+                                            padding: '1.1rem 1.25rem',
+                                        }}
+                                    >
+                                        <dt
+                                            style={{
+                                                fontFamily: "'DM Sans', sans-serif",
+                                                fontSize: '0.88rem',
+                                                fontWeight: 700,
+                                                color: '#2C2218',
+                                                marginBottom: '0.4rem',
+                                            }}
+                                        >
+                                            {faq.q}
+                                        </dt>
+                                        <dd
+                                            style={{
+                                                fontFamily: "'DM Sans', sans-serif",
+                                                fontSize: '0.84rem',
+                                                color: '#4A3F35',
+                                                lineHeight: 1.7,
+                                                margin: 0,
+                                            }}
+                                        >
+                                            {faq.a}
+                                        </dd>
+                                    </div>
+                                ))}
+                            </dl>
+                        </section>
+                    )}
                 </div>
             </div>
 

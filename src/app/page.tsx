@@ -1,5 +1,7 @@
 import { getProducts, getCollections } from '@/lib/shopify/client';
 import { Suspense } from 'react';
+import type { Metadata } from 'next';
+import { TrustSection } from '@/components/sections/TrustSection';
 import Hero from '@/components/home/Hero';
 import CategorySlider from '@/components/home/CategorySlider';
 import FeaturedCollections from '@/components/home/FeaturedCollections';
@@ -23,6 +25,13 @@ import { mockProducts } from '@/lib/shopify/mock';
 import StyleGridServer from '@/components/home/style-grid/StyleGridServer';
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: 'Bakya — Silver Kolusu, Chains, Bracelets & Rings | Since 1997',
+  description:
+    'Bakya by Bagyalakshmi Jewellers — handcrafted 92.5 BIS hallmarked silver jewellery from Tirunelveli since 1997. Silver kolusu, chains, bracelets, pendants & rings. Ships across Tamil Nadu.',
+  alternates: { canonical: 'https://www.bakya.in' },
+};
 
 export default async function HomePage() {
   let products: any[] = [];
@@ -56,6 +65,8 @@ export default async function HomePage() {
     <main>
       <Hero />
 
+      <TrustSection />
+
       <CategorySlider collections={collections} />
 
       {/* <FeaturedCollections collections={collections} /> */}
@@ -81,7 +92,7 @@ export default async function HomePage() {
       </Suspense>
 
       <PromoBanner />
-      <StyleGridServer />
+      {/* <StyleGridServer /> */}
       <FinalCTA />
 
       <WhyChooseUs />

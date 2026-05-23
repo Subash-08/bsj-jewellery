@@ -31,7 +31,11 @@ export default function FAQ() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <span className="text-amber-600 uppercase tracking-widest text-xs font-bold mb-4 block">Information</span>
-          <h2 className="text-3xl md:text-5xl font-serif text-stone-900">Frequently Asked Questions</h2>
+          <div className="flex justify-center items-center gap-3 md:gap-4">
+            <span className="text-[#230532] text-[23px] leading-none">✦</span>
+            <h2 className="text-[#230532] text-[36px] font-playfair font-bold mt-[-1px]">Frequently Asked Questions</h2>
+            <span className="text-[#230532] text-[23px] leading-none">✦</span>
+          </div>
         </div>
         
         <div className="space-y-4">

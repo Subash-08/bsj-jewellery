@@ -16,7 +16,11 @@ export default function InstagramFeed() {
   return (
     <Section className="bg-[#FAF8F5] px-0 md:px-0 lg:px-0 max-w-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-12">
-        <h2 className="text-3xl md:text-5xl font-serif text-stone-900 mb-4">Follow Our Journey</h2>
+        <div className="flex justify-center items-center gap-3 md:gap-4 mb-4">
+          <span className="text-[#230532] text-[23px] leading-none">✦</span>
+          <h2 className="text-[#230532] text-[36px] font-playfair font-bold mt-[-1px]">Follow Our Journey</h2>
+          <span className="text-[#230532] text-[23px] leading-none">✦</span>
+        </div>
         <p className="text-stone-600 font-sans text-lg mb-6">@bsjjewellers on Instagram</p>
       </div>
       

@@ -13,11 +13,11 @@ export default function AboutUs() {
       {/* Title above banner */}
       <div className="flex justify-center items-center mb-8 md:mb-12">
         <div className="flex items-center gap-3 md:gap-4">
-          <span className="text-[#230532] text-xl md:text-2xl">✦</span>
+          <span className="text-[#230532] text-[23px] leading-none">✦</span>
           <h2 className={`${playfair.className} text-[#230532] text-3xl md:text-[42px] font-bold tracking-wide`}>
             About Us
           </h2>
-          <span className="text-[#230532] text-xl md:text-2xl">✦</span>
+          <span className="text-[#230532] text-[23px] leading-none">✦</span>
         </div>
       </div>
 

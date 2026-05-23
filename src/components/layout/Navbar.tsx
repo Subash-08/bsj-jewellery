@@ -145,7 +145,7 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
 
                                 <Link
                                     href="/"
-                                    className="flex flex-col items-start group shrink-0"
+                                    className="hidden lg:flex flex-col items-start group shrink-0"
                                 >
                                     <Image src="/logo.png" alt="Logo" width={100} height={100} />
                                 </Link>
@@ -156,8 +156,12 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                 <HeaderSearch variant="desktop" />
                             </div>
 
-                            {/* Mobile: center column is empty spacer */}
-                            <div className="lg:hidden" />
+                            {/* Mobile: center logo */}
+                            <div className="lg:hidden flex justify-center items-center">
+                                <Link href="/" className="flex flex-col items-center group shrink-0">
+                                    <Image src="/logo.png" alt="Logo" width={100} height={100} />
+                                </Link>
+                            </div>
 
                             {/* RIGHT — Icons */}
                             <div className="flex items-center justify-end gap-3 lg:gap-5 shrink-0">
@@ -178,7 +182,7 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                         size={20}
                                         className="text-white group-hover:text-amber-600 transition-colors"
                                     />
-                                    <span className="text-[9px] uppercase tracking-widest font-medium mt-1 text-gray-500">
+                                    <span className="text-[9px] uppercase tracking-widest font-medium mt-1 text-white">
                                         {isAuthenticated ? (customer?.firstName ?? 'Account') : 'Sign In'}
                                     </span>
                                 </div>
@@ -191,7 +195,7 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                         size={20}
                                         className="text-white group-hover:text-amber-600 transition-colors"
                                     />
-                                    <span className="text-[9px] uppercase tracking-widest font-medium mt-1 text-gray-500">
+                                    <span className="text-[9px] uppercase tracking-widest font-medium mt-1 text-white">
                                         Wishlist
                                     </span>
                                 </Link>
@@ -212,7 +216,7 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                             </span>
                                         )}
                                     </div>
-                                    <span className="text-[9px] uppercase tracking-widests font-medium mt-1 text-gray-500">
+                                    <span className="hidden sm:block text-[9px] uppercase tracking-widest font-medium mt-1 text-white">
                                         Cart
                                     </span>
                                 </div>
@@ -222,8 +226,8 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                         {/* MOBILE SEARCH */}
                         <div
                             className={cn(
-                                "lg:hidden overflow-hidden transition-all duration-300",
-                                showSearch ? "h-14 mt-2 opacity-100" : "h-0 opacity-0"
+                                "lg:hidden transition-all duration-300",
+                                showSearch ? "h-14 mt-2 opacity-100 overflow-visible" : "h-0 opacity-0 overflow-hidden"
                             )}
                         >
                             <HeaderSearch

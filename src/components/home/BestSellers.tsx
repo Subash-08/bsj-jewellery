@@ -40,9 +40,8 @@ function BestSellerCard({ product }: { product: Product }) {
         {/* Heart Icon */}
         <button
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(product); }}
-          className={`absolute top-[8px] right-[8px] z-10 w-[28px] h-[28px] rounded-full border-none flex items-center justify-center cursor-pointer backdrop-blur-[4px] shadow-[0_1px_4px_rgba(0,0,0,0.1)] transition-all duration-200 hover:bg-white hover:scale-110 focus:outline-none ${
-            wish ? "bg-[#fff4f4]" : "bg-[rgba(255,255,255,0.88)]"
-          }`}
+          className={`absolute top-[8px] right-[8px] z-10 w-[28px] h-[28px] rounded-full border-none flex items-center justify-center cursor-pointer backdrop-blur-[4px] shadow-[0_1px_4px_rgba(0,0,0,0.1)] transition-all duration-200 hover:bg-white hover:scale-110 focus:outline-none ${wish ? "bg-[#fff4f4]" : "bg-[rgba(255,255,255,0.88)]"
+            }`}
           aria-label="Wishlist"
         >
           <Heart size={13} className={wish ? "fill-rose-500 text-rose-500" : "text-stone-400"} />
@@ -113,25 +112,25 @@ export default function BestSellers({ products }: { products: Product[] }) {
             <div className="relative w-14 h-14 md:w-20 md:h-20">
               <Image src="/svgviewer-png-output (1).png" alt="1 Year Free Insurance" fill className="object-contain" />
             </div>
-            <span className="text-[11px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">1 Year Free<br />Insurance</span>
+            <span className="text-[11px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">Easy Returns</span>
           </div>
           <div className="flex flex-col items-center flex-1 min-w-[80px] gap-4">
             <div className="relative w-14 h-14 md:w-20 md:h-20">
               <Image src="/svgviewer-png-output (2).png" alt="BIS Hallmarked Gold" fill className="object-contain" />
             </div>
-            <span className="text-[11px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">BIS Hallmarked Gold</span>
+            <span className="text-[11px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">Free Shipping</span>
           </div>
           <div className="flex flex-col items-center flex-1 min-w-[80px] gap-4">
             <div className="relative w-14 h-14 md:w-20 md:h-20">
               <Image src="/svgviewer-png-output (3).png" alt="Easy Returns" fill className="object-contain" />
             </div>
-            <span className="text-[11px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">Easy Returns</span>
+            <span className="text-[11px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">1 Year Free<br />Insurance</span>
           </div>
           <div className="flex flex-col items-center flex-1 min-w-[80px] gap-4">
             <div className="relative w-14 h-14 md:w-20 md:h-20">
               <Image src="/svgviewer-png-output (4).png" alt="Free Shipping" fill className="object-contain" />
             </div>
-            <span className="text-[11px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">Free Shipping</span>
+            <span className="text-[11px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">BIS Hallmarked Gold</span>
           </div>
           <div className="flex flex-col items-center flex-1 min-w-[80px] gap-4">
             <div className="relative w-14 h-14 md:w-16 md:h-16">

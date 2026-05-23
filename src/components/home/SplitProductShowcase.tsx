@@ -144,7 +144,7 @@ export default function SplitProductShowcase({
           {/* Header */}
           <div className="sps-header">
             <p className="sps-eyebrow">Curated Collection</p>
-            <h2 className="sps-title">{title}</h2>
+            <h2 className="text-[#230532] text-[36px] font-playfair font-bold mt-[-1px]">{title}</h2>
             <div className="sps-title-rule" />
             <p className="sps-desc">{description}</p>
           </div>

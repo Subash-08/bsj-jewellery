@@ -8,9 +8,13 @@ export default function FinalCTA() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-600/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-        <h2 className="text-4xl md:text-6xl font-serif text-stone-900 mb-6 leading-tight">
-          Discover Timeless Jewellery
-        </h2>
+        <div className="flex justify-center items-center gap-3 md:gap-4 mb-6">
+          <span className="text-[#230532] text-[23px] leading-none">✦</span>
+          <h2 className="text-[#230532] text-[36px] font-playfair font-bold mt-[-1px] leading-tight">
+            Discover Timeless Jewellery
+          </h2>
+          <span className="text-[#230532] text-[23px] leading-none">✦</span>
+        </div>
         <p className="text-stone-600 font-sans text-lg md:text-xl mb-12 max-w-2xl mx-auto tracking-wide">
           Explore our complete collection and find the perfect piece that speaks to your unique style.
         </p>

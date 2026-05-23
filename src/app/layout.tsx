@@ -10,13 +10,78 @@ import ShopByCategoryMenu from '@/components/layout/ShopByCategoryMenu';
 import Footer from '@/components/layout/Footer';
 import { Toaster } from 'sonner';
 import { getCustomerFromSession } from '@/lib/auth/session';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
+import { SchemaScript } from '@/components/seo/SchemaScript';
+import { organizationSchema, websiteSchema } from '@/lib/schema';
+import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
+import { Analytics } from '@/components/analytics/Analytics';
 
 const inter = Inter({ subsets: ['latin'] });
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#1C1510',
+};
+
 export const metadata: Metadata = {
-  title: 'BSJ Jewellery - Exquisite Jewelry for Every Occasion',
-  description: 'Discover our stunning collection of rings, necklaces, bangles, and more. Premium quality jewelry with free shipping on orders above ₹10,000.',
+  metadataBase: new URL('https://www.bakya.in'),
+  title: {
+    default: 'Bakya — Silver Kolusu, Chains, Bracelets & Rings | Since 1997',
+    template: '%s | Bakya Silver Jewellery',
+  },
+  description:
+    'Bakya by Bagyalakshmi Jewellers — handcrafted 92.5 BIS hallmarked silver jewellery from Tirunelveli since 1997. Silver kolusu, chains, bracelets, pendants & rings. Ships across Tamil Nadu.',
+  keywords: [
+    'silver kolusu',
+    'silver jewellery Tamil Nadu',
+    '92.5 silver',
+    'BIS hallmarked silver',
+    'Tirunelveli jewellers',
+    'silver anklets women',
+  ],
+  authors: [{ name: 'Bakya by Bagyalakshmi Jewellers' }],
+  creator: 'Bakya',
+  publisher: 'Bakya by Bagyalakshmi Jewellers',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_IN',
+    url: 'https://www.bakya.in',
+    siteName: 'Bakya Silver Jewellery',
+    title: 'Bakya — Handcrafted Silver Jewellery from Tirunelveli',
+    description:
+      'BIS hallmarked 92.5 silver kolusu, bracelets, chains & rings. Trusted since 1997. Ships Tamil Nadu.',
+    images: [
+      {
+        url: '/og-default.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Bakya Silver Jewellery — Tirunelveli',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Bakya — Handcrafted Silver Jewellery from Tirunelveli',
+    description:
+      'BIS hallmarked 92.5 silver kolusu, bracelets, chains & rings. Trusted since 1997.',
+    images: ['/og-default.jpg'],
+  },
+  alternates: {
+    canonical: 'https://www.bakya.in',
+    languages: { 'en-IN': 'https://www.bakya.in' },
+  },
+  other: {
+    'geo.region': 'IN-TN',
+    'geo.placename': 'Tirunelveli',
+    'geo.position': '8.7139;77.7567',
+    ICBM: '8.7139, 77.7567',
+  },
 };
 
 function ComingSoonPage() {
@@ -73,8 +138,17 @@ export default async function RootLayout({
   const initialCustomer = await getCustomerFromSession();
 
   return (
-    <html lang="en">
+    <html lang="en-IN">
+      <head>
+        <link rel="preconnect" href="https://cdn.shopify.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://connect.facebook.net" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.clarity.ms" />
+        <SchemaScript schema={[organizationSchema(), websiteSchema()]} />
+      </head>
       <body className={inter.className}>
+        <Analytics />
         <SessionProvider>
           <AuthProvider initialCustomer={initialCustomer}>
             <ThemeProvider>
@@ -86,6 +160,7 @@ export default async function RootLayout({
                     {children}
                   </main>
                   <Footer />
+                  <WhatsAppButton />
                 </CartProvider>
               </WishlistProvider>
             </ThemeProvider>

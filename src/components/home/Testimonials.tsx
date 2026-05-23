@@ -42,7 +42,11 @@ export default function Testimonials() {
   return (
     <Section className="bg-[#FAF8F5] relative overflow-hidden">
       <div className="max-w-4xl mx-auto relative z-10 text-center">
-        <h2 className="text-3xl md:text-5xl font-serif text-stone-900 mb-16">Stories of Elegance</h2>
+        <div className="flex justify-center items-center gap-3 md:gap-4 mb-16">
+          <span className="text-[#230532] text-[23px] leading-none">✦</span>
+          <h2 className="text-[#230532] text-[36px] font-playfair font-bold mt-[-1px]">Stories of Elegance</h2>
+          <span className="text-[#230532] text-[23px] leading-none">✦</span>
+        </div>
 
         <div className="relative min-h-[250px] flex items-center justify-center">
           <button 

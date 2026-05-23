@@ -5,7 +5,9 @@ import { env } from '@/lib/env';
 
 export const dynamic = 'force-dynamic';
 
+// Force Turbopack to recompile this route
 export async function GET(req: NextRequest) {
+    console.log("[Customer API] GET request received");
     const cookieStore = await cookies();
     const accessToken = cookieStore.get(env.AUTH_COOKIE_NAME)?.value;
 

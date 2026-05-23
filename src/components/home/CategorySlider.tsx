@@ -527,17 +527,7 @@ const CategorySlider = ({
               </span>
             </div>
 
-            <h2
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontSize: "clamp(2.6rem, 5.5vw, 4rem)",
-                fontWeight: 700,
-                color: "#230532",
-                letterSpacing: "-0.025em",
-                lineHeight: 1.1,
-                marginBottom: "0.75rem",
-              }}
-            >
+            <h2 className="text-[#230532] text-[36px] font-playfair font-bold mt-[-1px] mb-[0.75rem]">
               Shop by{" "}
               <span
                 style={{

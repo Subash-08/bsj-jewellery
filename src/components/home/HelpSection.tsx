@@ -8,11 +8,11 @@ export default function HelpSection() {
         Need Help!
       </p>
       <div className="flex justify-center items-center gap-3 md:gap-4 mb-4">
-        <span className="text-[#230532] text-xl md:text-2xl">✦</span>
+        <span className="text-[#230532] text-[23px] leading-none">✦</span>
         <h2 className="text-[#230532] text-2xl md:text-[34px] font-serif font-bold tracking-wide">
           Find Your Perfect Match — We're Here to Help
         </h2>
-        <span className="text-[#230532] text-xl md:text-2xl">✦</span>
+        <span className="text-[#230532] text-[23px] leading-none">✦</span>
       </div>
       <p className="text-[#230532] font-sans text-[13px] md:text-[15px] max-w-[600px] mx-auto mb-3 opacity-90 leading-relaxed font-medium">
         Not sure what to choose? Our experts are ready to guide you in finding the perfect piece for every occasion.
