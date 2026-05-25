@@ -97,7 +97,6 @@ export function ProductCard({ product, collectionHandle = 'all' }: ProductCardPr
                             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                             className="object-contain w-full h-full"
                             style={{
-                                padding: '1.25rem',
                                 transition: 'opacity 0.6s ease, transform 0.6s ease',
                                 opacity: hov && secondImage ? 0 : 1,
                                 transform: hov ? 'scale(1.06)' : 'scale(1)',
@@ -113,7 +112,6 @@ export function ProductCard({ product, collectionHandle = 'all' }: ProductCardPr
                                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                                 className="object-contain w-full h-full absolute inset-0"
                                 style={{
-                                    padding: '1.25rem',
                                     transition: 'opacity 0.6s ease, transform 0.6s ease',
                                     opacity: hov ? 1 : 0,
                                     transform: hov ? 'scale(1)' : 'scale(1.06)',

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Playfair_Display, Cormorant_Garamond, Jost } from "next/font/google";
+import { Playfair_Display, Montserrat } from "next/font/google";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { ShieldCheck, Tag, Gem, RefreshCw } from "lucide-react";
 
@@ -14,32 +14,25 @@ const playfair = Playfair_Display({
   variable: "--font-playfair",
 });
 
-const cormorant = Cormorant_Garamond({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["300", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
-});
-
-const jost = Jost({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-jost",
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-montserrat",
 });
 
 // CSS Variables & Global Settings
 const styleVars = {
-  "--ivory": "#FAF7F2",
-  "--ivory-deep": "#F2EDE4",
-  "--noir": "#0D0D0D",
-  "--noir-soft": "#1C1A17",
-  "--gold": "#B8860B",
-  "--gold-light": "#D4A843",
-  "--gold-muted": "#C9A84C",
-  "--gold-gradient": "linear-gradient(135deg, #B8860B 0%, #D4A843 50%, #B8860B 100%)",
-  "--stone": "#6B6560",
-  "--stone-light": "#9C958F",
-  "--border-warm": "rgba(184,134,11,0.15)",
+  "--ivory": "#FFFFFF",
+  "--ivory-deep": "#EAE2F0",
+  "--noir": "#230532",
+  "--noir-soft": "#3a1450",
+  "--gold": "#D4AF37",
+  "--gold-light": "#E5C95A",
+  "--gold-muted": "#D4AF37",
+  "--gold-gradient": "linear-gradient(135deg, #D4AF37 0%, #E5C95A 50%, #D4AF37 100%)",
+  "--stone": "#4A3F35",
+  "--stone-light": "#8A7A6A",
+  "--border-warm": "rgba(212,175,55,0.2)",
 } as React.CSSProperties;
 
 // Animation variants
@@ -110,14 +103,15 @@ export default function AboutPage() {
   return (
     <div
       style={styleVars}
-      className={`${playfair.variable} ${cormorant.variable} ${jost.variable} font-jost text-[var(--noir)] selection:bg-[var(--gold)] selection:text-[var(--noir)] bg-[var(--ivory)] overflow-hidden motion-reduce:transform-none motion-reduce:transition-none`}
+      className={`${playfair.variable} ${montserrat.variable} font-montserrat text-[var(--noir)] selection:bg-[var(--gold)] selection:text-[var(--noir)] bg-[var(--ivory)] overflow-hidden motion-reduce:transform-none motion-reduce:transition-none`}
       suppressHydrationWarning
     >
       <style dangerouslySetInnerHTML={{__html: `
         html { scroll-behavior: smooth; }
         .font-playfair { font-family: var(--font-playfair), serif; }
-        .font-cormorant { font-family: var(--font-cormorant), serif; }
-        .font-jost { font-family: var(--font-jost), sans-serif; }
+        .font-cormorant { font-family: var(--font-playfair), serif; }
+        .font-jost { font-family: var(--font-montserrat), sans-serif; }
+        .font-montserrat { font-family: var(--font-montserrat), sans-serif; }
       `}} />
 
       {/* SECTION 1: CINEMATIC HERO */}
@@ -638,7 +632,7 @@ export default function AboutPage() {
               Shop Collections
             </Link>
             <a 
-              href="https://wa.me/919790790527" 
+              href="https://wa.me/919025790527" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="w-full sm:w-auto px-8 py-4 bg-[#25D366] text-white font-medium tracking-wide hover:bg-[#20bd5a] transition-colors focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2 focus:ring-offset-[var(--gold)] flex items-center justify-center gap-2"

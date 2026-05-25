@@ -5,7 +5,7 @@ export const SITE = {
   domain: 'https://www.bakya.in',
   foundingYear: 1997,
   email: 'bagyalakshmijewellers97@gmail.com',
-  phone: '+91-9790790527',
+  phone: '+91-9025790527',
   address: {
     street: '57A/12 ERKP Building, Koolakadai Bazaar',
     city: 'Tirunelveli Town',
@@ -20,7 +20,7 @@ export const SITE = {
     facebook: '',
     pinterest: '',
     youtube: '',
-    whatsapp: '+919790790527',
+    whatsapp: '+919025790527',
   },
   whatsappMessage: 'Hi Bakya! I want to enquire about your silver jewellery.',
   openingHours: 'Mo-Sa 09:30-20:00',

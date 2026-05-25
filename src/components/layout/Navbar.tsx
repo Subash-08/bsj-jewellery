@@ -291,23 +291,47 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                         className="transition-transform duration-300 group-hover:rotate-180"
                                     />
                                 </button>
-                                <div className="absolute top-full left-0 mt-2 w-48 bg-white shadow-xl border border-[#efe8dc] rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                                    <div className="py-2">
-                                        {[
-                                            "Silver Chains",
-                                            "Silver Rings",
-                                            "Silver Anklets",
-                                            "Silver Bracelets",
-                                            "Silver Earrings",
-                                        ].map((item) => (
-                                            <Link
-                                                key={item}
-                                                href={`/shop/${item.toLowerCase().replace(" ", "-")}`}
-                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-amber-50 hover:text-amber-600 transition-colors"
-                                            >
-                                                {item}
-                                            </Link>
-                                        ))}
+                                <div className="absolute top-full left-0 mt-2 w-[420px] bg-white shadow-xl border border-[#efe8dc] rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                                    <div className="grid grid-cols-2 gap-0 py-3">
+                                        {/* Column 1: Browse by Category */}
+                                        <div className="px-4 border-r border-[#f0ece3]">
+                                            <p className="text-[10px] uppercase tracking-widest text-stone-400 font-semibold mb-2 px-1">Browse by Category</p>
+                                            {[
+                                                { label: "Silver Kolusu (Anklets)", href: "/silver-jewellery/anklets" },
+                                                { label: "Silver Rings", href: "/silver-jewellery/rings" },
+                                                { label: "Silver Chains", href: "/silver-jewellery/chains" },
+                                                { label: "Silver Pendants", href: "/silver-jewellery/pendants" },
+                                                { label: "Silver Bracelets", href: "/silver-jewellery/bracelets" },
+                                                { label: "All Silver Jewellery", href: "/silver-jewellery" },
+                                            ].map((item) => (
+                                                <Link
+                                                    key={item.href}
+                                                    href={item.href}
+                                                    className="block px-1 py-1.5 text-[13px] text-gray-700 hover:text-amber-600 transition-colors"
+                                                >
+                                                    {item.label}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                        {/* Column 2: Shop by Occasion */}
+                                        <div className="px-4">
+                                            <p className="text-[10px] uppercase tracking-widest text-stone-400 font-semibold mb-2 px-1">Shop by Occasion</p>
+                                            {[
+                                                { label: "Bridal Kolusu", href: "/silver-jewellery/anklets/bridal-kolusu" },
+                                                { label: "Daily Wear Silver", href: "/daily-wear-silver-jewellery" },
+                                                { label: "Temple Jewellery", href: "/temple-silver-jewellery" },
+                                                { label: "Silver Gifts for Women", href: "/silver-gifts-for-women" },
+                                                { label: "Under ₹1,500", href: "/silver-jewellery-under-1500" },
+                                            ].map((item) => (
+                                                <Link
+                                                    key={item.href}
+                                                    href={item.href}
+                                                    className="block px-1 py-1.5 text-[13px] text-gray-700 hover:text-amber-600 transition-colors"
+                                                >
+                                                    {item.label}
+                                                </Link>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -449,19 +473,36 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
 
                             {/* SILVER JEWELLERY */}
                             <MobileAccordion title="Silver Jewellery">
+                                <p className="text-[10px] uppercase tracking-widest text-[#EAE2F0]/50 font-semibold mt-1 mb-1 px-1">By Category</p>
                                 {[
-                                    "Silver Chains",
-                                    "Silver Rings",
-                                    "Silver Anklets",
-                                    "Silver Bracelets",
-                                    "Silver Earrings",
+                                    { label: "Silver Kolusu (Anklets)", href: "/silver-jewellery/anklets" },
+                                    { label: "Silver Rings", href: "/silver-jewellery/rings" },
+                                    { label: "Silver Chains", href: "/silver-jewellery/chains" },
+                                    { label: "Silver Pendants", href: "/silver-jewellery/pendants" },
+                                    { label: "Silver Bracelets", href: "/silver-jewellery/bracelets" },
                                 ].map((item) => (
                                     <Link
-                                        key={item}
-                                        href={`/shop/${item.toLowerCase().replace(/ /g, "-")}`}
-                                        className="block py-2 text-sm text-gray-600 hover:text-amber-600"
+                                        key={item.href}
+                                        href={item.href}
+                                        className="block py-2 text-sm text-white/80 hover:text-amber-400"
                                     >
-                                        {item}
+                                        {item.label}
+                                    </Link>
+                                ))}
+                                <p className="text-[10px] uppercase tracking-widest text-[#EAE2F0]/50 font-semibold mt-3 mb-1 px-1">By Occasion</p>
+                                {[
+                                    { label: "Bridal Kolusu", href: "/silver-jewellery/anklets/bridal-kolusu" },
+                                    { label: "Daily Wear Silver", href: "/daily-wear-silver-jewellery" },
+                                    { label: "Temple Jewellery", href: "/temple-silver-jewellery" },
+                                    { label: "Silver Gifts for Women", href: "/silver-gifts-for-women" },
+                                    { label: "Under ₹1,500", href: "/silver-jewellery-under-1500" },
+                                ].map((item) => (
+                                    <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        className="block py-2 text-sm text-white/80 hover:text-amber-400"
+                                    >
+                                        {item.label}
                                     </Link>
                                 ))}
                             </MobileAccordion>
@@ -486,11 +527,11 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                         <div className="px-5 py-5 border-t border-[#e8e3d9] space-y-3 text-sm text-white">
                             <div className="flex items-center gap-2">
                                 <Phone size={16} />
-                                <span>+91 98765 43210</span>
+                                <span>+91-9025790527</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Mail size={16} />
-                                <span>support@bsj.com</span>
+                                <span>bagyalakshmijewellers97@gmail.com</span>
                             </div>
                         </div>
                     </div>

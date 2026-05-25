@@ -236,7 +236,7 @@ const HARDCODED_POLICIES: Record<PolicyType, PolicyContent> = {
       <p>Questions about the Terms of Service should be sent to us at bagyalakhsmijewellers97@gmail.com</p>
       <p>Our contact information is posted below:<br/>
       Trade name: BSJ Jewellers<br/>
-      Phone number: 9790790527<br/>
+      Phone number: 9025790527<br/>
       Email: bagyalakhsmijewellers97@gmail.com<br/>
       Physical address: BAGYALAKSHMI JEWELLERY, 57A/12, KOOLAKKADAI BAZAAR, TOWN, TOWN, 627006 Tirunelveli TN, India</p>
     `

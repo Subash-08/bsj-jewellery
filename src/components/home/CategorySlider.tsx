@@ -486,7 +486,7 @@ const CategorySlider = ({
   return (
     <>
       <section
-        className="relative overflow-hidden py-16 md:py-24"
+        className="relative overflow-hidden py-6 md:py-8"
         style={{ background: "#ffffffff" }}
       >
         {/* Ambient blobs */}
@@ -568,11 +568,11 @@ const CategorySlider = ({
           </div>
 
           {/* ── Promo banners — stacked column, zigzag layout ── */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          {/* <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
             {promoBanners.map((banner, i) => (
               <PromoBannerCard key={i} banner={banner} index={i} />
             ))}
-          </div>
+          </div> */}
 
         </div>
       </section>

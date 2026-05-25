@@ -26,17 +26,23 @@ function getSeoConfig(category: string) {
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
     const params = await props.params;
+    const searchParams = await props.searchParams;
+    const hasFilters = Object.keys(searchParams).length > 0;
+    const baseCanonical = `${SITE.domain}/silver-jewellery/${params.category}`;
+
     const seo = getSeoConfig(params.category);
     if (seo) {
+        const canonical = `${SITE.domain}/${seo.handle}`;
         return {
             title: seo.metaTitle,
             description: seo.metaDescription,
             keywords: [...seo.keywords],
-            alternates: { canonical: `${SITE.domain}/${seo.handle}` },
+            alternates: { canonical },
+            robots: hasFilters ? { index: false, follow: true } : { index: true, follow: true },
             openGraph: {
                 title: seo.metaTitle,
                 description: seo.metaDescription,
-                url: `${SITE.domain}/${seo.handle}`,
+                url: canonical,
                 type: 'website',
             },
         };
@@ -48,7 +54,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         return {
             title: `${collection.seo?.title || collection.title} | Bakya Silver Jewellery`,
             description: collection.seo?.description || collection.description,
-            alternates: { canonical: `${SITE.domain}/silver-jewellery/${params.category}` },
+            alternates: { canonical: baseCanonical },
+            robots: hasFilters ? { index: false, follow: true } : { index: true, follow: true },
         };
     } catch {
         return {};

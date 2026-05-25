@@ -70,6 +70,9 @@ export default async function HomePage() {
       <CategorySlider collections={collections} />
 
       {/* <FeaturedCollections collections={collections} /> */}
+      <Suspense fallback={<ProductSkeleton />}>
+        <BestSellers products={products} />
+      </Suspense>
 
       <Suspense fallback={<SectionSkeleton />}>
         <LatestArrivals collections={collections} />
@@ -78,9 +81,7 @@ export default async function HomePage() {
       <ShopByGender collections={collections} />
       {/* Rebuild trigger */}
 
-      <Suspense fallback={<ProductSkeleton />}>
-        <BestSellers products={products} />
-      </Suspense>
+
 
       <Suspense fallback={<ProductSkeleton />}>
         <SplitProductShowcase

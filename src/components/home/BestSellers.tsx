@@ -72,7 +72,7 @@ export default function BestSellers({ products }: { products: Product[] }) {
   if (!products || products.length === 0) return null;
 
   return (
-    <section className="w-full bg-[#fffff] py-4 md:py-8 overflow-hidden">
+    <section className="w-full bg-[#fffff] py-4 md:py-6 overflow-hidden">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:ital,wght@0,400;0,500;0,700;1,400&display=swap');
         .font-playfair { font-family: 'Playfair Display', serif; }

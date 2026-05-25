@@ -43,6 +43,17 @@ export const metadata: Metadata = {
   authors: [{ name: 'Bakya by Bagyalakshmi Jewellers' }],
   creator: 'Bakya',
   publisher: 'Bakya by Bagyalakshmi Jewellers',
+  icons: {
+    icon: [
+      { url: '/bakya 64 x 64.ico', sizes: 'any' },
+      { url: '/bakya 64 x 64.png', type: 'image/png', sizes: '64x64' },
+      { url: '/BAKYA 512 X 512.png', type: 'image/png', sizes: '512x512' },
+    ],
+    apple: [
+      { url: '/BAKYA 512 X 512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/bakya 64 x 64.ico',
+  },
   robots: {
     index: true,
     follow: true,
@@ -58,9 +69,7 @@ export const metadata: Metadata = {
       'BIS hallmarked 92.5 silver kolusu, bracelets, chains & rings. Trusted since 1997. Ships Tamil Nadu.',
     images: [
       {
-        url: '/og-default.jpg',
-        width: 1200,
-        height: 630,
+        url: '/logo.png',
         alt: 'Bakya Silver Jewellery — Tirunelveli',
       },
     ],
@@ -70,7 +79,7 @@ export const metadata: Metadata = {
     title: 'Bakya — Handcrafted Silver Jewellery from Tirunelveli',
     description:
       'BIS hallmarked 92.5 silver kolusu, bracelets, chains & rings. Trusted since 1997.',
-    images: ['/og-default.jpg'],
+    images: ['/logo.png'],
   },
   alternates: {
     canonical: 'https://www.bakya.in',
