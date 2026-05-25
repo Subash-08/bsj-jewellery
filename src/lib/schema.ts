@@ -3,59 +3,60 @@ import { SITE } from './seo.config'
 export function organizationSchema() {
   return {
     '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Organization',
-        '@id': `${SITE.domain}/#organization`,
-        name: SITE.fullName,
-        url: SITE.domain,
-        logo: {
-          '@type': 'ImageObject',
-          url: `${SITE.domain}/logo.png`,
-          width: 300,
-          height: 300,
-        },
-        contactPoint: {
-          '@type': 'ContactPoint',
-          telephone: SITE.phone,
-          contactType: 'customer service',
-          areaServed: 'IN',
-          availableLanguage: ['English', 'Tamil'],
-        },
-        sameAs: Object.values(SITE.social).filter(Boolean),
-        foundingDate: String(SITE.foundingYear),
-        description:
-          'Handcrafted BIS hallmarked silver jewellery from Tirunelveli since 1997',
-      },
-      {
-        '@type': 'JewelryStore',
-        '@id': `${SITE.domain}/#localbusiness`,
-        name: SITE.fullName,
-        url: SITE.domain,
-        telephone: SITE.phone,
-        email: SITE.email,
-        priceRange: SITE.priceRange,
-        currenciesAccepted: SITE.currenciesAccepted,
-        paymentAccepted: SITE.paymentAccepted,
-        openingHours: SITE.openingHours,
-        address: {
-          '@type': 'PostalAddress',
-          streetAddress: SITE.address.street,
-          addressLocality: SITE.address.city,
-          addressRegion: SITE.address.state,
-          postalCode: SITE.address.pincode,
-          addressCountry: SITE.address.countryCode,
-        },
-        geo: {
-          '@type': 'GeoCoordinates',
-          latitude: SITE.geo.lat,
-          longitude: SITE.geo.lng,
-        },
-        hasMap: `https://www.google.com/maps?q=${SITE.geo.lat},${SITE.geo.lng}`,
-        image: `${SITE.domain}/storefront.jpg`,
-        logo: `${SITE.domain}/logo.png`,
-      },
-    ],
+    '@type': 'Organization',
+    '@id': `${SITE.domain}/#organization`,
+    name: SITE.fullName,
+    url: SITE.domain,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${SITE.domain}/logo.png`,
+      width: 300,
+      height: 300,
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: SITE.phone,
+      contactType: 'customer service',
+      areaServed: 'IN',
+      availableLanguage: ['English', 'Tamil'],
+    },
+    sameAs: Object.values(SITE.social).filter(Boolean),
+    foundingDate: String(SITE.foundingYear),
+    description:
+      'Handcrafted BIS hallmarked silver jewellery from Tirunelveli since 1997',
+  }
+}
+
+export function localBusinessSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'JewelryStore',
+    '@id': `${SITE.domain}/#localbusiness`,
+    name: SITE.fullName,
+    url: SITE.domain,
+    telephone: SITE.phone,
+    email: SITE.email,
+    priceRange: SITE.priceRange,
+    currenciesAccepted: SITE.currenciesAccepted,
+    paymentAccepted: SITE.paymentAccepted,
+    openingHours: SITE.openingHours,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: SITE.address.street,
+      addressLocality: SITE.address.city,
+      addressRegion: SITE.address.state,
+      postalCode: SITE.address.pincode,
+      addressCountry: SITE.address.countryCode,
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: SITE.geo.lat,
+      longitude: SITE.geo.lng,
+    },
+    hasMap: `https://www.google.com/maps?q=${SITE.geo.lat},${SITE.geo.lng}`,
+    image: `${SITE.domain}/storefront.jpg`,
+    logo: `${SITE.domain}/logo.png`,
+    parentOrganization: { '@id': `${SITE.domain}/#organization` },
   }
 }
 
@@ -80,6 +81,50 @@ export function websiteSchema() {
   }
 }
 
+export function webPageSchema(opts: {
+  type?:
+    | 'WebPage'
+    | 'AboutPage'
+    | 'ContactPage'
+    | 'CollectionPage'
+    | 'ItemPage'
+    | 'SearchResultsPage'
+  name: string
+  description: string
+  url: string
+  breadcrumbs?: Array<{ name: string; url: string }>
+}) {
+  const type = opts.type ?? 'WebPage'
+  return {
+    '@context': 'https://schema.org',
+    '@type': type,
+    '@id': `${opts.url}#webpage`,
+    name: opts.name,
+    description: opts.description,
+    url: opts.url,
+    isPartOf: { '@id': `${SITE.domain}/#website` },
+    inLanguage: 'en-IN',
+    ...(opts.breadcrumbs && opts.breadcrumbs.length > 0
+      ? {
+          breadcrumb: breadcrumbSchema(opts.breadcrumbs),
+        }
+      : {}),
+  }
+}
+
+export function searchResultsPageSchema(query: string) {
+  const url = `${SITE.domain}/search?q=${encodeURIComponent(query)}`
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'SearchResultsPage',
+    '@id': `${url}#webpage`,
+    name: `Search results for "${query}" — ${SITE.name}`,
+    url,
+    isPartOf: { '@id': `${SITE.domain}/#website` },
+    inLanguage: 'en-IN',
+  }
+}
+
 export function productSchema(product: {
   name: string
   description: string
@@ -87,11 +132,16 @@ export function productSchema(product: {
   price: string
   currency?: string
   sku: string
+  mpn?: string
+  gtin13?: string
+  weightGrams?: number
   url: string
   category: string
   availability?: 'InStock' | 'OutOfStock'
   ratingValue?: number
   reviewCount?: number
+  merchantReturnLink?: string
+  reviews?: Array<{ author: string; datePublished: string; body: string; ratingValue: number }>
 }) {
   return {
     '@context': 'https://schema.org',
@@ -100,6 +150,17 @@ export function productSchema(product: {
     description: product.description,
     image: product.images,
     sku: product.sku,
+    ...(product.mpn ? { mpn: product.mpn } : {}),
+    ...(product.gtin13 ? { gtin13: product.gtin13 } : {}),
+    ...(product.weightGrams
+      ? {
+          weight: {
+            '@type': 'QuantitativeValue',
+            value: product.weightGrams,
+            unitCode: 'GRM',
+          },
+        }
+      : {}),
     brand: {
       '@type': 'Brand',
       name: SITE.name,
@@ -117,17 +178,16 @@ export function productSchema(product: {
         '@type': 'Organization',
         name: SITE.fullName,
       },
-      priceValidUntil: new Date(
-        new Date().setFullYear(new Date().getFullYear() + 1),
-      )
-        .toISOString()
-        .split('T')[0],
+      priceValidUntil: '2027-12-31',
       hasMerchantReturnPolicy: {
         '@type': 'MerchantReturnPolicy',
         returnPolicyCategory:
           'https://schema.org/MerchantReturnFiniteReturnWindow',
         merchantReturnDays: 7,
         returnMethod: 'https://schema.org/ReturnByMail',
+        ...(product.merchantReturnLink
+          ? { merchantReturnLink: product.merchantReturnLink }
+          : { merchantReturnLink: `${SITE.domain}/return-refund-policy` }),
       },
       shippingDetails: {
         '@type': 'OfferShippingDetails',
@@ -180,6 +240,22 @@ export function productSchema(product: {
           },
         }
       : {}),
+    ...(product.reviews && product.reviews.length > 0
+      ? {
+          review: product.reviews.map((r) => ({
+            '@type': 'Review',
+            author: { '@type': 'Person', name: r.author },
+            datePublished: r.datePublished,
+            reviewBody: r.body,
+            reviewRating: {
+              '@type': 'Rating',
+              ratingValue: r.ratingValue,
+              bestRating: 5,
+              worstRating: 1,
+            },
+          })),
+        }
+      : {}),
   }
 }
 
@@ -218,32 +294,58 @@ export function collectionPageSchema(opts: {
   description: string
   url: string
   products: Array<{ name: string; url: string; image: string; price: string }>
+  breadcrumbs?: Array<{ name: string; url: string }>
 }) {
-  return {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'CollectionPage',
-        name: opts.name,
-        description: opts.description,
-        url: opts.url,
-        publisher: { '@id': `${SITE.domain}/#organization` },
-        inLanguage: 'en-IN',
-      },
-      {
-        '@type': 'ItemList',
-        name: opts.name,
-        url: opts.url,
-        numberOfItems: opts.products.length,
-        itemListElement: opts.products.map((p, i) => ({
+  const pageUrl = opts.url.startsWith('http') ? opts.url : `${SITE.domain}${opts.url}`
+  const graph: object[] = [
+    {
+      '@type': 'CollectionPage',
+      '@id': `${pageUrl}#webpage`,
+      name: opts.name,
+      description: opts.description,
+      url: pageUrl,
+      publisher: { '@id': `${SITE.domain}/#organization` },
+      inLanguage: 'en-IN',
+      isPartOf: { '@id': `${SITE.domain}/#website` },
+    },
+    {
+      '@type': 'ItemList',
+      '@id': `${pageUrl}#itemlist`,
+      name: opts.name,
+      url: pageUrl,
+      numberOfItems: opts.products.length,
+      itemListElement: opts.products.map((p, i) => {
+        const productUrl = p.url.startsWith('http') ? p.url : `${SITE.domain}${p.url}`
+        return {
           '@type': 'ListItem',
           position: i + 1,
           name: p.name,
-          url: p.url.startsWith('http') ? p.url : `${SITE.domain}${p.url}`,
+          url: productUrl,
           image: p.image,
-        })),
-      },
-    ],
+          item: {
+            '@type': 'Product',
+            name: p.name,
+            url: productUrl,
+            image: p.image,
+            offers: {
+              '@type': 'Offer',
+              price: p.price,
+              priceCurrency: 'INR',
+              availability: 'https://schema.org/InStock',
+            },
+          },
+        }
+      }),
+    },
+  ]
+
+  if (opts.breadcrumbs && opts.breadcrumbs.length > 0) {
+    graph.push(breadcrumbSchema(opts.breadcrumbs))
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': graph,
   }
 }
 
@@ -272,17 +374,31 @@ export function blogPostingSchema(post: {
   authorName: string
   authorUrl?: string
   tags?: string[]
+  category?: string
+  wordCount?: number
+  readingTimeMinutes?: number
 }) {
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
+    '@id': `${post.url}#article`,
     headline: post.title,
     description: post.description,
-    image: post.image,
+    image: {
+      '@type': 'ImageObject',
+      url: post.image,
+      width: 1200,
+      height: 630,
+    },
     url: post.url,
     datePublished: post.datePublished,
     dateModified: post.dateModified,
     ...(post.tags && post.tags.length > 0 ? { keywords: post.tags.join(', ') } : {}),
+    ...(post.category ? { articleSection: post.category } : {}),
+    ...(post.wordCount ? { wordCount: post.wordCount } : {}),
+    ...(post.readingTimeMinutes
+      ? { timeRequired: `PT${post.readingTimeMinutes}M` }
+      : {}),
     author: {
       '@type': 'Person',
       name: post.authorName,
@@ -291,13 +407,27 @@ export function blogPostingSchema(post: {
     },
     publisher: {
       '@type': 'Organization',
+      '@id': `${SITE.domain}/#organization`,
       name: SITE.name,
       logo: {
         '@type': 'ImageObject',
         url: `${SITE.domain}/logo.png`,
+        width: 300,
+        height: 300,
       },
     },
-    mainEntityOfPage: { '@type': 'WebPage', '@id': post.url },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': post.url,
+    },
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '.post-excerpt'],
+    },
+    potentialAction: {
+      '@type': 'ReadAction',
+      target: [post.url],
+    },
     inLanguage: 'en-IN',
     isPartOf: { '@id': `${SITE.domain}/#website` },
   }

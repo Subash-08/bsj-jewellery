@@ -1,5 +1,6 @@
 import { getSearchResults } from '@/lib/shopify/client';
 import { generateSeo } from '@/lib/seo/metadata';
+import { searchResultsPageSchema } from '@/lib/schema';
 import InfiniteProductGrid from '@/components/collection/InfiniteProductGrid';
 import FilterSidebar from '@/components/filters/FilterSidebar';
 import { ActiveFilterBar } from '@/components/filters/ActiveFilterBar';
@@ -177,6 +178,13 @@ export default async function SearchPage(props: Props) {
     }
 
     return (
+        <>
+        {cleanDisplayQuery && (
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(searchResultsPageSchema(cleanDisplayQuery)) }}
+            />
+        )}
         <div className="search-page min-h-screen bg-gray-50 pt-32 pb-24">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className={`grid ${showSidebar ? 'grid-cols-1 md:grid-cols-[260px_1fr]' : 'grid-cols-1'} gap-8 items-start`}>
@@ -260,5 +268,6 @@ export default async function SearchPage(props: Props) {
                 </div>
             </div>
         </div>
+        </>
     );
 }

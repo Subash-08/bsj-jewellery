@@ -28,7 +28,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
+    robots: { index: true, follow: true },
     alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: SITE.name,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+      site: '@bakya_jewels',
+    },
   }
 }
 

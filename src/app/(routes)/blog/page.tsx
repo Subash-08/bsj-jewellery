@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { SITE, BLOG_CONFIG } from '@/lib/seo.config'
 import { getPaginatedPosts, getPublishedPosts } from '@/lib/blog'
-import { blogListSchema } from '@/lib/schema'
+import { blogListSchema, webPageSchema } from '@/lib/schema'
 import BlogGrid from '@/components/blog/BlogGrid'
 import BlogPagination from '@/components/blog/BlogPagination'
 import BlogCategoryFilter from '@/components/blog/BlogCategoryFilter'
@@ -10,6 +10,16 @@ import BlogSidebar from '@/components/blog/BlogSidebar'
 export const metadata: Metadata = {
   title: BLOG_CONFIG.title,
   description: BLOG_CONFIG.description,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+    },
+  },
   alternates: { canonical: `${SITE.domain}/blog` },
   openGraph: {
     title: BLOG_CONFIG.title,
@@ -17,6 +27,12 @@ export const metadata: Metadata = {
     url: `${SITE.domain}/blog`,
     siteName: SITE.name,
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: BLOG_CONFIG.title,
+    description: BLOG_CONFIG.description,
+    site: '@bakya_jewels',
   },
 }
 
@@ -38,7 +54,22 @@ export default async function BlogListPage({ searchParams }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListSchema()) }}
       />
-      <main className="bg-white min-h-screen pt-32 pb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(webPageSchema({
+            type: 'WebPage',
+            name: BLOG_CONFIG.title,
+            description: BLOG_CONFIG.description,
+            url: `${SITE.domain}/blog`,
+            breadcrumbs: [
+              { name: 'Home', url: SITE.domain },
+              { name: 'Blog', url: `${SITE.domain}/blog` },
+            ],
+          }))
+        }}
+      />
+      <main className="bg-white min-h-screen pt-8 pb-20">
         <div className="container mx-auto px-4 lg:px-8 max-w-[1400px]">
 
           {/* Page header */}

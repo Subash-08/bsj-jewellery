@@ -1,7 +1,39 @@
 import { Mail, Phone, MapPin, ShieldCheck, Lock, RefreshCw, Truck, MessageCircle } from 'lucide-react';
+import type { Metadata } from 'next';
+import { SchemaScript } from '@/components/seo/SchemaScript';
+import { webPageSchema, localBusinessSchema } from '@/lib/schema';
+import { SITE } from '@/lib/seo.config';
+
+export const metadata: Metadata = {
+    title: 'Contact Bakya — Tirunelveli Silver Jewellers | WhatsApp & Email',
+    description:
+        'Contact Bakya by Bagyalakshmi Jewellers. WhatsApp, email, or visit our store in Tirunelveli. We help with orders, sizing, custom jewellery & returns.',
+    alternates: { canonical: `${SITE.domain}/contact` },
+    openGraph: {
+        title: 'Contact Bakya — Silver Jewellers, Tirunelveli',
+        description: 'Get in touch with Bakya for orders, sizing help, custom silver jewellery, and returns.',
+        url: `${SITE.domain}/contact`,
+    },
+};
 
 export default function ContactPage() {
     return (
+        <>
+        <SchemaScript
+            schema={[
+                webPageSchema({
+                    type: 'ContactPage',
+                    name: 'Contact Bakya — Tirunelveli Silver Jewellers',
+                    description: 'Get in touch with Bakya for orders, sizing help, custom silver jewellery, and returns.',
+                    url: `${SITE.domain}/contact`,
+                    breadcrumbs: [
+                        { name: 'Home', url: SITE.domain },
+                        { name: 'Contact', url: `${SITE.domain}/contact` },
+                    ],
+                }),
+                localBusinessSchema(),
+            ]}
+        />
         <main className="bg-white min-h-screen pb-20 font-sans">
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
@@ -310,5 +342,6 @@ export default function ContactPage() {
 
             </div>
         </main>
+        </>
     );
 }

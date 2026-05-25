@@ -1,4 +1,6 @@
 import { getProductByHandle, getCollectionProducts } from '@/lib/shopify/client';
+import { productSchema, breadcrumbSchema, webPageSchema } from '@/lib/schema';
+import { SITE } from '@/lib/seo.config';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import type { Product } from '@/types/shopify/product';
@@ -114,47 +116,54 @@ export default async function ProductPage(props: Props) {
 
     // ── JSON-LD Structured Data ────────────────────────────────────────
     const minPrice = product.priceRange.minVariantPrice;
-    const jsonLd = {
-        '@context': 'https://schema.org',
-        '@type': 'Product',
+    const productUrl = `${SITE.domain}/products/${product.handle}`;
+    const collectionHandle = breadcrumb.collectionHandle
+    const collectionTitle = breadcrumb.collectionTitle
+
+    const jsonLd = productSchema({
         name: product.title,
         description: product.description,
-        image: product.images.map((img) => img.url),
+        images: product.images.map((img: { url: string }) => img.url),
+        price: minPrice.amount,
+        currency: minPrice.currencyCode,
         sku: product.variants[0]?.sku || product.handle,
-        brand: {
-            '@type': 'Brand',
-            name: 'Bakya',
-        },
-        offers: {
-            '@type': 'Offer',
-            url: `https://bsjjewellery.com/products/${product.handle}`,
-            priceCurrency: minPrice.currencyCode,
-            price: minPrice.amount,
-            availability: product.availableForSale
-                ? 'https://schema.org/InStock'
-                : 'https://schema.org/OutOfStock',
-            seller: {
-                '@type': 'Organization',
-                name: 'Bakya',
-            },
-        },
-        // SEO: aggregateRating for Google star snippets
-        ...(reviewData.summary.count > 0 && {
-            aggregateRating: {
-                '@type': 'AggregateRating',
-                ratingValue: reviewData.summary.average,
-                reviewCount: reviewData.summary.count,
-                bestRating: 5,
-                worstRating: 1,
-            },
-        }),
-    };
+        url: productUrl,
+        category: product.productType || collectionTitle,
+        availability: product.availableForSale ? 'InStock' : 'OutOfStock',
+        ...(reviewData.summary.count > 0
+            ? { ratingValue: reviewData.summary.average, reviewCount: reviewData.summary.count }
+            : {}),
+    })
+
+    const crumbSchema = breadcrumbSchema([
+        { name: 'Home', url: SITE.domain },
+        { name: 'Silver Jewellery', url: `${SITE.domain}/silver-jewellery` },
+        ...(collectionHandle
+            ? [{ name: collectionTitle, url: `${SITE.domain}/silver-jewellery/${collectionHandle}` }]
+            : []),
+        { name: breadcrumb.shortTitle, url: productUrl },
+    ])
+
+    const pageSchema = webPageSchema({
+        type: 'ItemPage',
+        name: product.title,
+        description: product.seo?.description || product.description,
+        url: productUrl,
+    })
 
     return (
         <>
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbSchema) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(pageSchema) }}
             />
             <ProductPageClient
                 product={product}

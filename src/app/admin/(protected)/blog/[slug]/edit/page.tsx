@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getPostBySlug } from '@/lib/blog'
-import AdminPostForm from '@/components/admin/AdminPostForm'
+import BlogWizard from '@/components/admin/blog/BlogWizard'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -13,25 +13,11 @@ export default async function AdminEditPostPage({ params }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-serif font-bold text-[#230532] mb-8">
-        Edit Post — <span className="font-mono text-lg text-gray-500">{slug}</span>
-      </h1>
-      <AdminPostForm
-        initialData={{
-          slug: post.slug,
-          title: post.title,
-          excerpt: post.excerpt,
-          category: post.category,
-          tags: post.tags.join(', '),
-          author: post.author,
-          coverImage: post.coverImage,
-          status: post.status,
-          featured: post.featured ?? false,
-          content: post.content,
-        }}
-        isEdit
-        originalSlug={slug}
-      />
+      <div className="mb-6">
+        <h1 className="text-xl font-serif font-semibold text-[#230532]">Edit Post</h1>
+        <p className="text-sm text-gray-500 mt-0.5 font-mono">{slug}</p>
+      </div>
+      <BlogWizard initialData={post} isEdit />
     </div>
   )
 }

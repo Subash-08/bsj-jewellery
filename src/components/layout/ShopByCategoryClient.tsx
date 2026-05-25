@@ -115,22 +115,25 @@ export default function ShopByCategoryClient({ categories }: Props) {
                     </ul>
                   </div>
                 )}
-                {activeCategory.gender.length > 0 && (
+
+                {activeCategory.design.length > 0 && (
                   <div>
                     <h4 className="text-xs font-bold uppercase text-stone-400 mb-3 tracking-wider">
-                      Gender
+                      Design Style
                     </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {activeCategory.gender.map((item, idx) => (
-                        <Link
-                          key={idx}
-                          href={`${getCollectionUrl(activeCategory.handle)}?gender=${encodeURIComponent(item)}`}
-                          className="flex flex-col items-center gap-3 p-4 rounded-xl border border-[#efe8dc] bg-[#faf8f5] hover:border-amber-200 hover:shadow-md transition-all group"
-                        >
-                          {item}
-                        </Link>
+                    <ul className="space-y-2">
+                      {activeCategory.design.slice(0, 4).map((item, idx) => (
+                        <li key={item}>
+                          <Link
+                            key={idx}
+                            href={`${getCollectionUrl(activeCategory.handle)}?design_style=${encodeURIComponent(item)}`}
+                            className="text-sm text-gray-600 hover:text-amber-600 hover:bg-amber-50 px-3 py-1.5 rounded-md transition-colors"
+                          >
+                            {item}
+                          </Link>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
                 )}
               </div>
@@ -181,27 +184,26 @@ export default function ShopByCategoryClient({ categories }: Props) {
 
               {/* Column 3: Design & Feature Image */}
               <div className="space-y-8">
-                {activeCategory.design.length > 0 && (
+
+
+                {activeCategory.gender.length > 0 && (
                   <div>
                     <h4 className="text-xs font-bold uppercase text-stone-400 mb-3 tracking-wider">
-                      Design Style
+                      Gender
                     </h4>
-                    <ul className="space-y-2">
-                      {activeCategory.design.map((item, idx) => (
-                        <li key={item}>
-                          <Link
-                            key={idx}
-                            href={`${getCollectionUrl(activeCategory.handle)}?design_style=${encodeURIComponent(item)}`}
-                            className="text-sm text-gray-600 hover:text-amber-600 hover:bg-amber-50 px-3 py-1.5 rounded-md transition-colors"
-                          >
-                            {item}
-                          </Link>
-                        </li>
+                    <div className="flex flex-wrap gap-2">
+                      {activeCategory.gender.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={`${getCollectionUrl(activeCategory.handle)}?gender=${encodeURIComponent(item)}`}
+                          className="flex flex-col items-center gap-3 p-4 rounded-xl border border-[#efe8dc] bg-[#faf8f5] hover:border-amber-200 hover:shadow-md transition-all group"
+                        >
+                          {item}
+                        </Link>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 )}
-
                 {/* Decorative Image Card */}
                 <div className="relative h-48 w-full rounded-md overflow-hidden group/card mt-4">
                   <div className="absolute inset-0 bg-gray-800/20 group-hover/card:bg-gray-800/10 transition-colors z-10" />

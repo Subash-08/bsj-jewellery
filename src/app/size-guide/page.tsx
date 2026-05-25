@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { SITE } from '@/lib/seo.config'
 import { SchemaScript } from '@/components/seo/SchemaScript'
-import { faqSchema, breadcrumbSchema } from '@/lib/schema'
+import { faqSchema, breadcrumbSchema, webPageSchema } from '@/lib/schema'
 
 export const metadata: Metadata = {
   title: 'Silver Jewellery Size Guide — Ring, Kolusu & Bracelet Sizes | Bakya',
@@ -173,11 +173,17 @@ export default function SizeGuidePage() {
     <>
       <SchemaScript
         schema={[
+          webPageSchema({
+            type: 'WebPage',
+            name: 'Silver Jewellery Size Guide — Ring, Kolusu & Bracelet Sizes | Bakya',
+            description: "Find your perfect fit with Bakya's silver jewellery size guide.",
+            url: `${SITE.domain}/size-guide`,
+            breadcrumbs: [
+              { name: 'Home', url: SITE.domain },
+              { name: 'Size Guide', url: `${SITE.domain}/size-guide` },
+            ],
+          }),
           faqSchema(SIZE_FAQS),
-          breadcrumbSchema([
-            { name: 'Home', url: '/' },
-            { name: 'Size Guide', url: '/size-guide' },
-          ]),
         ]}
       />
 

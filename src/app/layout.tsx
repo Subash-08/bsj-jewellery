@@ -12,7 +12,7 @@ import { Toaster } from 'sonner';
 import { getCustomerFromSession } from '@/lib/auth/session';
 import type { Metadata, Viewport } from 'next';
 import { SchemaScript } from '@/components/seo/SchemaScript';
-import { organizationSchema, websiteSchema } from '@/lib/schema';
+import { organizationSchema, localBusinessSchema, websiteSchema } from '@/lib/schema';
 import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
 import { Analytics } from '@/components/analytics/Analytics';
 
@@ -69,7 +69,9 @@ export const metadata: Metadata = {
       'BIS hallmarked 92.5 silver kolusu, bracelets, chains & rings. Trusted since 1997. Ships Tamil Nadu.',
     images: [
       {
-        url: '/logo.png',
+        url: '/og-default.jpg',
+        width: 1200,
+        height: 630,
         alt: 'Bakya Silver Jewellery — Tirunelveli',
       },
     ],
@@ -79,7 +81,11 @@ export const metadata: Metadata = {
     title: 'Bakya — Handcrafted Silver Jewellery from Tirunelveli',
     description:
       'BIS hallmarked 92.5 silver kolusu, bracelets, chains & rings. Trusted since 1997.',
-    images: ['/logo.png'],
+    images: ['/og-default.jpg'],
+    site: '@bakya_jewels',
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION ?? '',
   },
   alternates: {
     canonical: 'https://www.bakya.in',
@@ -136,7 +142,7 @@ export default async function RootLayout({
 
   if (isComingSoon) {
     return (
-      <html lang="en">
+      <html lang="en-IN">
         <body className={inter.className}>
           <ComingSoonPage />
         </body>
@@ -154,7 +160,7 @@ export default async function RootLayout({
         <link rel="dns-prefetch" href="https://connect.facebook.net" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.clarity.ms" />
-        <SchemaScript schema={[organizationSchema(), websiteSchema()]} />
+        <SchemaScript schema={[organizationSchema(), localBusinessSchema(), websiteSchema()]} />
       </head>
       <body className={inter.className}>
         <Analytics />

@@ -8,7 +8,7 @@ import { getShopifyHandle, getProductUrl } from '@/lib/routes/index';
 import { Suspense } from 'react';
 import { COLLECTIONS, COLLECTION_FAQS, SITE } from '@/lib/seo.config';
 import { SchemaScript } from '@/components/seo/SchemaScript';
-import { collectionPageSchema, faqSchema, breadcrumbSchema } from '@/lib/schema';
+import { collectionPageSchema, faqSchema, webPageSchema } from '@/lib/schema';
 
 export const dynamic = 'force-dynamic';
 
@@ -135,13 +135,24 @@ export default async function CollectionPage(props: Props) {
         <>
             {seoConfig && (
                 <SchemaScript schema={[
-                    collectionPageSchema({ name: h1Text, description: seoConfig.metaDescription, url: pageUrl, products: schemaProducts }),
-                    faqSchema(faqs),
-                    breadcrumbSchema([
-                        { name: 'Home', url: '/' },
-                        { name: 'Silver Jewellery', url: '/silver-jewellery' },
-                        { name: seoConfig.title, url: `/silver-jewellery/${params.category}` },
-                    ]),
+                    collectionPageSchema({
+                        name: h1Text,
+                        description: seoConfig.metaDescription,
+                        url: pageUrl,
+                        products: schemaProducts,
+                        breadcrumbs: [
+                            { name: 'Home', url: SITE.domain },
+                            { name: 'Silver Jewellery', url: `${SITE.domain}/silver-jewellery` },
+                            { name: seoConfig.title, url: pageUrl },
+                        ],
+                    }),
+                    ...(faqs.length > 0 ? [faqSchema(faqs)] : []),
+                    webPageSchema({
+                        type: 'CollectionPage',
+                        name: h1Text,
+                        description: seoConfig.metaDescription,
+                        url: pageUrl,
+                    }),
                 ]} />
             )}
             <div
@@ -379,20 +390,6 @@ export default async function CollectionPage(props: Props) {
                                     </div>
                                 ) : (
                                     <>
-                                        <script
-                                            type="application/ld+json"
-                                            dangerouslySetInnerHTML={{
-                                                __html: JSON.stringify({
-                                                    '@context': 'https://schema.org',
-                                                    '@type': 'ItemList',
-                                                    itemListElement: collectionData.products.map((product: any, index: number) => ({
-                                                        '@type': 'ListItem',
-                                                        position: index + 1,
-                                                        url: `https://www.bsjjewellers.com${getProductUrl(product.handle, shopifyHandle)}`,
-                                                    })),
-                                                }),
-                                            }}
-                                        />
                                         <InfiniteProductGrid
                                             initialProducts={collectionData.products}
                                             initialPageInfo={collectionData.pageInfo}

@@ -5,8 +5,11 @@ import { Playfair_Display, Montserrat } from 'next/font/google'
 import { getCollectionUrl } from '@/lib/routes'
 import { SITE } from '@/lib/seo.config'
 import { SchemaScript } from '@/components/seo/SchemaScript'
-import { breadcrumbSchema, collectionPageSchema } from '@/lib/schema'
+import { collectionPageSchema, webPageSchema } from '@/lib/schema'
 import type { Metadata } from 'next'
+import BestSellers from '@/components/home/BestSellers'
+import { getProducts, getCollections } from '@/lib/shopify/client'
+import { mockProducts } from '@/lib/shopify/mock'
 
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '500', '600', '700'] })
 const montserrat = Montserrat({ subsets: ['latin'], weight: ['300', '400', '500', '600'] })
@@ -194,7 +197,24 @@ const COMING_SOON = ['Earrings', 'Toe Rings', 'Nose Pins', 'Bangles', 'Necklaces
 
 // ─── PAGE ─────────────────────────────────────────────────────────────────────
 
-export default function CollectionsPage() {
+export default async function CollectionsPage() {
+  let products: any[] = [];
+  let collections: any[] = [];
+
+  try {
+    collections = await getCollections();
+  } catch (e) {
+    console.error('Failed to fetch collections', e);
+  }
+
+  try {
+    const result = await getProducts();
+    products = result.products || [];
+  } catch (e) {
+    console.error('Failed to fetch best sellers, using mock data:', e);
+    products = mockProducts;
+  }
+
   const schemaProducts = CATEGORIES.map((c) => ({
     name: c.name,
     url: `${SITE.domain}${getCollectionUrl(c.handle)}`,
@@ -212,11 +232,18 @@ export default function CollectionsPage() {
               'Handcrafted 92.5 BIS hallmarked silver jewellery from Tirunelveli since 1997. Shop kolusu, bracelets, chains, pendants and rings.',
             url: `${SITE.domain}/silver-jewellery`,
             products: schemaProducts,
+            breadcrumbs: [
+              { name: 'Home', url: SITE.domain },
+              { name: 'Silver Jewellery', url: `${SITE.domain}/silver-jewellery` },
+            ],
           }),
-          breadcrumbSchema([
-            { name: 'Home', url: '/' },
-            { name: 'Silver Jewellery', url: '/silver-jewellery' },
-          ]),
+          webPageSchema({
+            type: 'CollectionPage',
+            name: 'Shop Silver Jewellery Online | Bakya Tirunelveli',
+            description:
+              'Handcrafted 92.5 BIS hallmarked silver jewellery from Tirunelveli since 1997.',
+            url: `${SITE.domain}/silver-jewellery`,
+          }),
         ]}
       />
 
@@ -294,7 +321,7 @@ export default function CollectionsPage() {
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 py-14 md:py-20">
 
           {/* SEO intro */}
-          <p className={`${montserrat.className} text-stone-500 text-[13px] md:text-[15px] max-w-3xl mx-auto text-center leading-loose mb-16 md:mb-24`}>
+          <p className={`${montserrat.className} text-stone-500 hidden text-[13px] md:text-[15px] max-w-3xl mx-auto text-center leading-loose mb-16 md:mb-24`}>
             Bakya is Tirunelveli's trusted silver jewellery brand — crafting BIS hallmarked 92.5 silver
             kolusu, rings, chains, pendants and bracelets since 1997. Every piece is certified,
             handcrafted, and shipped across Tamil Nadu.
@@ -306,93 +333,36 @@ export default function CollectionsPage() {
           <section aria-labelledby="collections-heading" className="mb-16 md:mb-20">
             <SectionHead id="collections-heading" eyebrow="Shop by Category" title="Our 5 Silver Collections" />
 
-            {/* Editorial grid: kolusu (featured, tall left) + 2×2 right */}
-            <div className="grid grid-cols-1 md:grid-cols-[2.2fr_1fr_1fr] md:grid-rows-2 gap-4 md:gap-6">
-
-              {/* Featured — Kolusu */}
-              {CATEGORIES.filter((c) => c.featured).map((cat) => (
+            {/* Editorial grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6">
+              {collections.slice(0, 5).map((cat: any) => (
                 <Link
                   key={cat.handle}
                   href={getCollectionUrl(cat.handle)}
-                  className="group relative overflow-hidden rounded-[24px] md:row-span-2 aspect-[4/5] md:aspect-auto md:min-h-[560px] focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 shadow-sm hover:shadow-xl transition-all duration-500"
-                  aria-label={`Shop ${cat.name}`}
+                  className="group relative overflow-hidden rounded-xl md:rounded-[20px] w-full aspect-square block focus:outline-none focus:ring-2 focus:ring-[#D4AF37] shadow-sm hover:shadow-xl transition-shadow duration-500"
+                  aria-label={`Shop ${cat.title}`}
                 >
-                  <Image
-                    src={cat.image}
-                    alt={cat.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 44vw"
-                    className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0518] via-[#0d0518]/40 to-[#0d0518]/10 opacity-90 group-hover:opacity-100 transition-opacity duration-700" />
-
-                  {/* Inner elegant border */}
-                  <div className="absolute inset-3 md:inset-4 rounded-[16px] border border-white/10 group-hover:border-[#D4AF37]/30 transition-colors duration-700 pointer-events-none" />
-
-                  <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-between z-10">
-                    {/* Top row: badge + number */}
-                    <div className="flex items-start justify-between">
-                      <span className={`${montserrat.className} text-[10px] text-[#D4AF37] font-semibold uppercase tracking-[0.25em] bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-[#D4AF37]/30 shadow-lg`}>
-                        {cat.badge}
-                      </span>
-                      <span className={`${playfair.className} text-white/10 text-[80px] font-bold leading-none -mt-3 -mr-2 select-none group-hover:text-white/15 transition-colors duration-500`}>
-                        {cat.num}
-                      </span>
+                  {cat.image?.url ? (
+                    <Image
+                      src={cat.image.url}
+                      alt={cat.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 20vw"
+                      className="object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-[#FAF8F5] flex items-center justify-center">
+                      <span className={`${montserrat.className} text-[10px] uppercase tracking-widest text-stone-400`}>No Image</span>
                     </div>
-                    {/* Bottom: text */}
-                    <div className="transform group-hover:-translate-y-2 transition-transform duration-500 ease-out">
-                      <h2 className={`${playfair.className} text-white text-[36px] md:text-[46px] font-bold leading-tight mb-3`}>
-                        {cat.name}
-                      </h2>
-                      <p className={`${montserrat.className} text-[#EAE2F0]/70 text-[13px] md:text-[14px] leading-relaxed mb-6 max-w-sm`}>
-                        {cat.tagline}
-                      </p>
-                      <div className={`${montserrat.className} inline-flex items-center gap-3 text-white text-[11px] font-semibold uppercase tracking-[0.2em] bg-white/10 backdrop-blur-md border border-white/20 hover:border-[#D4AF37]/60 px-7 py-3.5 rounded-full group-hover:bg-[#D4AF37]/20 group-hover:text-[#D4AF37] transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.1)]`}>
-                        Shop Collection <span aria-hidden="true" className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+                  )}
+                  {/* Bottom dark gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-700" />
 
-              {/* Other 4 in 2×2 grid */}
-              {CATEGORIES.filter((c) => !c.featured).map((cat) => (
-                <Link
-                  key={cat.handle}
-                  href={getCollectionUrl(cat.handle)}
-                  className="group relative overflow-hidden rounded-[20px] aspect-[4/3] md:aspect-auto focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 shadow-sm hover:shadow-lg transition-all duration-500"
-                  aria-label={`Shop ${cat.name}`}
-                >
-                  <Image
-                    src={cat.image}
-                    alt={cat.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 22vw"
-                    className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-[1.07]"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0518]/95 via-[#0d0518]/30 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-700" />
-
-                  {/* Inner elegant border */}
-                  <div className="absolute inset-2 md:inset-3 rounded-[12px] border border-white/10 group-hover:border-[#D4AF37]/30 transition-colors duration-700 pointer-events-none" />
-
-                  <div className="absolute inset-0 p-5 md:p-7 flex flex-col justify-between z-10">
-                    <span className={`${playfair.className} text-white/15 text-[56px] font-bold leading-none self-end select-none group-hover:text-white/25 transition-colors duration-500`}>
-                      {cat.num}
-                    </span>
-                    <div className="transform group-hover:-translate-y-1 transition-transform duration-500 ease-out">
-                      <span className={`${montserrat.className} text-[9px] text-[#D4AF37] font-semibold uppercase tracking-[0.25em] block mb-2`}>
-                        {cat.badge}
-                      </span>
-                      <h2 className={`${playfair.className} text-white text-2xl md:text-[28px] font-bold leading-tight mb-1.5`}>
-                        {cat.name}
-                      </h2>
-                      <p className={`${montserrat.className} text-[#EAE2F0]/60 text-[11px] leading-relaxed mb-3`}>{cat.tagline}</p>
-                      <span className={`${montserrat.className} inline-flex items-center gap-1.5 text-[#D4AF37] text-[10px] font-semibold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0`}>
-                        Explore <span aria-hidden="true">→</span>
-                      </span>
-                    </div>
+                  {/* Title */}
+                  <div className="absolute inset-x-0 bottom-0 p-4 md:p-6 flex flex-col items-center justify-end z-10">
+                    <h3 className={`${montserrat.className} text-white font-bold text-[16px] md:text-[20px] leading-tight text-center drop-shadow-md transform group-hover:-translate-y-1 transition-transform duration-300`}>
+                      {cat.title}
+                    </h3>
                   </div>
                 </Link>
               ))}
@@ -406,7 +376,7 @@ export default function CollectionsPage() {
             <SectionHead id="browse-heading" eyebrow="Find What You Need" title="Browse Silver Jewellery" />
 
             {/* 5 category rows */}
-            <div className="rounded-[20px] border border-[#EDE8E0]/70 overflow-hidden bg-white mb-8 shadow-sm">
+            <div className="rounded-[10px] border border-[#EDE8E0]/70 overflow-hidden bg-white mb-8 shadow-sm">
               <div className="divide-y divide-[#EDE8E0]/60">
                 {CATEGORIES.map((cat) => (
                   <div
@@ -485,7 +455,7 @@ export default function CollectionsPage() {
           {/* ══════════════════════════════════════════════════════ */}
 
           {/* BANNER 1 (Before Occasions) */}
-          <div className="relative w-full rounded-[24px] overflow-hidden mb-16 min-h-[300px] md:min-h-[400px] flex items-center shadow-lg">
+          <div className="relative w-full rounded-[10px] max-h-[500px] overflow-hidden mb-16 aspect-[4/3] md:aspect-[21/9] flex items-center shadow-lg">
             <Image
               src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&q=80&w=1600"
               alt="Simple. Stylish. Silver."
@@ -514,7 +484,7 @@ export default function CollectionsPage() {
                 <Link
                   key={card.title}
                   href={card.href}
-                  className="group relative rounded-xl md:rounded-[20px] overflow-hidden aspect-square focus:outline-none focus:ring-2 focus:ring-[#D4AF37] shadow-sm hover:shadow-xl transition-shadow duration-500"
+                  className="group relative rounded-lg md:rounded-[10px] overflow-hidden w-full aspect-square block focus:outline-none focus:ring-2 focus:ring-[#D4AF37] shadow-sm hover:shadow-xl transition-shadow duration-500"
                 >
                   <Image
                     src={card.image}
@@ -526,7 +496,7 @@ export default function CollectionsPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#D4AF37]/90 via-[#D4AF37]/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-700" />
 
                   {/* Subtle inner border */}
-                  <div className="absolute inset-2 md:inset-2.5 rounded-[12px] border border-white/20 group-hover:border-white/50 transition-colors duration-500 pointer-events-none" />
+                  <div className="absolute inset-2 md:inset-2.5 rounded-[5px] border border-white/20 group-hover:border-white/50 transition-colors duration-500 pointer-events-none" />
 
                   <div className="absolute inset-x-0 bottom-0 p-5 md:p-6 flex flex-col items-center justify-end z-10">
                     <h3 className={`${playfair.className} text-white font-bold text-[18px] md:text-[22px] leading-tight text-center drop-shadow-md transform group-hover:-translate-y-1 transition-transform duration-300`}>
@@ -539,7 +509,7 @@ export default function CollectionsPage() {
           </section>
 
           {/* BANNER 2 (After Occasions) */}
-          <div className="relative w-full rounded-[24px] overflow-hidden mb-16 min-h-[300px] md:min-h-[400px] flex items-center shadow-lg">
+          <div className="relative w-full rounded-[10px] max-h-[500px] overflow-hidden mb-16 aspect-[4/3] md:aspect-[21/9] flex items-center shadow-lg">
             <Image
               src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80&w=1600"
               alt="Timeless Antique Elegance"
@@ -579,7 +549,7 @@ export default function CollectionsPage() {
                 <Link
                   key={card.label}
                   href={card.href}
-                  className="group relative rounded-[20px] overflow-hidden p-6 flex flex-col justify-end h-[160px] md:h-[200px] focus:outline-none focus:ring-2 focus:ring-[#D4AF37] shadow-sm hover:shadow-lg transition-shadow duration-500"
+                  className="group relative rounded-[10px] overflow-hidden p-6 flex flex-col justify-end w-full aspect-[4/5] block focus:outline-none focus:ring-2 focus:ring-[#D4AF37] shadow-sm hover:shadow-lg transition-shadow duration-500"
                 >
                   <Image
                     src={card.image}
@@ -590,7 +560,7 @@ export default function CollectionsPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#230532]/90 via-[#230532]/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-700" />
 
                   {/* Inner border */}
-                  <div className="absolute inset-2 md:inset-2.5 rounded-[14px] border border-white/20 group-hover:border-[#D4AF37]/50 transition-colors duration-500 pointer-events-none" />
+                  <div className="absolute inset-2 md:inset-2.5 rounded-[5px] border border-white/20 group-hover:border-[#D4AF37]/50 transition-colors duration-500 pointer-events-none" />
 
                   <div className="relative z-10 text-center transform group-hover:-translate-y-1 transition-transform duration-300">
                     <p className={`${playfair.className} text-white text-[18px] md:text-[22px] font-bold leading-tight drop-shadow-sm`}>
@@ -605,7 +575,7 @@ export default function CollectionsPage() {
           {/* ══════════════════════════════════════════════════════ */}
           {/* Coming Soon                                            */}
           {/* ══════════════════════════════════════════════════════ */}
-          <div className="rounded-2xl bg-[#FAF8F5] border border-[#EDE8E0] px-6 py-8 text-center mb-2">
+          {/* <div className="rounded-2xl bg-[#FAF8F5] border border-[#EDE8E0] px-6 py-8 text-center mb-2">
             <div className="flex items-center justify-center gap-3 mb-3">
               <div className="h-px w-8 bg-gradient-to-r from-transparent to-[#D4AF37]/40" />
               <p className={`${montserrat.className} text-[9px] uppercase tracking-[0.25em] text-[#D4AF37]/70 font-semibold`}>
@@ -626,10 +596,10 @@ export default function CollectionsPage() {
                 </span>
               ))}
             </div>
-          </div>
-
+          </div> */}
         </div>
 
+        <BestSellers products={products} />
         {/* ── Bottom CTA ── */}
         <MatchCTA />
       </main>
