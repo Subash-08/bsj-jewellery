@@ -11,13 +11,13 @@ export default function PromoBanner() {
           <div className="flex flex-col items-center md:items-start justify-center md:pr-12 py-4">
             <span className="text-amber-500 uppercase tracking-widest text-xs font-semibold mb-3">Premium Delivery</span>
             <h3 className="text-2xl md:text-4xl text-white font-serif mb-4">Free Shipping</h3>
-            <p className="text-stone-300 font-sans">On all orders above ₹10,000 across India.</p>
+            <p className="text-stone-300 font-sans">On all orders above ₹999 across Tamil Nadu.</p>
           </div>
           <div className="flex flex-col items-center md:items-start justify-center md:pl-12 py-4">
             <span className="text-amber-500 uppercase tracking-widest text-xs font-semibold mb-3">Limited Offer</span>
             <h3 className="text-2xl md:text-4xl text-white font-serif mb-4">Flat 10% OFF</h3>
             <p className="text-stone-300 font-sans mb-6">On our exclusive Silver jewellery collection.</p>
-            <Link href="/shop/silver" className="inline-block border border-white text-white hover:bg-white hover:text-stone-900 transition-colors uppercase tracking-[0.15em] text-xs font-semibold px-8 py-3">
+            <Link href="/silver-jewellery" className="inline-block border border-white text-white hover:bg-white hover:text-stone-900 transition-colors uppercase tracking-[0.15em] text-xs font-semibold px-8 py-3">
               Shop Silver
             </Link>
           </div>

@@ -22,6 +22,15 @@ export function middleware(request: NextRequest) {
         }
     }
 
+    // 3. Protected Admin Routes: /admin/* (except /admin/login)
+    if (path.startsWith('/admin') && !path.startsWith('/admin/login')) {
+        const adminSession = request.cookies.get('admin_session');
+        const expectedToken = process.env.NEXT_PRIVATE_ADMIN_SESSION_TOKEN;
+        if (!expectedToken || adminSession?.value !== expectedToken) {
+            return NextResponse.redirect(new URL('/admin/login', request.url));
+        }
+    }
+
     return NextResponse.next();
 }
 
@@ -31,5 +40,6 @@ export const config = {
         '/login',
         '/register',
         '/forgot-password',
+        '/admin/:path*',
     ],
 };

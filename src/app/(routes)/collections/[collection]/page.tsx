@@ -20,7 +20,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         const collection = await getCollection(params.collection);
         if (!collection) return {};
         return generateSeo({
-            title: `${collection.seo.title || collection.title} | BSJ Jewellers`,
+            title: `${collection.seo.title || collection.title} | Bakya`,
             description: collection.seo.description || collection.description,
             image: collection.image?.url,
         });

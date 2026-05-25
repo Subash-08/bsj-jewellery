@@ -151,7 +151,7 @@ export default function ProductPageClient({
     const careInstructions = meta['Care Instructions'] as string | undefined;
 
     // Short title for breadcrumb
-    const shortTitle = breadcrumb.shortTitle || product.title.replace(/\s*\|\s*BSJ Jewellery/i, '').slice(0, 60);
+    const shortTitle = breadcrumb.shortTitle || product.title.replace(/\s*\|\s*Bakya Jewellery/i, '').slice(0, 60);
 
     return (
         <div className="bg-[#ffffff]">
@@ -314,7 +314,7 @@ export default function ProductPageClient({
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
                             {[
                                 { icon: Shield, label: 'Hallmark Certified' },
-                                { icon: Truck, label: 'Free Shipping ₹10K+' },
+                                { icon: Truck, label: 'Free Shipping ₹999+' },
                                 { icon: RotateCcw, label: 'Easy Returns' },
                                 { icon: Lock, label: 'Secure Payment' },
                             ].map(({ icon: Icon, label }) => (
@@ -382,8 +382,8 @@ export default function ProductPageClient({
 
                             <AccordionSection title="Shipping & Returns">
                                 <div className="text-sm text-stone-600 leading-relaxed space-y-2">
-                                    <p>Free shipping on all orders above ₹10,000. Standard delivery takes 5–7 business days.</p>
-                                    <p>30-day return policy on unworn items in original packaging. Customised items are not eligible for return.</p>
+                                    <p>Free shipping on all orders above ₹999. Standard delivery takes 3–5 business days.</p>
+                                    <p>7-day return policy on unworn items in original packaging. Customised items are not eligible for return.</p>
                                 </div>
                             </AccordionSection>
 
@@ -419,10 +419,10 @@ export default function ProductPageClient({
                 </div>
 
                 {/* ══════════════════════════════════════════════════════════
-                    SECTION: TRUST — Why Choose BSJ
+                    SECTION: TRUST — Why Choose Bakya
                 ══════════════════════════════════════════════════════════ */}
                 <div className="py-12 md:py-16 border-t border-stone-100">
-                    <h2 className="font-serif text-xl font-semibold text-stone-900 mb-8 text-center">Why Choose BSJ</h2>
+                    <h2 className="font-serif text-xl font-semibold text-stone-900 mb-8 text-center">Why Choose Bakya</h2>
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
                             {
@@ -514,7 +514,7 @@ export default function ProductPageClient({
                                     <div className="flex flex-col gap-[6px] pt-[16px]">
                                         <div className="flex flex-col">
                                         <h3 className="text-[14px] text-[#1a1a1a] font-medium truncate font-sans leading-[22px]">{rp.title}</h3>
-                                        <p className="text-[12px] text-[#777777] font-medium font-sans leading-[22px]">22K Gold • BIS Hallmarked</p>
+                                        <p className="text-[12px] text-[#777777] font-medium font-sans leading-[22px]">92.5 Silver • BIS Hallmarked</p>
                                         </div>
                                         <div className="flex flex-col">
                                         <p className="text-[18px] font-bold text-[#230532] font-sans leading-[22px]">{format(rp.priceRange.minVariantPrice.amount)}</p>

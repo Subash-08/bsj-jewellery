@@ -1,7 +1,7 @@
 import ActivateAccountForm from '@/components/auth/ActivateAccountForm';
 
 export const metadata = {
-    title: 'Activate Account - BSJ Jewellers',
+    title: 'Activate Account - Bakya',
 };
 
 export default function ActivateAccountPage({

@@ -7,10 +7,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: policy?.title
-      ? `${policy.title} | BSJ Jewellers`
-      : 'Shipping Policy | BSJ Jewellers',
+      ? `${policy.title} | Bakya by Bagyalakshmi Jewellers`
+      : 'Shipping Policy | Bakya by Bagyalakshmi Jewellers',
     description:
-      'Find out about shipping options, delivery times, and costs at BSJ Jewellers. We offer reliable delivery across India.',
+      'Find out about shipping options, delivery times, and costs at Bakya by Bagyalakshmi Jewellers. We offer reliable delivery across India.',
   };
 }
 

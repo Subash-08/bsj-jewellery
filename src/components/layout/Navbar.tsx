@@ -147,7 +147,7 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                     href="/"
                                     className="hidden lg:flex flex-col items-start group shrink-0"
                                 >
-                                    <Image src="/logo.png" alt="Logo" width={100} height={100} />
+                                    <Image src="/logo.png" alt="Bakya Silver Jewellery — Handcrafted Since 1997" width={100} height={100} />
                                 </Link>
                             </div>
 
@@ -159,7 +159,7 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                             {/* Mobile: center logo */}
                             <div className="lg:hidden flex justify-center items-center">
                                 <Link href="/" className="flex flex-col items-center group shrink-0">
-                                    <Image src="/logo.png" alt="Logo" width={100} height={100} />
+                                    <Image src="/logo.png" alt="Bakya Silver Jewellery" width={100} height={100} />
                                 </Link>
                             </div>
 
@@ -249,39 +249,6 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                         <div className="flex items-center justify-center gap-8 relative">
                             {categoryMenuSlot}
 
-                            {/* GOLD JEWELLERY */}
-                            <div className="relative group">
-                                <button className="text-[11px] font-medium text-gray-700 hover:text-amber-600 uppercase tracking-widest transition-colors py-2 flex items-center gap-1">
-                                    Gold Jewellery
-                                    <ChevronDown
-                                        size={13}
-                                        className="transition-transform duration-300 group-hover:rotate-180"
-                                    />
-                                </button>
-                                <div className="absolute top-full left-0 mt-2 w-48 bg-white shadow-xl border border-[#efe8dc] rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                                    <div className="py-2">
-                                        {[
-                                            "Chains",
-                                            "Necklaces",
-                                            "Bangles",
-                                            "Bracelets",
-                                            "Rings",
-                                            "Earrings",
-                                            "Anklets",
-                                            "Toe Rings",
-                                        ].map((item) => (
-                                            <Link
-                                                key={item}
-                                                href={`/shop/${item.toLowerCase().replace(" ", "-")}`}
-                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-amber-50 hover:text-amber-600 transition-colors"
-                                            >
-                                                {item}
-                                            </Link>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-
                             {/* SILVER */}
                             <div className="relative group">
                                 <button className="text-[11px] font-medium text-gray-700 hover:text-amber-600 uppercase tracking-widest transition-colors py-2 flex items-center gap-1">
@@ -341,6 +308,14 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                 className="text-[11px] font-medium text-gray-700 hover:text-amber-600 uppercase tracking-widest transition-colors relative group py-2"
                             >
                                 About
+                                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-amber-500 transition-all duration-300 group-hover:w-full" />
+                            </Link>
+
+                            <Link
+                                href="/blog"
+                                className="text-[11px] font-medium text-gray-700 hover:text-amber-600 uppercase tracking-widest transition-colors relative group py-2"
+                            >
+                                Blog
                                 <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-amber-500 transition-all duration-300 group-hover:w-full" />
                             </Link>
 
@@ -449,28 +424,6 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                 </Link>
                             )}
 
-                            {/* GOLD JEWELLERY */}
-                            <MobileAccordion title="Gold Jewellery">
-                                {[
-                                    "Chains",
-                                    "Necklaces",
-                                    "Bangles",
-                                    "Bracelets",
-                                    "Rings",
-                                    "Earrings",
-                                    "Anklets",
-                                    "Toe Rings",
-                                ].map((item) => (
-                                    <Link
-                                        key={item}
-                                        href={`/shop/${item.toLowerCase().replace(/ /g, "-")}`}
-                                        className="block py-2 text-sm text-gray-600 hover:text-amber-600"
-                                    >
-                                        {item}
-                                    </Link>
-                                ))}
-                            </MobileAccordion>
-
                             {/* SILVER JEWELLERY */}
                             <MobileAccordion title="Silver Jewellery">
                                 <p className="text-[10px] uppercase tracking-widest text-[#EAE2F0]/50 font-semibold mt-1 mb-1 px-1">By Category</p>
@@ -513,6 +466,13 @@ export default function Navbar({ categoryMenuSlot, mobileCategories = [] }: Navb
                                 className="block py-3 px-2 text-white font-medium border-b border-[#f1ece3]"
                             >
                                 About
+                            </Link>
+
+                            <Link
+                                href="/blog"
+                                className="block py-3 px-2 text-white font-medium border-b border-[#f1ece3]"
+                            >
+                                Blog
                             </Link>
 
                             <Link

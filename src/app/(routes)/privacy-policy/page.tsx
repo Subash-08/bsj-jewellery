@@ -7,10 +7,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: policy?.title
-      ? `${policy.title} | BSJ Jewellers`
-      : 'Privacy Policy | BSJ Jewellers',
+      ? `${policy.title} | Bakya by Bagyalakshmi Jewellers`
+      : 'Privacy Policy | Bakya by Bagyalakshmi Jewellers',
     description:
-      'Read our privacy policy to understand how BSJ Jewellers collects, uses, and protects your personal information.',
+      'Read our privacy policy to understand how Bakya by Bagyalakshmi Jewellers collects, uses, and protects your personal information.',
   };
 }
 

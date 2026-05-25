@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next'
 import { SITE } from '@/lib/seo.config'
 import { getProducts, getCollections } from '@/lib/shopify/client'
 import { getProductUrl } from '@/lib/routes/index'
+import { getPaginatedPosts } from '@/lib/blog'
 
 export const revalidate = 3600
 
@@ -47,5 +48,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // fall through with static pages only
   }
 
-  return [...staticPages, ...productPages]
+  let blogPages: MetadataRoute.Sitemap = [
+    { url: `${base}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
+  ]
+  try {
+    const { posts } = getPaginatedPosts(1, 1000)
+    blogPages = [
+      { url: `${base}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
+      ...posts.map((p) => ({
+        url: `${base}/blog/${p.slug}`,
+        lastModified: p.dateModified,
+        changeFrequency: 'monthly' as const,
+        priority: 0.6,
+      })),
+    ]
+  } catch {
+    // fall through with listing page only
+  }
+
+  return [...staticPages, ...productPages, ...blogPages]
 }

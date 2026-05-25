@@ -57,7 +57,7 @@ function BestSellerCard({ product }: { product: Product }) {
       <div className="flex flex-col gap-[6px] pt-[16px]">
         <div className="flex flex-col">
           <h3 className="text-[14px] text-[#1a1a1a] font-medium truncate font-sans leading-[22px]">{product.title}</h3>
-          <p className="text-[12px] text-[#777777] font-medium font-sans leading-[22px]">22K Gold • BIS Hallmarked</p>
+          <p className="text-[12px] text-[#777777] font-medium font-sans leading-[22px]">92.5 Silver • BIS Hallmarked</p>
         </div>
         <div className="flex flex-col">
           <p className="text-[18px] font-bold text-[#230532] font-sans leading-[22px]">{format(price)}</p>
@@ -89,7 +89,7 @@ export default function BestSellers({ products }: { products: Product[] }) {
             <span className="text-[#230532] text-[23px] leading-none">✦</span>
           </div>
           <p className="text-[#000000] italic font-sans text-[16px] md:text-[18px] font-normal leading-[22px] mt-1">
-            Most loved designs chosen by our customers
+            92.5 BIS Hallmarked Silver — Loved by Women Across Tamil Nadu
           </p>
         </div>
 

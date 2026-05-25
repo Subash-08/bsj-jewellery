@@ -100,7 +100,7 @@ function ComingSoonPage() {
 
         {/* Logo / Brand */}
         <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-          BSJ Jewellers
+          Bakya by Bagyalakshmi Jewellers
         </h1>
 
         {/* Subtitle */}
@@ -120,7 +120,7 @@ function ComingSoonPage() {
 
         {/* Footer */}
         <p className="text-sm text-zinc-500 mt-10">
-          © {new Date().getFullYear()} BSJ Jewellers. All rights reserved.
+          © {new Date().getFullYear()} Bakya by Bagyalakshmi Jewellers. All rights reserved.
         </p>
       </div>
     </div>

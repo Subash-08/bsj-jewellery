@@ -36,9 +36,9 @@ const ChevronRight = () => (
 const slides = [
   {
     id: 0,
-    label: "TRENDING NOW",
-    title: "Shine in Every\nMoment",
-    subtitle: "Discover lightweight, stylish silver jewellery crafted for your everyday shine.",
+    label: "",
+    title: "Handcrafted Silver\nJewellery",
+    subtitle: "BIS Hallmarked 92.5 Silver | Handcrafted in Tirunelveli | Ships Across Tamil Nadu",
     // Desktop Image (16:9 - 1920x1080)
     image: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/hero-slide1.jpg?v=1778743993",
     // Mobile Image (4:5 - 1080x1350)
@@ -70,8 +70,8 @@ const slides = [
 ];
 
 const TRUST_BADGES = [
-  "Certified Jewel",
-  "Easy Returns",
+  "92.5 BIS Certified",
+  "7-Day Returns",
   "Secure Payments",
 ];
 
@@ -280,19 +280,21 @@ const Hero = () => {
                 animate="visible"
                 exit="exit"
               >
-                {/* Label */}
-                <motion.div variants={labelVariants} className="mb-3">
-                  <span
-                    className="font-montserrat italic"
-                    style={{
-                      color: "#B6B6B6",
-                      fontSize: "18px",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {slide.label}
-                  </span>
-                </motion.div>
+                {/* Label — only shown when non-empty */}
+                {slide.label && (
+                  <motion.div variants={labelVariants} className="mb-3">
+                    <span
+                      className="font-montserrat italic"
+                      style={{
+                        color: "#B6B6B6",
+                        fontSize: "18px",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {slide.label}
+                    </span>
+                  </motion.div>
+                )}
 
                 {/* Heading — word-by-word stagger */}
                 <motion.h1
@@ -322,13 +324,19 @@ const Hero = () => {
                   {slide.subtitle}
                 </motion.p>
 
-                {/* CTA */}
-                <motion.div variants={ctaVariants}>
+                {/* CTAs */}
+                <motion.div variants={ctaVariants} className="flex flex-wrap items-center gap-4">
                   <Link
                     href="/silver-jewellery"
                     className="inline-flex items-center justify-center bg-[#FACE7A] text-[#230532] font-montserrat font-bold text-[18px] rounded-[4px] px-[20px] py-[10px] transition-transform duration-300 hover:scale-105 shadow-md"
                   >
-                    Explore Collection
+                    Shop Silver Jewellery
+                  </Link>
+                  <Link
+                    href="/silver-jewellery/anklets"
+                    className="inline-flex items-center justify-center border-2 border-[#FACE7A] text-[#FACE7A] font-montserrat font-bold text-[18px] rounded-[4px] px-[20px] py-[10px] transition-all duration-300 hover:bg-[#FACE7A]/10 hover:scale-105"
+                  >
+                    Shop Kolusu
                   </Link>
                 </motion.div>
               </motion.div>

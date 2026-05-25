@@ -24,7 +24,7 @@ export default function RegisterPage() {
             <div className="hidden md:flex md:w-1/2 relative">
                 <Image
                     src="/login-img.png"
-                    alt="BSJ Jewellery Register"
+                    alt="Bakya Silver Jewellery"
                     fill
                     className="object-cover"
                     priority

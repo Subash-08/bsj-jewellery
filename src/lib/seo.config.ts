@@ -306,3 +306,13 @@ export const COLLECTION_FAQS = {
     },
   ],
 } as const
+
+export const BLOG_CONFIG = {
+  title: 'Bakya Journal — Silver Jewellery Guides & Tamil Culture',
+  description:
+    'Expert guides on silver jewellery care, Tamil jewellery traditions, gifting ideas, and behind-the-craft stories from Bakya, Tirunelveli.',
+  path: '/blog',
+  perPage: 9,
+  defaultAuthor: 'Bakya Team',
+  defaultCoverImage: '/blog/images/placeholder.jpg',
+} as const

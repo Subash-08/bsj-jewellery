@@ -18,7 +18,7 @@ export default function TrackOrderPage() {
                                 <input
                                     type="text"
                                     id="orderNumber"
-                                    placeholder="e.g., BSJ123456"
+                                    placeholder="e.g., #1001"
                                     className="w-full px-4 py-3 border border-stone-300 rounded-md focus:ring-2 focus:ring-rose-500 focus:border-rose-500"
                                 />
                             </div>

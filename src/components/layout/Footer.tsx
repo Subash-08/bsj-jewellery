@@ -6,18 +6,16 @@ import {
   RotateCcw,
   CreditCard,
   Award,
-  Instagram,
-  Facebook,
   MessageCircle,
-  ArrowRight
 } from "lucide-react";
+import NewsletterForm from "./NewsletterForm";
 
 const TRUST_BADGES = [
-  { icon: Award, label: "Hallmark Certified" },
-  { icon: Truck, label: "Free Shipping (₹10K+)" },
-  { icon: RotateCcw, label: "Easy Returns" },
-  { icon: CreditCard, label: "Secure Payment" },
-  { icon: ShieldCheck, label: "Lifetime Service" },
+  { icon: Award, label: "BIS Hallmark Certified" },
+  { icon: Truck, label: "Free Shipping Above ₹999" },
+  { icon: RotateCcw, label: "7-Day Easy Returns" },
+  { icon: CreditCard, label: "Secure Razorpay Payments" },
+  { icon: ShieldCheck, label: "Ships Across Tamil Nadu" },
 ];
 
 const SHOP_LINKS = [
@@ -38,6 +36,7 @@ const CUSTOMER_CARE_LINKS = [
 
 const ABOUT_LINKS = [
   { label: "About Us", href: "/about" },
+  { label: "Blog", href: "/blog" },
   { label: "Privacy Policy", href: "/privacy-policy" },
   { label: "Terms & Conditions", href: "/terms-of-service" },
 ];
@@ -68,19 +67,52 @@ export default function Footer() {
           {/* Column 1 — Brand */}
           <div className="lg:col-span-4 flex flex-col gap-6">
             <Link href="/" className="">
-              <Image src="/logo.png" alt="BSJ Logo" width={120} height={120} className="w-auto h-12 object-contain" />
+              <Image src="/logo.png" alt="Bakya Silver Jewellery — Tirunelveli Since 1997" width={120} height={120} className="w-auto h-12 object-contain" />
             </Link>
-            <p className="text-sm text-white/80 leading-relaxed max-w-sm">
-              Crafting timeless luxury and exquisite pure silver jewellery tailored to celebrate your life's most precious moments.
-            </p>
+            <div>
+              <p className="text-sm text-white/80 leading-relaxed max-w-sm">
+                Handcrafted BIS hallmarked silver jewellery from Tirunelveli, Tamil Nadu.
+              </p>
+              <p className="text-sm text-white/80 leading-relaxed max-w-sm">
+                Trusted by families since 1997.
+              </p>
+              <p className="text-xs text-white/50 mt-3 leading-relaxed max-w-sm">
+                57A/12 ERKP Building, Koolakadai Bazaar<br />
+                Tirunelveli Town, Tamil Nadu 627006
+              </p>
+            </div>
             <div className="flex items-center gap-4 mt-2">
-              <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-amber-500 hover:border-amber-500 transition-colors">
-                <Instagram className="w-5 h-5" />
+              <a
+                href="https://www.instagram.com/bakya.jewels"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Bakya on Instagram"
+                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-amber-500 hover:border-amber-500 transition-colors"
+              >
+                {/* Instagram icon */}
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" strokeWidth="0" />
+                </svg>
               </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-amber-500 hover:border-amber-500 transition-colors">
-                <Facebook className="w-5 h-5" />
+              <a
+                href="#"
+                aria-label="Bakya on Facebook (coming soon)"
+                title="Coming soon"
+                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-amber-500 hover:border-amber-500 transition-colors"
+              >
+                {/* Facebook icon */}
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                </svg>
               </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-amber-500 hover:border-amber-500 transition-colors">
+              <a
+                href="#"
+                aria-label="Bakya on WhatsApp (coming soon)"
+                title="Coming soon"
+                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-amber-500 hover:border-amber-500 transition-colors"
+              >
                 <MessageCircle className="w-5 h-5" />
               </a>
             </div>
@@ -132,25 +164,9 @@ export default function Footer() {
           <div className="lg:col-span-2 flex flex-col gap-6">
             <h3 className="text-sm font-serif font-medium text-white uppercase tracking-widest">Newsletter</h3>
             <p className="text-sm text-white/80 leading-relaxed">
-              Subscribe to receive updates, access to exclusive deals, and more.
+              Subscribe to receive updates, exclusive offers, and silver care tips.
             </p>
-            <form className="flex flex-col gap-3 mt-2">
-              <div className="relative">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="w-full bg-white/10 border border-white/20 text-white text-sm px-4 py-3 outline-none focus:border-amber-500 transition-colors placeholder:text-white/50"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="absolute right-0 top-0 bottom-0 px-4 text-white/70 hover:text-amber-500 transition-colors flex items-center justify-center"
-                  aria-label="Subscribe"
-                >
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-              </div>
-            </form>
+            <NewsletterForm />
           </div>
 
         </div>
@@ -158,7 +174,7 @@ export default function Footer() {
         {/* 3. BOTTOM BAR */}
         <div className="pt-8 border-t border-white/20 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-white/70">
-            BSJ Jewellers &copy; {new Date().getFullYear()}. All Rights Reserved.
+            Bakya by Bagyalakshmi Jewellers &copy; {new Date().getFullYear()}. All Rights Reserved.
           </p>
           <div className="flex items-center gap-3 opacity-60 hover:opacity-100 transition-all duration-300">
             {/* Payment Placeholders */}

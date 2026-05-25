@@ -309,7 +309,7 @@ export default async function ProductPage(props: Props) {
     const breadcrumb = {
         collectionTitle: currentCollectionNode?.title || (shopifyCollectionHandle === 'all' ? 'All Jewellery' : product.productType || ''),
         collectionHandle: shopifyCollectionHandle,
-        shortTitle: product.title.replace(/\s*\|\s*BSJ Jewellery/i, '').slice(0, 60),
+        shortTitle: product.title.replace(/\s*\|\s*Bakya/i, '').slice(0, 60),
     };
 
     let relatedProducts: Product[] = [];
@@ -342,7 +342,7 @@ export default async function ProductPage(props: Props) {
         sku: product.variants[0]?.sku || product.handle,
         brand: {
             '@type': 'Brand',
-            name: 'BSJ Jewellery',
+            name: 'Bakya',
         },
         offers: {
             '@type': 'Offer',
@@ -354,7 +354,7 @@ export default async function ProductPage(props: Props) {
                 : 'https://schema.org/OutOfStock',
             seller: {
                 '@type': 'Organization',
-                name: 'BSJ Jewellery',
+                name: 'Bakya',
             },
         },
     };

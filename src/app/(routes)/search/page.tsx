@@ -22,13 +22,13 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
     if (rawQuery) {
         return generateSeo({
-            title: `Search: "${rawQuery}" | BSJ Jewellers`,
-            description: `Search results for "${rawQuery}" at BSJ Jewellers. Browse our collection of fine jewellery.`,
+            title: `Search: "${rawQuery}" | Bakya`,
+            description: `Search results for "${rawQuery}" at Bakya. Browse our collection of fine jewellery.`,
         });
     }
 
     return generateSeo({
-        title: 'Search | BSJ Jewellers',
+        title: 'Search | Bakya',
         description: 'Search our collection of gold and silver jewellery.',
     });
 }

@@ -81,7 +81,7 @@ export default function AccountDrawer({
                             </div>
                             <div className="space-y-1">
                                 <p className="font-serif text-lg text-stone-700">
-                                    Welcome to BSJ
+                                    Welcome to Bakya
                                 </p>
                                 <p className="text-xs text-stone-400 tracking-widest uppercase">
                                     Sign in to access your account

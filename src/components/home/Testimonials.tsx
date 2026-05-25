@@ -14,7 +14,7 @@ const TESTIMONIALS = [
   {
     author: "Priya Desai",
     location: "Delhi",
-    review: "I have been buying from BSJ for years. Their silver collection is unmatched in elegance. This recent purchase was exactly what I dreamed of for my anniversary.",
+    review: "I have been buying from Bakya for years. Their silver collection is unmatched in elegance. This recent purchase was exactly what I dreamed of for my anniversary.",
     rating: 5
   },
   {

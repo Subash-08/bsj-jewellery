@@ -247,6 +247,21 @@ export function collectionPageSchema(opts: {
   }
 }
 
+export function blogListSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    '@id': `${SITE.domain}/blog`,
+    name: 'Bakya Journal',
+    description:
+      'Silver care guides, Tamil jewellery traditions, gifting ideas and craft stories from Bakya, Tirunelveli.',
+    url: `${SITE.domain}/blog`,
+    publisher: { '@id': `${SITE.domain}/#organization` },
+    inLanguage: 'en-IN',
+    isPartOf: { '@id': `${SITE.domain}/#website` },
+  }
+}
+
 export function blogPostingSchema(post: {
   title: string
   description: string
@@ -255,6 +270,8 @@ export function blogPostingSchema(post: {
   datePublished: string
   dateModified: string
   authorName: string
+  authorUrl?: string
+  tags?: string[]
 }) {
   return {
     '@context': 'https://schema.org',
@@ -265,9 +282,11 @@ export function blogPostingSchema(post: {
     url: post.url,
     datePublished: post.datePublished,
     dateModified: post.dateModified,
+    ...(post.tags && post.tags.length > 0 ? { keywords: post.tags.join(', ') } : {}),
     author: {
       '@type': 'Person',
       name: post.authorName,
+      ...(post.authorUrl ? { url: post.authorUrl } : {}),
       worksFor: { '@id': `${SITE.domain}/#organization` },
     },
     publisher: {

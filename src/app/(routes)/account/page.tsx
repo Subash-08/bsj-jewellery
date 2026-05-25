@@ -65,7 +65,7 @@ export default function AccountDashboard() {
                 <div className="relative">
                     <div className="flex items-center gap-2 mb-3">
                         <Crown size={18} className="text-amber-400" />
-                        <span className="text-amber-400/80 text-xs uppercase tracking-[0.2em] font-medium">BSJ Member</span>
+                        <span className="text-amber-400/80 text-xs uppercase tracking-[0.2em] font-medium">Bakya Member</span>
                     </div>
                     <h1 className="text-3xl md:text-4xl font-serif font-light mb-2">
                         Welcome back, <span className="font-normal">{customer.firstName || 'Valued Customer'}</span>

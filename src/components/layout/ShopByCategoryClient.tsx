@@ -88,7 +88,7 @@ export default function ShopByCategoryClient({ categories }: Props) {
                   href={getCollectionUrl(activeCategory.handle)}
                   className="inline-flex items-center gap-2 px-8 py-3.5 bg-amber-600 text-white text-sm font-semibold tracking-wider uppercase rounded-full hover:bg-amber-700 transition-all shadow-lg shadow-amber-600/20"
                 >
-                  Explore {activeCategory.name}
+                  {activeCategory.handle === 'anklet' ? 'Explore Silver Kolusu' : `Explore ${activeCategory.name}`}
                 </Link>
               </div>
             </div>
@@ -211,7 +211,7 @@ export default function ShopByCategoryClient({ categories }: Props) {
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute bottom-3 left-3 z-20">
-                    <p className="text-white text-xs font-bold uppercase">Trending Now</p>
+                    <p className="text-white text-xs font-bold uppercase">Shop Now</p>
                     <p className="text-white text-xs opacity-90">In {activeCategory.name}</p>
                   </div>
                 </div>

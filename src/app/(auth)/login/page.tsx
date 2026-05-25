@@ -24,7 +24,7 @@ export default function LoginPage() {
             <div className="hidden md:flex md:w-1/2 relative">
                 <Image
                     src="/login-img.png"
-                    alt="BSJ Jewellery Login"
+                    alt="Bakya Silver Jewellery"
                     fill
                     className="object-cover"
                     priority

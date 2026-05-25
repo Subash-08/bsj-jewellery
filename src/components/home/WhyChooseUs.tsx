@@ -11,7 +11,7 @@ const FEATURES = [
   {
     icon: Truck,
     title: 'Free Shipping',
-    description: 'Complimentary shipping on orders above ₹10K.'
+    description: 'Free shipping on all orders above ₹999.'
   },
   {
     icon: CreditCard,
