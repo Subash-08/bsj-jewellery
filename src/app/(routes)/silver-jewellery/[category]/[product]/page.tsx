@@ -14,8 +14,8 @@ import { productSchema, faqSchema, collectionPageSchema, breadcrumbSchema, webPa
 import { SchemaScript } from '@/components/seo/SchemaScript';
 import { QuickAnswer } from '@/components/seo/QuickAnswer';
 
-// Enable dynamic rendering for this route
-export const dynamic = 'force-dynamic';
+// Revalidate every hour — allows static shell rendering for Googlebot
+export const revalidate = 3600;
 
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '600', '700'] });
 const montserrat = Montserrat({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
@@ -165,18 +165,21 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     const productUrl = `${SITE.domain}/silver-jewellery/${params.category}/${params.product}`;
     const productImage = product.images?.[0]?.url ?? `${SITE.domain}/og-default.jpg`;
 
-    // Build clean SEO title — no double brand name
+    // Build clean SEO title — use absolute to bypass layout template's brand suffix
     const cleanTitle = product.seo?.title
         ? product.seo.title.replace(/\|\s*Bakya\s*$/i, '').trim()
         : product.title.replace(/\|\s*Bakya.*/i, '').trim();
-    const seoTitle = `${cleanTitle} | Bakya`;
+    const seoTitle = `${cleanTitle} | 92.5 BIS Silver | Bakya`;
 
-    // Build clean meta description — not the bullet-list body copy
-    const seoDescription = product.seo?.description
+    // Build clean meta description — cut at last complete word before 155 chars
+    const rawDescription = product.seo?.description
         && product.seo.description.length >= 60
         && product.seo.description.length <= 165
         ? product.seo.description
-        : `Buy ${cleanTitle} handcrafted in 92.5 BIS hallmarked sterling silver. ${product.productType ? `Premium ${product.productType.toLowerCase()} for women.` : ''} Trusted by families since 1997. Ships across Tamil Nadu.`.slice(0, 160);
+        : `Buy ${cleanTitle} handcrafted in 92.5 BIS hallmarked sterling silver. Premium ${product.productType?.toLowerCase() ?? 'silver jewellery'} for women. Trusted by families since 1997. Ships across Tamil Nadu.`;
+    const seoDescription = rawDescription.length <= 155
+        ? rawDescription
+        : rawDescription.slice(0, rawDescription.lastIndexOf(' ', 155)) + '.';
 
     const keywords = [
         cleanTitle.toLowerCase(),
@@ -189,7 +192,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     ].filter(Boolean);
 
     return {
-        title: seoTitle,
+        title: { absolute: seoTitle },
         description: seoDescription,
         keywords,
         alternates: { canonical: productUrl },

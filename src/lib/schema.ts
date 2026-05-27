@@ -20,7 +20,7 @@ export function organizationSchema() {
       areaServed: 'IN',
       availableLanguage: ['English', 'Tamil'],
     },
-    sameAs: Object.values(SITE.social).filter(Boolean),
+    sameAs: Object.values(SITE.social).filter((v): v is string => typeof v === 'string' && v.startsWith('http')),
     foundingDate: String(SITE.foundingYear),
     description:
       'Handcrafted BIS hallmarked silver jewellery from Tirunelveli since 1997',
