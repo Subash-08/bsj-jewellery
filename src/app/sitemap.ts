@@ -35,15 +35,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .map((c: { handle: string }) => c.handle)
       .filter(Boolean)
 
-    const productResult = await getProducts({})
-    const products = productResult.products ?? []
+    let allProducts: any[] = []
+    let hasNextPage = true
+    let cursor: string | undefined = undefined
 
-    productPages = products.map((p: { handle: string; updatedAt?: string }) => ({
-      url: `${base}${getProductUrl(p.handle, collectionHandles[0] ?? 'all')}`,
-      lastModified: p.updatedAt ?? now,
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    }))
+    while (hasNextPage) {
+      const productResult = await getProducts({ after: cursor })
+      allProducts = [...allProducts, ...(productResult.products ?? [])]
+      
+      hasNextPage = productResult.pageInfo?.hasNextPage ?? false
+      cursor = productResult.pageInfo?.endCursor ?? undefined
+    }
+
+    productPages = allProducts.map((p: any) => {
+      const productCollectionHandle = p.collections?.edges?.[0]?.node?.handle || 'all'
+      return {
+        url: `${base}${getProductUrl(p.handle, productCollectionHandle)}`,
+        lastModified: p.updatedAt ?? now,
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+      }
+    })
   } catch {
     // fall through with static pages only
   }
