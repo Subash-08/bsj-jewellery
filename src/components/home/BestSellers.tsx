@@ -101,42 +101,42 @@ export default function BestSellers({ products }: { products: Product[] }) {
         </div>
 
         {/* Trust Icons Bottom Row */}
-        <div className="mt-10 md:mt-14 flex flex-wrap justify-between items-start gap-y-10 gap-x-4 opacity-90 px-2 md:px-4 w-full">
-          <div className="flex flex-col items-center flex-1 min-w-[80px] gap-4">
-            <div className="relative w-14 h-14 md:w-20 md:h-20">
+        <div className="mt-10 md:mt-14 grid grid-cols-3 lg:grid-cols-6 gap-y-8 gap-x-2 md:gap-x-4 opacity-90 px-2 md:px-4 w-full">
+          <div className="flex flex-col items-center gap-3 md:gap-4">
+            <div className="relative w-12 h-12 md:w-20 md:h-20">
               <Image src="/svgviewer-png-output.png" alt="100% Certified Jewellery" fill className="object-contain" />
             </div>
-            <span className="text-[11px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">100% Certified<br />Jewellery</span>
+            <span className="text-[10px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">100% Certified<br />Jewellery</span>
           </div>
-          <div className="flex flex-col items-center flex-1 min-w-[80px] gap-4">
-            <div className="relative w-14 h-14 md:w-20 md:h-20">
+          <div className="flex flex-col items-center gap-3 md:gap-4">
+            <div className="relative w-12 h-12 md:w-20 md:h-20">
               <Image src="/svgviewer-png-output (1).png" alt="1 Year Free Insurance" fill className="object-contain" />
             </div>
-            <span className="text-[11px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">Easy Returns</span>
+            <span className="text-[10px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">Easy Returns</span>
           </div>
-          <div className="flex flex-col items-center flex-1 min-w-[80px] gap-4">
-            <div className="relative w-14 h-14 md:w-20 md:h-20">
+          <div className="flex flex-col items-center gap-3 md:gap-4">
+            <div className="relative w-12 h-12 md:w-20 md:h-20">
               <Image src="/svgviewer-png-output (2).png" alt="BIS Hallmarked Gold" fill className="object-contain" />
             </div>
-            <span className="text-[11px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">Free Shipping</span>
+            <span className="text-[10px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">Free Shipping</span>
           </div>
-          <div className="flex flex-col items-center flex-1 min-w-[80px] gap-4">
-            <div className="relative w-14 h-14 md:w-20 md:h-20">
+          <div className="flex flex-col items-center gap-3 md:gap-4">
+            <div className="relative w-12 h-12 md:w-20 md:h-20">
               <Image src="/svgviewer-png-output (3).png" alt="Easy Returns" fill className="object-contain" />
             </div>
-            <span className="text-[11px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">1 Year Free<br />Insurance</span>
+            <span className="text-[10px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">1 Year Free<br />Insurance</span>
           </div>
-          <div className="flex flex-col items-center flex-1 min-w-[80px] gap-4">
-            <div className="relative w-14 h-14 md:w-20 md:h-20">
+          <div className="flex flex-col items-center gap-3 md:gap-4">
+            <div className="relative w-12 h-12 md:w-20 md:h-20">
               <Image src="/svgviewer-png-output (4).png" alt="Free Shipping" fill className="object-contain" />
             </div>
-            <span className="text-[11px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">BIS Hallmarked Gold</span>
+            <span className="text-[10px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">BIS Hallmarked Gold</span>
           </div>
-          <div className="flex flex-col items-center flex-1 min-w-[80px] gap-4">
-            <div className="relative w-14 h-14 md:w-16 md:h-16">
+          <div className="flex flex-col items-center gap-3 md:gap-4">
+            <div className="relative w-12 h-12 md:w-16 md:h-16">
               <Image src="/svgviewer-png-output (5).png" alt="Premium Craftsmanship" fill className="object-contain" />
             </div>
-            <span className="text-[11px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">Premium<br />Craftsmanship</span>
+            <span className="text-[10px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">Premium<br />Craftsmanship</span>
           </div>
         </div>
 

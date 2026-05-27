@@ -6,21 +6,21 @@ import { Section } from '@/components/layout/Section';
 
 const FAQS = [
   {
-    question: "What is your shipping time?",
-    answer: "We process all orders within 24 hours. Standard shipping takes 3-5 business days across India. Expedited shipping options are available at checkout."
+    question: 'Is Bakya silver jewellery BIS hallmarked?',
+    answer: 'Yes. All silver jewellery sold by Bakya by Bagyalakshmi Jewellers carries BIS hallmark certification with HUID, confirming silver purity of 92.5 (sterling) or 90 purity.',
   },
   {
-    question: "What is your return policy?",
-    answer: "We offer a hassle-free 15-day return policy for all unworn jewellery with original tags attached. Custom pieces are non-refundable."
+    question: 'Does Bakya ship silver jewellery outside Tirunelveli?',
+    answer: 'Yes. Bakya ships silver jewellery across Tamil Nadu and India. Orders are dispatched in 1–2 business days and delivered within 3–5 business days.',
   },
   {
-    question: "Is the jewellery authentic?",
-    answer: "Yes, every piece of Bakya jewellery is BIS Hallmark certified. Our 92.5 silver pieces come with a certificate of authenticity."
+    question: 'What is the return policy for silver jewellery at Bakya?',
+    answer: 'Bakya offers a 7-day return window from the date of delivery. Items must be unused and in original condition. Contact us via WhatsApp or email to initiate a return.',
   },
   {
-    question: "Are my payments safe?",
-    answer: "Absolutely. We use industry-standard encryption protocols. Your payment information is never stored on our servers."
-  }
+    question: 'How do I care for my silver jewellery?',
+    answer: 'Store your silver jewellery in a dry pouch away from moisture and perfumes. Clean with a soft silver polishing cloth to restore shine. Avoid exposing to household chemicals or soaking in water.',
+  },
 ];
 
 export default function FAQ() {

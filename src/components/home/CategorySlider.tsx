@@ -556,14 +556,15 @@ const CategorySlider = ({
           </div>
 
           {/* ── Category bubbles ── */}
-          <div className="flex flex-wrap justify-center gap-8 md:gap-12 lg:gap-14 mb-` md:mb-12">
+          <div className="flex overflow-x-auto lg:flex-wrap lg:justify-center gap-6 lg:gap-14 mb-8 md:mb-12 pb-4 pt-4 lg:pb-0 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden -mx-4 px-4 lg:mx-0 lg:px-0">
             {collections.slice(0, 8).map((cat, i) => (
-              <CategoryBubble
-                key={cat.handle || i}
-                collection={cat}
-                scheme={SCHEMES[i % SCHEMES.length]}
-                index={i}
-              />
+              <div key={cat.handle || i} className="flex-shrink-0 snap-center">
+                <CategoryBubble
+                  collection={cat}
+                  scheme={SCHEMES[i % SCHEMES.length]}
+                  index={i}
+                />
+              </div>
             ))}
           </div>
 

@@ -120,6 +120,9 @@ export default async function ProductPage(props: Props) {
     const collectionHandle = breadcrumb.collectionHandle
     const collectionTitle = breadcrumb.collectionTitle
 
+    const weightMatch = jewelryMetafields?.['Gross Weight'] ? Number(jewelryMetafields['Gross Weight']) : undefined;
+    const gtinMatch = (product.variants[0] as any)?.barcode || jewelryMetafields?.['GTIN'] || undefined;
+
     const jsonLd = productSchema({
         name: product.title,
         description: product.description,
@@ -127,6 +130,8 @@ export default async function ProductPage(props: Props) {
         price: minPrice.amount,
         currency: minPrice.currencyCode,
         sku: product.variants[0]?.sku || product.handle,
+        gtin13: gtinMatch,
+        weightGrams: weightMatch,
         url: productUrl,
         category: product.productType || collectionTitle,
         availability: product.availableForSale ? 'InStock' : 'OutOfStock',

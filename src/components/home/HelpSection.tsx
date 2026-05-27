@@ -3,7 +3,7 @@ import { Phone, MessageCircle } from "lucide-react";
 
 export default function HelpSection() {
   return (
-    <section className="w-full bg-[#DFD1E8] mt-20 max-w-[95%] mx-auto py-14 md:py-16 text-center px-4">
+    <section className="w-full bg-[#DFD1E8] mt-20 mb-20 max-w-[95%] mx-auto py-14 md:py-16 text-center px-4">
       <p className="text-[#230532] font-sans text-[15px] md:text-base font-medium mb-3">
         Need Help!
       </p>

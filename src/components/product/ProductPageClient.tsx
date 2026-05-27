@@ -21,6 +21,8 @@ import ReviewSection from '@/components/reviews/ReviewSection';
 import type { Product, ProductVariant } from '@/types/shopify/product';
 import type { JudgeMeReview, ReviewSummaryData } from '@/types/review';
 import { getCollectionUrl, getProductUrl } from '@/lib/routes';
+import { SITE } from '@/lib/seo.config';
+import { QuickAnswer } from '@/components/seo/QuickAnswer';
 
 // ─── Types ───────────────────────────────────────────────────────────────
 interface SpecItem {
@@ -67,7 +69,7 @@ function parseHighlightsFromDescription(description: string): {
             purity: purityMatch ? `${purityMatch[1]}%` : null,
             weight: weightMatch ? `${weightMatch[1]}g` : null,
             length: lengthMatch ? `${lengthMatch[1]} inch` : null,
-            metal: metalMatch ? metalMatch[1].trim() : null,
+            metal: metalMatch ? metalMatch[1]?.trim() ?? null : null,
         };
     } catch {
         return { purity: null, weight: null, length: null, metal: null };
@@ -145,7 +147,7 @@ export default function ProductPageClient({
     ].filter((h) => h.value);
 
     const hideVariantSelector = product.options.length === 0
-        || (product.options.length === 1 && product.options[0].values.length <= 1);
+        || (product.options.length === 1 && (product.options[0]?.values.length ?? 0) <= 1);
 
     const dispatchTime = meta['Dispatch Time'] as string | undefined;
     const careInstructions = meta['Care Instructions'] as string | undefined;
@@ -249,6 +251,30 @@ export default function ProductPageClient({
                             )}
                         </div>
 
+                        {/* Gifting Badge — shown for gifting-occasion products */}
+                        {(meta['Occasion'] === 'Gifting' || (typeof meta['Occasion'] === 'string' && meta['Occasion']?.includes?.('Gift'))) && (
+                            <div className="flex items-center gap-2">
+                                <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-200 px-3 py-1 rounded-full">
+                                    <span aria-hidden="true">❖</span>
+                                    Perfect for Gifting — comes in gift box
+                                </span>
+                            </div>
+                        )}
+
+                        {/* QuickAnswer — for AEO / AI engine citations */}
+                        {(meta['Purity Percentage'] || meta['Purity'] || parsed.purity) && (
+                            <QuickAnswer
+                                answer={[
+                                    product.title.replace(/\|\s*Bakya.*/i, '').trim(),
+                                    'handcrafted in',
+                                    meta['Purity Percentage'] ? `${meta['Purity Percentage']}% BIS hallmarked silver` : '92.5 BIS hallmarked silver',
+                                    meta['Gross Weight'] ? `(${meta['Gross Weight']}g)` : parsed.weight ? `(${parsed.weight})` : '',
+                                    'from Bakya, Tirunelveli.',
+                                    'Ships across Tamil Nadu.',
+                                ].filter(Boolean).join(' ')}
+                            />
+                        )}
+
                         {/* Highlight Strip */}
                         {highlights.length > 0 && (
                             <div className="grid grid-cols-3 gap-3">
@@ -294,6 +320,21 @@ export default function ProductPageClient({
                                 quantity={quantity}
                                 availableForSale={product.availableForSale}
                             />
+                            {/* WhatsApp Enquiry */}
+                            <a
+                                href={`https://wa.me/${SITE.social.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                                    `Hi Bakya! I want to enquire about: ${product.title.replace(/\|\s*Bakya.*/i, '').trim()}. Product link: ${SITE.domain}/products/${product.handle}`
+                                )}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center justify-center gap-2 w-full py-3 border border-[#25D366] text-[#25D366] rounded-sm text-sm font-semibold hover:bg-[#25D366] hover:text-white transition-colors"
+                                aria-label={`Ask about ${product.title} on WhatsApp`}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.49"/>
+                                </svg>
+                                Ask on WhatsApp
+                            </a>
                         </div>
 
 
@@ -418,6 +459,43 @@ export default function ProductPageClient({
                     </div>
                 </div>
 
+                {/* ══════════════════════════════════════════════════════
+                    SECTION: FAQ
+                ══════════════════════════════════════════════════════ */}
+                <div className="py-8 md:py-10 border-t border-stone-100">
+                    <h2 className="font-serif text-xl font-semibold text-stone-900 mb-5">
+                        Frequently Asked Questions
+                    </h2>
+                    <div className="max-w-2xl space-y-3">
+                        {[
+                            {
+                                q: 'Is this made of real silver?',
+                                a: 'Yes. This is genuine 92.5 BIS hallmarked sterling silver with HUID certification — not silver-plated. You can verify purity by scanning the hallmark with the BIS CARE app.',
+                            },
+                            {
+                                q: 'Is this good for gifting?',
+                                a: 'Yes. All Bakya silver jewellery comes in a premium jewellery box with a silver care card — ready to gift without extra packaging.',
+                            },
+                            {
+                                q: 'What is the return policy?',
+                                a: 'We offer a 7-day return policy for damaged or wrong items received. Contact us within 7 days at bagyalakshmijewellers97@gmail.com.',
+                            },
+                            {
+                                q: 'How long does delivery take?',
+                                a: 'Delivery takes 3–5 business days across Tamil Nadu. Orders are dispatched within 1–2 business days from our Tirunelveli workshop.',
+                            },
+                        ].map((faq, i) => (
+                            <details key={i} className="border border-stone-200 rounded-sm bg-white shadow-sm">
+                                <summary className="flex items-center justify-between w-full px-5 py-4 text-left cursor-pointer list-none">
+                                    <span className="text-sm font-semibold text-stone-900">{faq.q}</span>
+                                    <span className="text-stone-400 text-lg ml-3 flex-shrink-0">+</span>
+                                </summary>
+                                <p className="px-5 pb-5 pt-1 text-sm text-stone-600 leading-relaxed">{faq.a}</p>
+                            </details>
+                        ))}
+                    </div>
+                </div>
+
                 {/* ══════════════════════════════════════════════════════════
                     SECTION: TRUST — Why Choose Bakya
                 ══════════════════════════════════════════════════════════ */}
@@ -432,18 +510,18 @@ export default function ProductPageClient({
                             },
                             {
                                 icon: Award,
-                                title: 'Purity Guaranteed',
-                                subtitle: '925 Sterling Silver & Fine Gold',
+                                title: 'Handcrafted in Tirunelveli',
+                                subtitle: 'Made by artisans since 1997',
                             },
                             {
-                                icon: Sparkles,
-                                title: 'Free Lifetime Polishing',
-                                subtitle: 'Keep your jewellery shining forever',
+                                icon: Truck,
+                                title: 'Ships Across Tamil Nadu',
+                                subtitle: 'Delivery in 3–5 business days',
                             },
                             {
                                 icon: RotateCcw,
-                                title: '30-Day Easy Returns',
-                                subtitle: 'Hassle-free return on all orders',
+                                title: '7-Day Easy Returns',
+                                subtitle: 'For damaged or wrong items',
                             },
                         ].map(({ icon: Icon, title, subtitle }) => (
                             <div
@@ -461,13 +539,13 @@ export default function ProductPageClient({
                 {/* ══════════════════════════════════════════════════════════
                     SECTION: REVIEWS
                 ══════════════════════════════════════════════════════════ */}
-                <ReviewSection
+                {/* <ReviewSection
                     productId={product.id}
                     productHandle={product.handle}
                     productTitle={product.title}
                     initialReviews={initialReviews}
                     initialSummary={initialSummary}
-                />
+                /> */}
 
                 {/* ══════════════════════════════════════════════════════════
                     SECTION: RELATED PRODUCTS
@@ -479,48 +557,47 @@ export default function ProductPageClient({
                             {relatedProducts.map((rp) => {
                                 const wish = isInWishlist(rp.id);
                                 return (
-                                <Link key={rp.id} href={getProductUrl(rp.handle)} className="group flex flex-col relative block w-full">
-                                    <div className="relative aspect-square overflow-hidden bg-[#f1eeea]">
-                                        {rp.images[0] ? (
-                                        <Image
-                                            src={rp.images[0].url}
-                                            alt={rp.images[0].altText || rp.title}
-                                            fill
-                                            className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
-                                            sizes="(max-width: 768px) 50vw, 25vw"
-                                        />
-                                        ) : (
-                                            <div className="flex items-center justify-center h-full text-stone-300 text-xs">No Image</div>
-                                        )}
+                                    <Link key={rp.id} href={getProductUrl(rp.handle)} className="group flex flex-col relative block w-full">
+                                        <div className="relative aspect-square overflow-hidden bg-[#f1eeea]">
+                                            {rp.images[0] ? (
+                                                <Image
+                                                    src={rp.images[0].url}
+                                                    alt={rp.images[0].altText || rp.title}
+                                                    fill
+                                                    className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                                                    sizes="(max-width: 768px) 50vw, 25vw"
+                                                />
+                                            ) : (
+                                                <div className="flex items-center justify-center h-full text-stone-300 text-xs">No Image</div>
+                                            )}
 
-                                        {/* Heart Icon */}
-                                        <button
-                                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(rp); }}
-                                            className={`absolute top-[8px] right-[8px] z-10 w-[28px] h-[28px] rounded-full border-none flex items-center justify-center cursor-pointer backdrop-blur-[4px] shadow-[0_1px_4px_rgba(0,0,0,0.1)] transition-all duration-200 hover:bg-white hover:scale-110 focus:outline-none ${
-                                                wish ? "bg-[#fff4f4]" : "bg-[rgba(255,255,255,0.88)]"
-                                            }`}
-                                            aria-label="Wishlist"
-                                        >
-                                            <Heart size={13} className={wish ? "fill-rose-500 text-rose-500" : "text-stone-400"} />
-                                        </button>
+                                            {/* Heart Icon */}
+                                            <button
+                                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(rp); }}
+                                                className={`absolute top-[8px] right-[8px] z-10 w-[28px] h-[28px] rounded-full border-none flex items-center justify-center cursor-pointer backdrop-blur-[4px] shadow-[0_1px_4px_rgba(0,0,0,0.1)] transition-all duration-200 hover:bg-white hover:scale-110 focus:outline-none ${wish ? "bg-[#fff4f4]" : "bg-[rgba(255,255,255,0.88)]"
+                                                    }`}
+                                                aria-label="Wishlist"
+                                            >
+                                                <Heart size={13} className={wish ? "fill-rose-500 text-rose-500" : "text-stone-400"} />
+                                            </button>
 
-                                        {/* Quick View */}
-                                        <div className="absolute bottom-0 right-0 px-[10px] py-[4px] bg-[#ffffff66] backdrop-blur-sm rounded-tl-[24px] opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center cursor-pointer hover:bg-[#ffffff99]"
-                                            onClick={(e) => e.preventDefault()}>
-                                            <span className="text-[14px] font-medium font-sans text-white leading-normal">Quick View</span>
+                                            {/* Quick View */}
+                                            <div className="absolute bottom-0 right-0 px-[10px] py-[4px] bg-[#ffffff66] backdrop-blur-sm rounded-tl-[24px] opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center cursor-pointer hover:bg-[#ffffff99]"
+                                                onClick={(e) => e.preventDefault()}>
+                                                <span className="text-[14px] font-medium font-sans text-white leading-normal">Quick View</span>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div className="flex flex-col gap-[6px] pt-[16px]">
-                                        <div className="flex flex-col">
-                                        <h3 className="text-[14px] text-[#1a1a1a] font-medium truncate font-sans leading-[22px]">{rp.title}</h3>
-                                        <p className="text-[12px] text-[#777777] font-medium font-sans leading-[22px]">92.5 Silver • BIS Hallmarked</p>
+                                        <div className="flex flex-col gap-[6px] pt-[16px]">
+                                            <div className="flex flex-col">
+                                                <h3 className="text-[14px] text-[#1a1a1a] font-medium truncate font-sans leading-[22px]">{rp.title}</h3>
+                                                <p className="text-[12px] text-[#777777] font-medium font-sans leading-[22px]">92.5 Silver • BIS Hallmarked</p>
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <p className="text-[18px] font-bold text-[#230532] font-sans leading-[22px]">{format(rp.priceRange.minVariantPrice.amount)}</p>
+                                            </div>
                                         </div>
-                                        <div className="flex flex-col">
-                                        <p className="text-[18px] font-bold text-[#230532] font-sans leading-[22px]">{format(rp.priceRange.minVariantPrice.amount)}</p>
-                                        </div>
-                                    </div>
-                                </Link>
+                                    </Link>
                                 );
                             })}
                         </div>

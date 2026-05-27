@@ -89,6 +89,7 @@ export function webPageSchema(opts: {
     | 'CollectionPage'
     | 'ItemPage'
     | 'SearchResultsPage'
+    | string[]
   name: string
   description: string
   url: string
@@ -293,6 +294,7 @@ export function collectionPageSchema(opts: {
   name: string
   description: string
   url: string
+  image?: string
   products: Array<{ name: string; url: string; image: string; price: string }>
   breadcrumbs?: Array<{ name: string; url: string }>
 }) {
@@ -303,6 +305,7 @@ export function collectionPageSchema(opts: {
       '@id': `${pageUrl}#webpage`,
       name: opts.name,
       description: opts.description,
+      ...(opts.image ? { image: opts.image } : {}),
       url: pageUrl,
       publisher: { '@id': `${SITE.domain}/#organization` },
       inLanguage: 'en-IN',
@@ -419,10 +422,6 @@ export function blogPostingSchema(post: {
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': post.url,
-    },
-    speakable: {
-      '@type': 'SpeakableSpecification',
-      cssSelector: ['h1', '.post-excerpt'],
     },
     potentialAction: {
       '@type': 'ReadAction',

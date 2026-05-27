@@ -126,12 +126,16 @@ export default function SplitProductShowcase({
   title,
   description,
   products,
-  imageSrc
+  imageSrc,
+  ctaText,
+  ctaHref
 }: {
   title: string;
   description: string;
   products: Product[];
   imageSrc: string;
+  ctaText?: string;
+  ctaHref?: string;
 }) {
   if (!products?.length) return null;
 
@@ -158,8 +162,8 @@ export default function SplitProductShowcase({
 
           {/* CTA */}
           <div className="sps-cta-wrap">
-            <Link href="/silver-jewellery" className="sps-cta">
-              <span>Explore All</span>
+            <Link href={ctaHref ?? "/silver-jewellery"} className="sps-cta">
+              <span>{ctaText ?? "Explore All"}</span>
               <span className="sps-cta-arrow">→</span>
             </Link>
           </div>

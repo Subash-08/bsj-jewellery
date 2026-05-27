@@ -9,7 +9,9 @@ import { collectionPageSchema, webPageSchema } from '@/lib/schema'
 import type { Metadata } from 'next'
 import BestSellers from '@/components/home/BestSellers'
 import { getProducts, getCollections } from '@/lib/shopify/client'
+import { filterDisplayCollections } from '@/lib/shopify/collections.config'
 import { mockProducts } from '@/lib/shopify/mock'
+import HelpSection from '@/components/home/HelpSection'
 
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '500', '600', '700'] })
 const montserrat = Montserrat({ subsets: ['latin'], weight: ['300', '400', '500', '600'] })
@@ -202,7 +204,8 @@ export default async function CollectionsPage() {
   let collections: any[] = [];
 
   try {
-    collections = await getCollections();
+    const rawCollections = await getCollections();
+    collections = filterDisplayCollections(rawCollections);
   } catch (e) {
     console.error('Failed to fetch collections', e);
   }
@@ -334,12 +337,12 @@ export default async function CollectionsPage() {
             <SectionHead id="collections-heading" eyebrow="Shop by Category" title="Our 5 Silver Collections" />
 
             {/* Editorial grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6">
+            <div className="flex overflow-x-auto lg:grid lg:grid-cols-5 gap-4 lg:gap-6 pb-4 lg:pb-0 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden -mx-4 px-4 lg:mx-0 lg:px-0">
               {collections.slice(0, 5).map((cat: any) => (
                 <Link
                   key={cat.handle}
                   href={getCollectionUrl(cat.handle)}
-                  className="group relative overflow-hidden rounded-xl md:rounded-[20px] w-full aspect-square block focus:outline-none focus:ring-2 focus:ring-[#D4AF37] shadow-sm hover:shadow-xl transition-shadow duration-500"
+                  className="group relative overflow-hidden rounded-xl lg:rounded-[20px] w-[45vw] sm:w-[35vw] md:w-[28vw] lg:w-full flex-shrink-0 snap-center aspect-square block focus:outline-none focus:ring-2 focus:ring-[#D4AF37] shadow-sm hover:shadow-xl transition-shadow duration-500"
                   aria-label={`Shop ${cat.title}`}
                 >
                   {cat.image?.url ? (
@@ -369,108 +372,29 @@ export default async function CollectionsPage() {
             </div>
           </section>
 
-          {/* ══════════════════════════════════════════════════════ */}
-          {/* SECTION 2 — BROWSE ALL                                */}
-          {/* ══════════════════════════════════════════════════════ */}
-          <section aria-labelledby="browse-heading" className="mb-16 md:mb-20">
-            <SectionHead id="browse-heading" eyebrow="Find What You Need" title="Browse Silver Jewellery" />
 
-            {/* 5 category rows */}
-            <div className="rounded-[10px] border border-[#EDE8E0]/70 overflow-hidden bg-white mb-8 shadow-sm">
-              <div className="divide-y divide-[#EDE8E0]/60">
-                {CATEGORIES.map((cat) => (
-                  <div
-                    key={cat.handle}
-                    className="group/row flex flex-col sm:flex-row sm:items-center gap-4 px-6 py-5 hover:bg-[#FAF8F5] transition-all duration-300"
-                  >
-                    {/* Category name */}
-                    <Link
-                      href={getCollectionUrl(cat.handle)}
-                      className="sm:w-48 flex-shrink-0 flex items-center gap-4"
-                    >
-                      <span className={`${montserrat.className} text-[11px] font-bold text-[#D4AF37] w-6 flex-shrink-0 opacity-70 group-hover/row:opacity-100 transition-opacity`}>
-                        {cat.num}
-                      </span>
-                      <p className={`${montserrat.className} text-[#230532] font-semibold text-[14px] group-hover/row:text-[#D4AF37] transition-colors`}>
-                        {cat.name}
-                      </p>
-                    </Link>
-
-                    {/* Sub-category chips */}
-                    <div className="flex flex-wrap gap-2.5 flex-1 pl-10 sm:pl-0">
-                      {cat.chips.map((chip) => (
-                        <Link
-                          key={chip.label}
-                          href={chip.href}
-                          className={`${montserrat.className} text-[11px] text-stone-500 border border-stone-200 bg-white px-4 py-1.5 rounded-full hover:bg-[#230532] hover:border-[#230532] hover:text-white transition-all duration-300 shadow-sm hover:shadow-md whitespace-nowrap`}
-                        >
-                          {chip.label}
-                        </Link>
-                      ))}
-                    </div>
-
-                    {/* View All */}
-                    <Link
-                      href={getCollectionUrl(cat.handle)}
-                      className={`${montserrat.className} hidden sm:flex items-center gap-1.5 text-[10px] text-[#D4AF37] font-semibold uppercase tracking-[0.2em] flex-shrink-0 opacity-0 group-hover/row:opacity-100 transition-all duration-300 translate-x-2 group-hover/row:translate-x-0`}
-                    >
-                      View All <span className="text-[14px] leading-none">›</span>
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Quick browse: Occasion / Gender / Style / Budget */}
-            <div className="rounded-[20px] bg-gradient-to-br from-[#FAF8F5] to-white border border-[#EDE8E0]/70 px-6 md:px-8 py-7 shadow-sm">
-              <p className={`${montserrat.className} flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-[#D4AF37] font-semibold mb-6`}>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
-                Quick Browse
-              </p>
-              <div className="space-y-4">
-                {FILTER_GROUPS.map((group) => (
-                  <div key={group.label} className="flex flex-wrap sm:flex-nowrap items-start gap-4">
-                    <span className={`${montserrat.className} text-[11px] uppercase tracking-[0.2em] font-semibold text-stone-400 sm:w-[84px] flex-shrink-0 pt-1.5`}>
-                      {group.label}
-                    </span>
-                    <div className="flex flex-wrap gap-2.5">
-                      {group.chips.map((chip) => (
-                        <Link
-                          key={chip.label}
-                          href={chip.href}
-                          className={`${montserrat.className} text-[12px] text-[#230532] border border-[#EDE8E0] bg-white px-4 py-1.5 rounded-full hover:bg-[#230532] hover:border-[#230532] hover:text-white transition-all duration-300 shadow-sm hover:shadow-md whitespace-nowrap`}
-                        >
-                          {chip.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
 
           {/* ══════════════════════════════════════════════════════ */}
           {/* SECTION 3 — SHOP BY OCCASION                          */}
           {/* ══════════════════════════════════════════════════════ */}
 
           {/* BANNER 1 (Before Occasions) */}
-          <div className="relative w-full rounded-[10px] max-h-[500px] overflow-hidden mb-16 aspect-[4/3] md:aspect-[21/9] flex items-center shadow-lg">
+          <div className="relative w-full rounded-[10px] max-h-[450px] overflow-hidden mb-16 aspect-[16/9] md:aspect-[16/9] flex items-center shadow-lg">
             <Image
-              src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&q=80&w=1600"
+              src="https://cdn.shopify.com/s/files/1/0704/8554/0995/files/hero-slide1-webp.webp?v=1778744216"
               alt="Simple. Stylish. Silver."
               fill
               className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[#230532]/90 via-[#230532]/60 to-transparent" />
-            <div className="relative z-10 px-8 md:px-16 max-w-lg">
-              <h2 className={`${playfair.className} text-white text-[36px] md:text-[52px] font-bold leading-tight mb-3`}>
+            <div className="relative z-10 px-6 sm:px-8 md:px-16 max-w-sm sm:max-w-md md:max-w-lg">
+              <h2 className={`${playfair.className} text-white text-[28px] sm:text-[36px] md:text-[44px] lg:text-[52px] font-bold leading-tight mb-2 sm:mb-3`}>
                 Simple. Stylish. Silver.
               </h2>
-              <p className={`${montserrat.className} text-[#EAE2F0] text-[13px] md:text-[16px] mb-8 font-medium`}>
+              <p className={`${montserrat.className} text-[#EAE2F0] text-[12px] sm:text-[13px] md:text-[15px] lg:text-[16px] mb-6 sm:mb-8 font-medium`}>
                 Everyday essentials with modern elegance
               </p>
-              <Link href="/silver-jewellery" className={`${montserrat.className} inline-flex items-center justify-center bg-[#D4AF37] text-[#230532] font-bold uppercase tracking-widest text-[11px] px-8 py-3.5 rounded-full hover:bg-white transition-colors shadow-lg`}>
+              <Link href="/silver-jewellery" className={`${montserrat.className} inline-flex items-center justify-center bg-[#D4AF37] text-[#230532] font-bold uppercase tracking-widest text-[10px] sm:text-[11px] px-6 sm:px-8 py-3 sm:py-3.5 rounded-full hover:bg-white transition-colors shadow-lg`}>
                 Explore All Collection
               </Link>
             </div>
@@ -479,12 +403,12 @@ export default async function CollectionsPage() {
           <section aria-labelledby="occasion-heading" className="mb-16 md:mb-20">
             <SectionHead id="occasion-heading" eyebrow="Contemporary silver jewellery for a refined and versatile look." title="New Collections" />
 
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
+            <div className="flex overflow-x-auto lg:grid lg:grid-cols-5 gap-3 lg:gap-4 pb-4 lg:pb-0 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden -mx-4 px-4 lg:mx-0 lg:px-0">
               {OCCASION_CARDS.map((card) => (
                 <Link
                   key={card.title}
                   href={card.href}
-                  className="group relative rounded-lg md:rounded-[10px] overflow-hidden w-full aspect-square block focus:outline-none focus:ring-2 focus:ring-[#D4AF37] shadow-sm hover:shadow-xl transition-shadow duration-500"
+                  className="group relative rounded-lg lg:rounded-[10px] overflow-hidden w-[45vw] sm:w-[35vw] md:w-[28vw] lg:w-full flex-shrink-0 snap-center aspect-square block focus:outline-none focus:ring-2 focus:ring-[#D4AF37] shadow-sm hover:shadow-xl transition-shadow duration-500"
                 >
                   <Image
                     src={card.image}
@@ -509,7 +433,7 @@ export default async function CollectionsPage() {
           </section>
 
           {/* BANNER 2 (After Occasions) */}
-          <div className="relative w-full rounded-[10px] max-h-[500px] overflow-hidden mb-16 aspect-[4/3] md:aspect-[21/9] flex items-center shadow-lg">
+          <div className="relative w-full rounded-[10px] max-h-[450px] overflow-hidden mb-16 aspect-[16/9] md:aspect-[16/9] flex items-center shadow-lg">
             <Image
               src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80&w=1600"
               alt="Timeless Antique Elegance"
@@ -517,21 +441,21 @@ export default async function CollectionsPage() {
               className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-l from-[#FAF8F5]/95 via-[#FAF8F5]/80 to-transparent" />
-            <div className="relative z-10 px-8 md:px-16 w-full flex justify-end text-right">
-              <div className="max-w-md">
-                <h2 className={`${playfair.className} text-[#230532] text-[32px] md:text-[46px] font-bold leading-tight mb-3`}>
+            <div className="relative z-10 px-6 sm:px-8 md:px-16 w-full flex justify-end text-right">
+              <div className="max-w-[280px] sm:max-w-sm md:max-w-md">
+                <h2 className={`${playfair.className} text-[#230532] text-[24px] sm:text-[32px] md:text-[40px] lg:text-[46px] font-bold leading-tight mb-2 sm:mb-3`}>
                   Timeless Antique Elegance
                 </h2>
-                <p className={`${montserrat.className} text-[#230532]/70 text-[12px] md:text-[14px] mb-4 font-medium leading-relaxed`}>
+                <p className={`${montserrat.className} text-[#230532]/70 text-[11px] sm:text-[12px] md:text-[14px] mb-3 sm:mb-4 font-medium leading-relaxed`}>
                   Inspired by heritage craftsmanship, discover intricately designed jewellery that reflects tradition, artistry, and royal beauty.
                 </p>
-                <p className={`${montserrat.className} text-[#230532] text-[12px] font-semibold mb-2`}>
+                {/* <p className={`${montserrat.className} text-[#230532] text-[10px] sm:text-[11px] md:text-[12px] font-semibold mb-1 sm:mb-2`}>
                   Making Charges Starting at
                 </p>
-                <p className={`${playfair.className} text-[#230532] text-[48px] md:text-[64px] font-bold leading-none mb-6`}>
+                <p className={`${playfair.className} text-[#230532] text-[36px] sm:text-[48px] md:text-[56px] lg:text-[64px] font-bold leading-none mb-4 sm:mb-6`}>
                   4%
-                </p>
-                <Link href="/temple-silver-jewellery" className={`${montserrat.className} inline-flex items-center justify-center bg-[#230532] text-white font-bold uppercase tracking-widest text-[11px] px-8 py-3.5 rounded-full hover:bg-[#D4AF37] hover:text-[#230532] transition-colors shadow-lg`}>
+                </p> */}
+                <Link href="/temple-silver-jewellery" className={`${montserrat.className} inline-flex items-center justify-center bg-[#230532] text-white font-bold uppercase tracking-widest text-[9px] sm:text-[10px] md:text-[11px] px-6 sm:px-8 py-3 sm:py-3.5 rounded-full hover:bg-[#D4AF37] hover:text-[#230532] transition-colors shadow-lg`}>
                   Explore All Collection
                 </Link>
               </div>
@@ -541,15 +465,15 @@ export default async function CollectionsPage() {
           {/* ══════════════════════════════════════════════════════ */}
           {/* SECTION 4 — SHOP BY BUDGET                            */}
           {/* ══════════════════════════════════════════════════════ */}
-          <section aria-labelledby="budget-heading" className="mb-16 md:mb-20">
+          <section aria-labelledby="budget-heading" className="mb-8 md:mb-8">
             <SectionHead id="budget-heading" eyebrow="Genuine Silver at Every Price Point" title="Shop by Budget" />
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="flex overflow-x-auto lg:grid lg:grid-cols-4 gap-4 pb-4 lg:pb-0 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden -mx-4 px-4 lg:mx-0 lg:px-0">
               {PRICE_RANGES.map((card) => (
                 <Link
                   key={card.label}
                   href={card.href}
-                  className="group relative rounded-[10px] overflow-hidden p-6 flex flex-col justify-end w-full aspect-[4/5] block focus:outline-none focus:ring-2 focus:ring-[#D4AF37] shadow-sm hover:shadow-lg transition-shadow duration-500"
+                  className="group relative rounded-[10px] overflow-hidden p-6 flex flex-col justify-end w-[45vw] sm:w-[35vw] md:w-[28vw] lg:w-full flex-shrink-0 snap-center aspect-[4/5] block focus:outline-none focus:ring-2 focus:ring-[#D4AF37] shadow-sm hover:shadow-lg transition-shadow duration-500"
                 >
                   <Image
                     src={card.image}
@@ -600,8 +524,90 @@ export default async function CollectionsPage() {
         </div>
 
         <BestSellers products={products} />
+
+        {/* ══════════════════════════════════════════════════════ */}
+        {/* SECTION 2 — BROWSE ALL                                */}
+        {/* ══════════════════════════════════════════════════════ */}
+        <section aria-labelledby="browse-heading" className="mb-16 md:mb-20 max-w-[1200px] mx-auto">
+          <SectionHead id="browse-heading" eyebrow="Find What You Need" title="Browse Silver Jewellery" />
+
+          {/* 5 category rows */}
+          <div className="rounded-[10px] border border-[#EDE8E0]/90 overflow-hidden bg-white mb-8 shadow-sm">
+            <div className="divide-y divide-[#EDE8E0]/90">
+              {CATEGORIES.map((cat) => (
+                <div
+                  key={cat.handle}
+                  className="group/row flex flex-col sm:flex-row sm:items-center gap-4 px-6 py-5 hover:bg-[#FAF8F5] transition-all duration-300"
+                >
+                  {/* Category name */}
+                  <Link
+                    href={getCollectionUrl(cat.handle)}
+                    className="sm:w-48 flex-shrink-0 flex items-center gap-4"
+                  >
+                    <span className={`${montserrat.className} text-[11px] font-bold text-[#D4AF37] w-6 flex-shrink-0 opacity-70 group-hover/row:opacity-100 transition-opacity`}>
+                      {cat.num}
+                    </span>
+                    <p className={`${montserrat.className} text-[#230532] font-semibold text-[14px] group-hover/row:text-[#D4AF37] transition-colors`}>
+                      {cat.name}
+                    </p>
+                  </Link>
+
+                  {/* Sub-category chips */}
+                  <div className="flex flex-wrap gap-2.5 flex-1 pl-10 sm:pl-0">
+                    {cat.chips.map((chip) => (
+                      <Link
+                        key={chip.label}
+                        href={chip.href}
+                        className={`${montserrat.className} text-[11px] text-stone-800 border border-stone-200 bg-white px-4 py-1.5 rounded-full hover:bg-[#230532] hover:border-[#230532] hover:text-white transition-all duration-300 shadow-sm hover:shadow-md whitespace-nowrap`}
+                      >
+                        {chip.label}
+                      </Link>
+                    ))}
+                  </div>
+
+                  {/* View All */}
+                  <Link
+                    href={getCollectionUrl(cat.handle)}
+                    className={`${montserrat.className} hidden sm:flex items-center gap-1.5 text-[10px] text-[#D4AF37] font-semibold uppercase tracking-[0.2em] flex-shrink-0 opacity-0 group-hover/row:opacity-100 transition-all duration-300 translate-x-2 group-hover/row:translate-x-0`}
+                  >
+                    View All <span className="text-[14px] leading-none">›</span>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Quick browse: Occasion / Gender / Style / Budget */}
+          <div className="rounded-[20px] bg-gradient-to-br from-[#FAF8F5] to-white border border-[#EDE8E0]/70 px-6 md:px-8 py-7 shadow-sm">
+            <p className={`${montserrat.className} flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-[#D4AF37] font-semibold mb-6`}>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
+              Quick Browse
+            </p>
+            <div className="space-y-4">
+              {FILTER_GROUPS.map((group) => (
+                <div key={group.label} className="flex flex-wrap sm:flex-nowrap items-start gap-4">
+                  <span className={`${montserrat.className} text-[11px] uppercase tracking-[0.2em] font-semibold text-stone-400 sm:w-[84px] flex-shrink-0 pt-1.5`}>
+                    {group.label}
+                  </span>
+                  <div className="flex flex-wrap gap-2.5">
+                    {group.chips.map((chip) => (
+                      <Link
+                        key={chip.label}
+                        href={chip.href}
+                        className={`${montserrat.className} text-[12px] text-[#230532] border border-[#EDE8E0] bg-white px-4 py-1.5 rounded-full hover:bg-[#230532] hover:border-[#230532] hover:text-white transition-all duration-300 shadow-sm hover:shadow-md whitespace-nowrap`}
+                      >
+                        {chip.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
         {/* ── Bottom CTA ── */}
-        <MatchCTA />
+
+        <HelpSection />
       </main>
     </>
   )

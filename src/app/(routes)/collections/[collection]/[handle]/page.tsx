@@ -118,6 +118,7 @@ export default async function ProductPage(props: Props) {
     // ── Reviews (SSR with timeout — must never block page render) ─────
     const emptyReviews: { reviews: JudgeMeReview[]; summary: ReviewSummaryData } = { reviews: [], summary: { average: 0, count: 0, distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 } } };
     let reviewData = emptyReviews;
+    /*
     try {
         const numericId = extractNumericProductId(product.id);
         const timeout = new Promise<typeof emptyReviews>((resolve) =>
@@ -143,6 +144,7 @@ export default async function ProductPage(props: Props) {
             error: err instanceof Error ? err.message : String(err),
         });
     }
+    */
 
     const jsonLdWithReviews = {
         ...jsonLd,

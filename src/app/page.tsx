@@ -1,4 +1,5 @@
-import { getProducts, getCollections } from '@/lib/shopify/client';
+import { getProducts, getCollections, getCollectionProducts } from '@/lib/shopify/client';
+import { filterDisplayCollections } from '@/lib/shopify/collections.config';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { SchemaScript } from '@/components/seo/SchemaScript';
@@ -12,6 +13,7 @@ import SplitProductShowcase from '@/components/home/SplitProductShowcase';
 import ProductGrid from '@/components/features/ProductGrid';
 import BestSellers from '@/components/home/BestSellers';
 import LatestArrivals from '@/components/home/LatestArrivals';
+import ShopByOccasion from '@/components/home/ShopByOccasion';
 import ShopByGender from '@/components/home/ShopByGender';
 import AboutUs from '@/components/home/AboutUs';
 import HelpSection from '@/components/home/HelpSection';
@@ -26,13 +28,19 @@ import ProductSkeleton from '@/components/home/ProductSkeleton';
 import SectionSkeleton from '@/components/home/SectionSkeleton';
 import { mockProducts } from '@/lib/shopify/mock';
 import StyleGridServer from '@/components/home/style-grid/StyleGridServer';
+import Link from 'next/link';
+
+// Move this URL out of JSX into a named constant
+const CELEBRATION_IMAGE =
+  'https://cdn.shopify.com/s/files/1/0704/8554/0995/files/ChatGPT_Image_May_14_2026_12_43_53_PM.webp?v=1778747781';
+// TODO: Replace with a proper gifting/celebration jewellery image
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Bakya — Silver Kolusu, Chains, Bracelets & Rings | Since 1997',
+  title: 'Bakya by Bagyalakshmi Jewellers | Handcrafted Silver Jewellery Since 1997',
   description:
-    'Bakya by Bagyalakshmi Jewellers — handcrafted 92.5 BIS hallmarked silver jewellery from Tirunelveli since 1997. Silver kolusu, chains, bracelets, pendants & rings. Ships across Tamil Nadu.',
+    'Bakya by Bagyalakshmi Jewellers offers handcrafted 92.5 BIS hallmarked silver jewellery from Tirunelveli since 1997. Shop silver kolusu, rings, chains, bracelets and pendants online with delivery across Tamil Nadu and India.',
   alternates: { canonical: 'https://www.bakya.in' },
 };
 
@@ -50,11 +58,44 @@ export default async function HomePage() {
   const useMock = process.env.NODE_ENV === 'development'
 
   try {
-    const result = await getProducts();
-    products = result.products || [];
+    const bestSellersResult = await getCollectionProducts({ handle: 'best-sellers' });
+    const bestSellers = bestSellersResult?.products || [];
+
+    if (bestSellersResult && bestSellers.length > 0) {
+      products = bestSellers;
+    } else {
+      console.warn(
+        '[HomePage] best-sellers collection empty or missing — falling back to general products'
+      );
+      try {
+        const fallback = await getProducts();
+        products = fallback.products || [];
+      } catch {
+        products = process.env.NODE_ENV === 'development' ? mockProducts.slice(0, 8) : [];
+      }
+    }
   } catch (e) {
-    console.error('Failed to fetch best sellers, using mock data:', e);
-    if (useMock) products = mockProducts;
+    console.error('[HomePage] Failed to fetch best-sellers collection:', e);
+    products = process.env.NODE_ENV === 'development' ? mockProducts.slice(0, 8) : [];
+  }
+
+  // Gifting Edit — fetched from the curated 'gifting-edit' Shopify collection
+  let giftingProducts: any[] = [];
+  try {
+    const giftingResult = await getCollectionProducts({ handle: 'gifting-edit' });
+    const gifting = giftingResult?.products || [];
+
+    if (giftingResult && gifting.length > 0) {
+      giftingProducts = gifting;
+    } else {
+      console.warn(
+        '[HomePage] gifting-edit collection empty or missing — using fallback products'
+      );
+      giftingProducts = products.slice(0, 6);
+    }
+  } catch (e) {
+    console.error('[HomePage] Failed to fetch gifting-edit collection:', e);
+    giftingProducts = products.slice(0, 6);
   }
 
   try {
@@ -62,12 +103,12 @@ export default async function HomePage() {
     allProducts = allResult.products || [];
     if (allProducts.length === 0 && useMock) allProducts = mockProducts;
   } catch (e) {
-    console.error('Failed to fetch all products, using mock data:', e);
-    if (useMock) allProducts = mockProducts;
+    console.error('[HomePage] Failed to fetch all products:', e);
+    allProducts = process.env.NODE_ENV === 'development' ? mockProducts : [];
   }
 
   const homePageSchema = webPageSchema({
-    type: 'WebPage',
+    type: ['WebPage', 'CollectionPage'],
     name: 'Bakya — Handcrafted Silver Jewellery from Tirunelveli since 1997',
     description:
       'BIS hallmarked 92.5 silver kolusu, bracelets, chains & rings. Trusted since 1997. Ships across Tamil Nadu.',
@@ -92,69 +133,134 @@ export default async function HomePage() {
       q: 'How do I care for my silver jewellery?',
       a: 'Store your silver jewellery in a dry pouch away from moisture and perfumes. Clean with a soft silver polishing cloth to restore shine. Avoid exposing to household chemicals or soaking in water.',
     },
-    {
-      q: 'Does Bakya accept custom silver jewellery orders?',
-      a: 'Yes. Bakya accepts custom orders for silver kolusu, chains, and other jewellery pieces. Contact us on WhatsApp with your design requirements and preferred weight/purity.',
-    },
   ])
 
   return (
     <>
       <SchemaScript schema={[homePageSchema, homeFaqSchema]} />
-    <main>
-      <Hero />
+      <main>
+        <Hero />
 
-      <TrustSection />
+        <TrustSection />
 
-      <CategorySlider collections={collections} />
+        <CategorySlider collections={filterDisplayCollections(collections)} />
 
-      {/* <FeaturedCollections collections={collections} /> */}
-      <Suspense fallback={<ProductSkeleton />}>
-        <BestSellers products={products} />
-      </Suspense>
+        {/* <FeaturedCollections collections={collections} /> */}
+        <Suspense fallback={<ProductSkeleton />}>
+          <BestSellers products={products} />
+        </Suspense>
 
-      <Suspense fallback={<SectionSkeleton />}>
-        <LatestArrivals collections={collections} />
-      </Suspense>
+        {/* REPLACED: LatestArrivals → ShopByOccasion (better conversion, matches actual inventory) */}
+        {/* <Suspense fallback={<SectionSkeleton />}>
+        <LatestArrivals collections={filterDisplayCollections(collections)} />
+      </Suspense> */}
 
-      <ShopByGender collections={collections} />
-      {/* Rebuild trigger */}
+        <ShopByOccasion />
 
-
-
-      <Suspense fallback={<ProductSkeleton />}>
-        <SplitProductShowcase
-          title="Celebration Edit"
-          description="Life is one big celebration. Dance, dazzle and enjoy with the finest festive jewellery designs."
-          products={products.slice(0, 6)}
-          imageSrc="https://cdn.shopify.com/s/files/1/0704/8554/0995/files/ChatGPT_Image_May_14_2026_12_43_53_PM.webp?v=1778747781"
-        />
-      </Suspense>
-
-      <PromoBanner />
-      {/* <StyleGridServer /> */}
-      <FinalCTA />
-
-      <WhyChooseUs />
-
-      <AboutUs />
-      <HelpSection />
-
-      {/* {products.length > 0 && <FeaturedProduct product={products[0]} />} */}
-      <Suspense fallback={<SectionSkeleton />}>
-        <InstagramFeed />
-      </Suspense>
-
-      <Suspense fallback={<SectionSkeleton />}>
-        <Testimonials />
-      </Suspense>
-
-      <Suspense fallback={<SectionSkeleton />}>
-        <FAQ />
-      </Suspense>
+        <ShopByGender collections={filterDisplayCollections(collections)} />
+        {/* Rebuild trigger */}
 
 
-    </main>
+
+        <Suspense fallback={<ProductSkeleton />}>
+          <SplitProductShowcase
+            title="Silver Gifts She'll Love"
+            description="Handcrafted BIS hallmarked silver — from ₹999. Gift-ready packaging on every order."
+            ctaText="Shop Gifting →"
+            ctaHref="/silver-gifts-for-women"
+            products={giftingProducts}
+            imageSrc={CELEBRATION_IMAGE}
+          />
+        </Suspense>
+
+        <PromoBanner />
+        {/* <StyleGridServer /> */}
+        <FinalCTA />
+        <section className="relative overflow-hidden py-16 md:py-24 px-4">
+          {/* Soft Background Accent */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#FAF8F5] via-white to-[#FAF8F5]" />
+
+          <div className="relative max-w-4xl mx-auto text-center">
+
+            {/* Small Label */}
+            <p className="text-[11px] md:text-xs uppercase tracking-[0.3em] text-[#9B8B7A] mb-4 font-medium">
+              Bakya by Bagyalakshmi Jewellers
+            </p>
+
+            {/* Main Heading */}
+            <h1 className="font-playfair text-3xl md:text-5xl font-semibold leading-tight text-[#230532] max-w-3xl mx-auto">
+              Handcrafted 92.5 Silver Jewellery Since 1997
+            </h1>
+
+            {/* Description */}
+            <p className="mt-6 text-sm md:text-base leading-8 text-[#5B5146] max-w-2xl mx-auto font-dm-sans">
+              Discover handcrafted silver kolusu, rings, chains, bracelets and temple jewellery from Tirunelveli — designed for everyday elegance, meaningful gifting and timeless tradition.
+            </p>
+
+            {/* Collection Links */}
+            <div className="flex flex-wrap justify-center gap-3 mt-10">
+
+              {[
+                {
+                  label: "Silver Rings",
+                  href: "/silver-jewellery/rings",
+                },
+                {
+                  label: "Silver Anklets",
+                  href: "/silver-jewellery/anklets",
+                },
+                {
+                  label: "Temple Jewellery",
+                  href: "/temple-silver-jewellery",
+                },
+                {
+                  label: "Daily Wear Jewellery",
+                  href: "/daily-wear-silver-jewellery",
+                },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="px-5 py-2.5 rounded-full border border-[#E7DED2] text-sm text-[#4A3F35] hover:bg-[#230532] hover:text-white transition-all duration-300"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Trust Row */}
+            <div className="flex flex-wrap justify-center gap-6 mt-10 text-xs md:text-sm text-[#7B6D60] font-medium">
+
+              <span>✓ BIS Hallmarked</span>
+              <span>✓ Secure Payments</span>
+              <span>✓ Since 1997</span>
+              <span>✓ Ships Across India</span>
+
+            </div>
+          </div>
+        </section>
+        {/* <WhyChooseUs /> */}
+
+        <AboutUs />
+        <HelpSection />
+
+        {/* {products.length > 0 && <FeaturedProduct product={products[0]} />} */}
+        <Suspense fallback={<SectionSkeleton />}>
+          <InstagramFeed />
+        </Suspense>
+
+        <Suspense fallback={<SectionSkeleton />}>
+          <Testimonials />
+        </Suspense>
+
+
+
+        <Suspense fallback={<SectionSkeleton />}>
+          <FAQ />
+        </Suspense>
+
+
+      </main>
     </>
   );
 }

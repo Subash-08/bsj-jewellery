@@ -44,14 +44,14 @@ export default function ShopByGender({ collections }: { collections: Collection[
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
+        <div className="flex overflow-x-auto lg:grid lg:grid-cols-3 gap-6 lg:gap-10 pb-4 lg:pb-0 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden -mx-4 px-4 lg:mx-0 lg:px-0">
           {genders.map((gender, idx) => (
             <Link
               href={getCollectionUrl(gender.handle)}
               key={idx}
-              className="group flex flex-col items-center"
+              className="group flex flex-col items-center w-[75vw] sm:w-[45vw] md:w-[35vw] lg:w-full flex-shrink-0 snap-center"
             >
-              <div className="w-full aspect-square relative overflow-hidden bg-gray-100 mb-6">
+              <div className="w-full aspect-square relative overflow-hidden bg-gray-100 mb-6 rounded-xl lg:rounded-none">
                 <Image
                   src={gender.image}
                   alt={gender.title}

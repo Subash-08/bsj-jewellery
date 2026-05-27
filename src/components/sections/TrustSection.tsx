@@ -8,7 +8,7 @@ const TRUST_ITEMS = [
   },
   {
     icon: ShieldCheck,
-    label: 'BIS Certified',
+    label: 'BIS Hallmarked Silver',
     desc: '92.5 hallmarked silver, HUID verified',
   },
   {
@@ -23,7 +23,7 @@ const TRUST_ITEMS = [
   },
   {
     icon: Package,
-    label: 'Ships Tamil Nadu',
+    label: 'Ships Across India',
     desc: 'Delivery in 3–5 business days',
   },
   {

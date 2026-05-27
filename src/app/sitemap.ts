@@ -4,6 +4,8 @@ import { getProducts, getCollections } from '@/lib/shopify/client'
 import { getProductUrl } from '@/lib/routes/index'
 import { getPaginatedPosts } from '@/lib/blog'
 
+import { filterDisplayCollections } from '@/lib/shopify/collections.config'
+
 export const revalidate = 3600
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -31,7 +33,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let productPages: MetadataRoute.Sitemap = []
   try {
     const collections = await getCollections()
-    const collectionHandles = collections
+    const displayCollections = filterDisplayCollections(collections)
+    const collectionHandles = displayCollections
       .map((c: { handle: string }) => c.handle)
       .filter(Boolean)
 
