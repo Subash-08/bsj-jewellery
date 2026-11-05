@@ -40,7 +40,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: 'Bakya by Bagyalakshmi Jewellers | Handcrafted Silver Jewellery Since 1997',
   description:
-    'Bakya by Bagyalakshmi Jewellers offers handcrafted 92.5 BIS hallmarked silver jewellery from Tirunelveli since 1997. Shop silver kolusu, rings, chains, bracelets and pendants online with delivery across Tamil Nadu and India.',
+    'Bakya by Bagyalakshmi Jewellers offers handcrafted silver jewellery from Tirunelveli since 1997. Shop silver kolusu, rings, chains, bracelets and pendants online.',
   alternates: { canonical: 'https://www.bakya.in' },
 };
 
@@ -111,23 +111,23 @@ export default async function HomePage() {
     type: ['WebPage', 'CollectionPage'],
     name: 'Bakya — Handcrafted Silver Jewellery from Tirunelveli since 1997',
     description:
-      'BIS hallmarked 92.5 silver kolusu, bracelets, chains & rings. Trusted since 1997. Ships across Tamil Nadu.',
+      'Handcrafted silver kolusu, bracelets, chains, pendants and rings from Tirunelveli. Trusted since 1997.',
     url: SITE.domain,
     breadcrumbs: [{ name: 'Home', url: SITE.domain }],
   })
 
   const homeFaqSchema = faqSchema([
     {
-      q: 'Is Bakya silver jewellery BIS hallmarked?',
-      a: 'Yes. All silver jewellery sold by Bakya by Bagyalakshmi Jewellers carries BIS hallmark certification with HUID, confirming silver purity of 92.5 (sterling) or 90 purity.',
+      q: 'Where can I find purity and product details?',
+      a: 'Each product page shows the available product details, such as purity, weight, size and care information. Contact Bakya before purchase if you need help with a specific item.',
     },
     {
       q: 'Does Bakya ship silver jewellery outside Tirunelveli?',
-      a: 'Yes. Bakya ships silver jewellery across Tamil Nadu and India. Orders are dispatched in 1–2 business days and delivered within 3–5 business days.',
+      a: 'Available shipping options, charges and delivery estimates are shown at checkout. Please review the Shipping Policy for the current terms.',
     },
     {
       q: 'What is the return policy for silver jewellery at Bakya?',
-      a: 'Bakya offers a 7-day return window from the date of delivery. Items must be unused and in original condition. Contact us via WhatsApp or email to initiate a return.',
+      a: 'Return eligibility and the process are described in the Return and Refund Policy. Please review that policy before placing an order.',
     },
     {
       q: 'How do I care for my silver jewellery?',
@@ -165,7 +165,7 @@ export default async function HomePage() {
         <Suspense fallback={<ProductSkeleton />}>
           <SplitProductShowcase
             title="Silver Gifts She'll Love"
-            description="Handcrafted BIS hallmarked silver — from ₹999. Gift-ready packaging on every order."
+            description="Handcrafted silver jewellery for meaningful gifting and everyday wear."
             ctaText="Shop Gifting →"
             ctaHref="/silver-gifts-for-women"
             products={giftingProducts}
@@ -189,7 +189,7 @@ export default async function HomePage() {
 
             {/* Main Heading */}
             <h1 className="font-playfair text-3xl md:text-5xl font-semibold leading-tight text-[#230532] max-w-3xl mx-auto">
-              Handcrafted 92.5 Silver Jewellery Since 1997
+              Handcrafted Silver Jewellery Since 1997
             </h1>
 
             {/* Description */}
@@ -231,10 +231,10 @@ export default async function HomePage() {
             {/* Trust Row */}
             <div className="flex flex-wrap justify-center gap-6 mt-10 text-xs md:text-sm text-[#7B6D60] font-medium">
 
-              <span>✓ BIS Hallmarked</span>
+              <span>✓ Product details available</span>
               <span>✓ Secure Payments</span>
               <span>✓ Since 1997</span>
-              <span>✓ Ships Across India</span>
+              <span>✓ Shipping options at checkout</span>
 
             </div>
           </div>

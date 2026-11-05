@@ -6,16 +6,16 @@ import { Section } from '@/components/layout/Section';
 
 const FAQS = [
   {
-    question: 'Is Bakya silver jewellery BIS hallmarked?',
-    answer: 'Yes. All silver jewellery sold by Bakya by Bagyalakshmi Jewellers carries BIS hallmark certification with HUID, confirming silver purity of 92.5 (sterling) or 90 purity.',
+    question: 'Where can I find purity and product details?',
+    answer: 'Each product page shows the available product details, such as purity, weight, size and care information. Contact Bakya before purchase if you need help with a specific item.',
   },
   {
     question: 'Does Bakya ship silver jewellery outside Tirunelveli?',
-    answer: 'Yes. Bakya ships silver jewellery across Tamil Nadu and India. Orders are dispatched in 1–2 business days and delivered within 3–5 business days.',
+    answer: 'Available shipping options, charges and delivery estimates are shown at checkout. Please review the Shipping Policy for the current terms.',
   },
   {
     question: 'What is the return policy for silver jewellery at Bakya?',
-    answer: 'Bakya offers a 7-day return window from the date of delivery. Items must be unused and in original condition. Contact us via WhatsApp or email to initiate a return.',
+    answer: 'Return eligibility and the process are described in the Return and Refund Policy. Please review that policy before placing an order.',
   },
   {
     question: 'How do I care for my silver jewellery?',
@@ -27,7 +27,7 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <Section className="bg-white">
+    <Section id="faq" className="bg-white">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <span className="text-amber-600 uppercase tracking-widest text-xs font-bold mb-4 block">Information</span>

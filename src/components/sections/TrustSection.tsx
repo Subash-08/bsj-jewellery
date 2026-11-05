@@ -8,8 +8,8 @@ const TRUST_ITEMS = [
   },
   {
     icon: ShieldCheck,
-    label: 'BIS Hallmarked Silver',
-    desc: '92.5 hallmarked silver, HUID verified',
+    label: 'Product Information',
+    desc: 'See available purity, weight and size details',
   },
   {
     icon: Handshake,
@@ -23,13 +23,13 @@ const TRUST_ITEMS = [
   },
   {
     icon: Package,
-    label: 'Ships Across India',
-    desc: 'Delivery in 3–5 business days',
+    label: 'Delivery Options',
+    desc: 'Charges and estimates shown at checkout',
   },
   {
     icon: RotateCcw,
-    label: '7-Day Returns',
-    desc: 'Damaged or wrong item returns accepted',
+    label: 'Returns & Support',
+    desc: 'Review the policy before placing an order',
   },
 ]
 

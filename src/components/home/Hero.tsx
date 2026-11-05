@@ -38,7 +38,7 @@ const slides = [
     id: 0,
     label: "",
     title: "Handcrafted Silver\nJewellery",
-    subtitle: "BIS Hallmarked 92.5 Silver | Handcrafted in Tirunelveli | Ships Across Tamil Nadu",
+    subtitle: "Handcrafted in Tirunelveli | Product details shown clearly | Secure checkout",
     // Desktop Image (16:9 - 1920x1080)
     image: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/hero-slide1.jpg?v=1778743993",
     // Mobile Image (4:5 - 1080x1350)

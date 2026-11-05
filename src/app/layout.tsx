@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: '%s | Bakya Silver Jewellery',
   },
   description:
-    'Bakya by Bagyalakshmi Jewellers — handcrafted 92.5 BIS hallmarked silver jewellery from Tirunelveli since 1997. Silver kolusu, chains, bracelets, pendants & rings. Ships across Tamil Nadu.',
+    'Bakya by Bagyalakshmi Jewellers — handcrafted silver jewellery from Tirunelveli since 1997. Explore silver kolusu, chains, bracelets, pendants and rings online.',
   keywords: [
     'silver kolusu',
     'silver jewellery Tamil Nadu',
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     siteName: 'Bakya Silver Jewellery',
     title: 'Bakya — Handcrafted Silver Jewellery from Tirunelveli',
     description:
-      'BIS hallmarked 92.5 silver kolusu, bracelets, chains & rings. Trusted since 1997. Ships Tamil Nadu.',
+      'Handcrafted silver kolusu, bracelets, chains, pendants and rings from Tirunelveli. Trusted since 1997.',
     images: [
       {
         url: '/og-default.jpg',
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Bakya — Handcrafted Silver Jewellery from Tirunelveli',
     description:
-      'BIS hallmarked 92.5 silver kolusu, bracelets, chains & rings. Trusted since 1997.',
+      'Handcrafted silver kolusu, bracelets, chains, pendants and rings from Tirunelveli. Trusted since 1997.',
     images: ['/og-default.jpg'],
     site: '@bakya_jewels',
   },
@@ -185,4 +185,3 @@ export default async function RootLayout({
     </html>
   );
 }
-

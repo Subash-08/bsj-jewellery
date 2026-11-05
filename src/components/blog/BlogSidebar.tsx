@@ -78,7 +78,7 @@ export default function BlogSidebar({ recentPosts = [], activeCategorySlug }: Pr
           Shop Silver Jewellery
         </h3>
         <p className="text-xs text-white/70 mb-4 leading-relaxed">
-          BIS Hallmarked 92.5 Silver — Handcrafted in Tirunelveli
+          Handcrafted silver jewellery from Tirunelveli
         </p>
         <Link
           href="/silver-jewellery"

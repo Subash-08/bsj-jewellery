@@ -57,11 +57,11 @@ function BestSellerCard({ product }: { product: Product }) {
       <div className="flex flex-col gap-[6px] pt-[16px]">
         <div className="flex flex-col">
           <h3 className="text-[14px] text-[#1a1a1a] font-medium truncate font-sans leading-[22px]">{product.title}</h3>
-          <p className="text-[12px] text-[#777777] font-medium font-sans leading-[22px]">92.5 Silver • BIS Hallmarked</p>
+          <p className="text-[12px] text-[#777777] font-medium font-sans leading-[22px]">View product details</p>
         </div>
         <div className="flex flex-col">
           <p className="text-[18px] font-bold text-[#230532] font-sans leading-[22px]">{format(price)}</p>
-          <p className="text-[10px] text-[#535353] tracking-[0.5px] font-sans uppercase font-normal leading-[22px]">#BEST SELLER</p>
+          <p className="text-[10px] text-[#535353] tracking-[0.5px] font-sans uppercase font-normal leading-[22px]">View product</p>
         </div>
       </div>
     </Link>
@@ -89,7 +89,7 @@ export default function BestSellers({ products }: { products: Product[] }) {
             <span className="text-[#230532] text-[23px] leading-none">✦</span>
           </div>
           <p className="text-[#000000] italic font-sans text-[16px] md:text-[18px] font-normal leading-[22px] mt-1">
-            92.5 BIS Hallmarked Silver — Loved by Women Across Tamil Nadu
+            Handcrafted silver jewellery for everyday wear and gifting
           </p>
         </div>
 
@@ -98,46 +98,6 @@ export default function BestSellers({ products }: { products: Product[] }) {
           {products.slice(0, 8).map((product) => (
             <BestSellerCard key={product.id} product={product} />
           ))}
-        </div>
-
-        {/* Trust Icons Bottom Row */}
-        <div className="mt-10 md:mt-14 grid grid-cols-3 lg:grid-cols-6 gap-y-8 gap-x-2 md:gap-x-4 opacity-90 px-2 md:px-4 w-full">
-          <div className="flex flex-col items-center gap-3 md:gap-4">
-            <div className="relative w-12 h-12 md:w-20 md:h-20">
-              <Image src="/svgviewer-png-output.png" alt="100% Certified Jewellery" fill className="object-contain" />
-            </div>
-            <span className="text-[10px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">100% Certified<br />Jewellery</span>
-          </div>
-          <div className="flex flex-col items-center gap-3 md:gap-4">
-            <div className="relative w-12 h-12 md:w-20 md:h-20">
-              <Image src="/svgviewer-png-output (1).png" alt="1 Year Free Insurance" fill className="object-contain" />
-            </div>
-            <span className="text-[10px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">Easy Returns</span>
-          </div>
-          <div className="flex flex-col items-center gap-3 md:gap-4">
-            <div className="relative w-12 h-12 md:w-20 md:h-20">
-              <Image src="/svgviewer-png-output (2).png" alt="BIS Hallmarked Gold" fill className="object-contain" />
-            </div>
-            <span className="text-[10px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">Free Shipping</span>
-          </div>
-          <div className="flex flex-col items-center gap-3 md:gap-4">
-            <div className="relative w-12 h-12 md:w-20 md:h-20">
-              <Image src="/svgviewer-png-output (3).png" alt="Easy Returns" fill className="object-contain" />
-            </div>
-            <span className="text-[10px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">1 Year Free<br />Insurance</span>
-          </div>
-          <div className="flex flex-col items-center gap-3 md:gap-4">
-            <div className="relative w-12 h-12 md:w-20 md:h-20">
-              <Image src="/svgviewer-png-output (4).png" alt="Free Shipping" fill className="object-contain" />
-            </div>
-            <span className="text-[10px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">BIS Hallmarked Gold</span>
-          </div>
-          <div className="flex flex-col items-center gap-3 md:gap-4">
-            <div className="relative w-12 h-12 md:w-16 md:h-16">
-              <Image src="/svgviewer-png-output (5).png" alt="Premium Craftsmanship" fill className="object-contain" />
-            </div>
-            <span className="text-[10px] md:text-xs text-center text-[#230532] font-sans font-medium leading-tight">Premium<br />Craftsmanship</span>
-          </div>
         </div>
 
       </div>

@@ -11,11 +11,11 @@ import {
 import NewsletterForm from "./NewsletterForm";
 
 const TRUST_BADGES = [
-  { icon: Award, label: "BIS Hallmark Certified" },
-  { icon: Truck, label: "Free Shipping Above ₹999" },
-  { icon: RotateCcw, label: "7-Day Easy Returns" },
+  { icon: Award, label: "Product Details Available" },
+  { icon: Truck, label: "Shipping at Checkout" },
+  { icon: RotateCcw, label: "Return Policy Available" },
   { icon: CreditCard, label: "Secure Razorpay Payments" },
-  { icon: ShieldCheck, label: "Ships Across Tamil Nadu" },
+  { icon: ShieldCheck, label: "Secure Checkout" },
 ];
 
 const SHOP_LINKS = [
@@ -29,7 +29,7 @@ const SHOP_LINKS = [
 const CUSTOMER_CARE_LINKS = [
   { label: "Contact Us", href: "/contact" },
   { label: "Track Order", href: "/track-order" },
-  { label: "FAQs", href: "/faqs" },
+  { label: "FAQs", href: "/#faq" },
   { label: "Shipping Policy", href: "/shipping-policy" },
   { label: "Return & Refund Policy", href: "/return-refund-policy" },
 ];
@@ -71,7 +71,7 @@ export default function Footer() {
             </Link>
             <div>
               <p className="text-sm text-white/80 leading-relaxed max-w-sm">
-                Handcrafted BIS hallmarked silver jewellery from Tirunelveli, Tamil Nadu.
+                Handcrafted silver jewellery from Tirunelveli, Tamil Nadu.
               </p>
               <p className="text-sm text-white/80 leading-relaxed max-w-sm">
                 Trusted by families since 1997.
