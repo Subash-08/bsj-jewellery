@@ -160,39 +160,39 @@ const OCCASION_CARDS = [
     title: 'Bridal',
     desc: 'Traditional kolusu, rings & chains for the Tamil bride',
     href: '/silver-jewellery/anklets?occasion=Bridal',
-    image: 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&q=80&w=600',
+    image: 'https://cdn.shopify.com/s/files/1/0704/8554/0995/files/Bridal.1.png?v=1779876172',
   },
   {
     title: 'Daily Wear',
     desc: 'Lightweight pieces for everyday elegance',
     href: '/daily-wear-silver-jewellery',
-    image: 'https://images.unsplash.com/photo-1605100804763-247f67b6348e?auto=format&fit=crop&q=80&w=600',
+    image: 'https://cdn.shopify.com/s/files/1/0704/8554/0995/files/Daily_Wear_.2.png?v=1779876169',
   },
   {
     title: 'Office Wear',
     desc: 'Minimalist & professional silver designs',
     href: '/silver-jewellery',
-    image: 'https://images.unsplash.com/photo-1599643478514-4a4e0f69a1ba?auto=format&fit=crop&q=80&w=600',
+    image: 'https://cdn.shopify.com/s/files/1/0704/8554/0995/files/Officewear.2.png?v=1779876171',
   },
   {
     title: 'Party Wear',
     desc: 'Statement pieces for celebrations',
     href: '/silver-jewellery',
-    image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=600',
+    image: 'https://cdn.shopify.com/s/files/1/0704/8554/0995/files/Partywear.1.png?v=1779876170',
   },
   {
     title: 'Festive',
     desc: 'Devotional & traditional silver pieces',
     href: '/temple-silver-jewellery',
-    image: 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80&w=600',
+    image: 'https://cdn.shopify.com/s/files/1/0704/8554/0995/files/Festivel.png?v=1779876170',
   },
 ]
 
 const PRICE_RANGES = [
-  { label: 'Under ₹1,500', desc: 'Pendants & rings', href: '/silver-jewellery-under-1500', image: 'https://images.unsplash.com/photo-1622398925373-3f9efa8ce462?auto=format&fit=crop&q=80&w=600' },
-  { label: '₹1,500 – ₹3,000', desc: 'Rings & chains', href: '/silver-jewellery/rings?price=1500-3000', image: 'https://images.unsplash.com/photo-1602752250013-1a067ed776c8?auto=format&fit=crop&q=80&w=600' },
-  { label: '₹3,000 – ₹5,000', desc: 'Bracelets & chains', href: '/silver-jewellery/bracelets?price=3000-5000', image: 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&q=80&w=600' },
-  { label: 'Above ₹5,000', desc: 'Heavy kolusu & statement', href: '/silver-jewellery/anklets', image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=600' },
+  { label: 'Under ₹1,500', desc: 'Pendants & rings', href: '/silver-jewellery-under-1500', image: 'https://cdn.shopify.com/s/files/1/0704/8554/0995/files/BAKYA_600_X_750.png_01.png?v=1779975882' },
+  { label: '₹1,500 – ₹3,000', desc: 'Rings & chains', href: '/silver-jewellery/rings?price=1500-3000', image: 'https://cdn.shopify.com/s/files/1/0704/8554/0995/files/BAKYA_600_X_750.png_03.png?v=1779975883' },
+  { label: '₹3,000 – ₹5,000', desc: 'Bracelets & chains', href: '/silver-jewellery/bracelets?price=3000-5000', image: 'https://cdn.shopify.com/s/files/1/0704/8554/0995/files/BAKYA_600_X_750.png_02.png?v=1779975882' },
+  { label: 'Above ₹5,000', desc: 'Heavy kolusu & statement', href: '/silver-jewellery/anklets', image: 'https://cdn.shopify.com/s/files/1/0704/8554/0995/files/BAKYA_600_X_750.png_04.png?v=1779975883' },
 ]
 
 const COMING_SOON = ['Earrings', 'Toe Rings', 'Nose Pins', 'Bangles', 'Necklaces', 'Jewellery Sets']
@@ -381,7 +381,7 @@ export default async function CollectionsPage() {
           {/* BANNER 1 (Before Occasions) */}
           <div className="relative w-full rounded-[10px] max-h-[450px] overflow-hidden mb-16 aspect-[16/9] md:aspect-[16/9] flex items-center shadow-lg">
             <Image
-              src="https://cdn.shopify.com/s/files/1/0704/8554/0995/files/hero-slide1-webp.webp?v=1778744216"
+              src="https://cdn.shopify.com/s/files/1/0704/8554/0995/files/BAKYA_1280_X_720.png_023.png?v=1779975857"
               alt="Simple. Stylish. Silver."
               fill
               className="object-cover"
@@ -417,10 +417,10 @@ export default async function CollectionsPage() {
                     className="object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-[1.08]"
                   />
                   {/* Bottom gold-to-dark gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#D4AF37]/90 via-[#D4AF37]/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-700" />
+                  {/* <div className="absolute inset-0 bg-gradient-to-t from-[#D4AF37]/90 via-[#D4AF37]/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-700" /> */}
 
                   {/* Subtle inner border */}
-                  <div className="absolute inset-2 md:inset-2.5 rounded-[5px] border border-white/20 group-hover:border-white/50 transition-colors duration-500 pointer-events-none" />
+                  {/* <div className="absolute inset-2 md:inset-2.5 rounded-[5px] border border-white/20 group-hover:border-white/50 transition-colors duration-500 pointer-events-none" /> */}
 
                   <div className="absolute inset-x-0 bottom-0 p-5 md:p-6 flex flex-col items-center justify-end z-10">
                     <h3 className={`${playfair.className} text-white font-bold text-[18px] md:text-[22px] leading-tight text-center drop-shadow-md transform group-hover:-translate-y-1 transition-transform duration-300`}>
@@ -435,12 +435,12 @@ export default async function CollectionsPage() {
           {/* BANNER 2 (After Occasions) */}
           <div className="relative w-full rounded-[10px] max-h-[450px] overflow-hidden mb-16 aspect-[16/9] md:aspect-[16/9] flex items-center shadow-lg">
             <Image
-              src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80&w=1600"
+              src="https://cdn.shopify.com/s/files/1/0704/8554/0995/files/BAKYA_1280_X_720.png_03.png?v=1779975856"
               alt="Timeless Antique Elegance"
               fill
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-l from-[#FAF8F5]/95 via-[#FAF8F5]/80 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-l from-[#FAF8F5]/95 via-[#FAF8F5]/50 to-transparent" />
             <div className="relative z-10 px-6 sm:px-8 md:px-16 w-full flex justify-end text-right">
               <div className="max-w-[280px] sm:max-w-sm md:max-w-md">
                 <h2 className={`${playfair.className} text-[#230532] text-[24px] sm:text-[32px] md:text-[40px] lg:text-[46px] font-bold leading-tight mb-2 sm:mb-3`}>
@@ -484,7 +484,7 @@ export default async function CollectionsPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#230532]/90 via-[#230532]/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-700" />
 
                   {/* Inner border */}
-                  <div className="absolute inset-2 md:inset-2.5 rounded-[5px] border border-white/20 group-hover:border-[#D4AF37]/50 transition-colors duration-500 pointer-events-none" />
+                  {/* <div className="absolute inset-2 md:inset-2.5 rounded-[5px] border border-white/20 group-hover:border-[#D4AF37]/50 transition-colors duration-500 pointer-events-none" /> */}
 
                   <div className="relative z-10 text-center transform group-hover:-translate-y-1 transition-transform duration-300">
                     <p className={`${playfair.className} text-white text-[18px] md:text-[22px] font-bold leading-tight drop-shadow-sm`}>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useCart } from '@/context/CartProvider';
 import { cn } from '@/lib/utils';
 import { Loader2, Lock } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface CheckoutButtonProps {
     className?: string;
@@ -19,23 +20,24 @@ export function CheckoutButton({ className }: CheckoutButtonProps) {
         setIsSyncing(true);
 
         try {
-            // Sync buyer identity before redirect so Shopify checkout
-            // recognizes the customer (pre-fills email, shows saved addresses)
-            const res = await fetch('/api/cart/sync-identity', {
+            // Fetch a fresh, server-validated Shopify checkout URL. Checkout
+            // URLs can become stale and must not point back to the Next.js host.
+            const res = await fetch('/api/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ cartId: cart.id }),
             });
 
             const data = await res.json();
+            if (!res.ok || !data.checkoutUrl) {
+                throw new Error(data.error || 'Unable to prepare checkout.');
+            }
 
-            // Use the updated checkout URL if sync succeeded, otherwise use the original
-            const checkoutUrl = data.checkoutUrl || cart.checkoutUrl;
-            window.location.href = checkoutUrl;
+            window.location.assign(data.checkoutUrl);
         } catch (error) {
-            // If sync fails, still redirect — don't block checkout
-            console.warn('Identity sync failed, proceeding with checkout:', error);
-            window.location.href = cart.checkoutUrl;
+            console.error('Checkout preparation failed:', error);
+            toast.error(error instanceof Error ? error.message : 'Unable to prepare checkout.');
+            setIsSyncing(false);
         }
     };
 

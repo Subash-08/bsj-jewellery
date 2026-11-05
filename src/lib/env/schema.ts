@@ -4,7 +4,8 @@ export const envSchema = z.object({
     // Server-side
     SHOPIFY_STORE_DOMAIN: z.string().min(1),
     SHOPIFY_STOREFRONT_ACCESS_TOKEN: z.string().min(1),
-    SHOPIFY_API_VERSION: z.string().default('2024-01'),
+    SHOPIFY_API_VERSION: z.string().default('2026-10'),
+    SHOPIFY_CHECKOUT_DOMAIN: z.string().min(1).optional(),
     NEXT_PRIVATE_REVALIDATION_SECRET: z.string().min(1),
     NEXT_PRIVATE_WEBHOOK_SECRET: z.string().min(1),
     ENCRYPTION_KEY: z.string().length(32, "Encryption key must be 32 chars"),

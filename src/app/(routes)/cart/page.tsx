@@ -9,6 +9,7 @@ import {
     ChevronRight, Shield, Truck, Tag, Lock
 } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
+import { CheckoutButton } from '@/components/cart/CheckoutButton';
 
 export default function CartPage() {
     const { cart, itemCount, updateCartItem, removeCartItem } = useCart();
@@ -27,13 +28,6 @@ export default function CartPage() {
         await removeCartItem(lineId);
     };
 
-    const handleCheckout = () => {
-        console.log("Checkout URL:", cart?.checkoutUrl);
-
-        if (cart?.checkoutUrl) {
-            window.location.href = cart.checkoutUrl;
-        }
-    };
     // ---- End business logic ----
 
     // Empty state
@@ -281,13 +275,7 @@ export default function CartPage() {
 
                             {/* Checkout */}
                             <div className="pt-2">
-                                <button
-                                    onClick={handleCheckout}
-                                    className="w-full py-4 bg-[#230532] text-white font-jakarta text-[14px] uppercase tracking-widest font-bold rounded flex items-center justify-center gap-3 hover:opacity-90 transition-opacity"
-                                >
-                                    <span>Proceed to Checkout</span>
-                                    <ChevronRight size={18} />
-                                </button>
+                                <CheckoutButton className="py-4 bg-[#230532] font-jakarta text-[14px] rounded hover:opacity-90" />
                             </div>
 
                             {/* Continue shopping */}

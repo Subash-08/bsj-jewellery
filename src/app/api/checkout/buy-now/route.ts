@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createCheckoutCart } from '@/lib/shopify/client';
 import { env } from '@/lib/env';
+import {
+    CheckoutConfigurationError,
+    getBuyerIp,
+    getRequestHostname,
+    resolveCheckoutUrl,
+} from '@/lib/shopify/checkout';
 
 /**
  * POST /api/checkout/buy-now
@@ -24,6 +30,7 @@ export async function POST(req: NextRequest) {
 
         const cookieStore = await cookies();
         const accessToken = cookieStore.get(env.AUTH_COOKIE_NAME)?.value;
+        const buyerIp = getBuyerIp(req.headers);
 
         // Fetch customer email if logged in (needed for Shopify checkout pre-fill)
         let email: string | undefined;
@@ -41,14 +48,29 @@ export async function POST(req: NextRequest) {
             variantId,
             quantity,
             accessToken || undefined,
-            email
+            email,
+            buyerIp
         );
 
+        const requestHostname = getRequestHostname(req.headers, req.nextUrl.hostname);
+        const checkoutUrl = resolveCheckoutUrl(cart.checkoutUrl, requestHostname);
+
         return NextResponse.json({
-            checkoutUrl: cart.checkoutUrl,
+            checkoutUrl,
             cartId: cart.id,
         });
     } catch (error) {
+        if (error instanceof CheckoutConfigurationError) {
+            console.error('Buy Now checkout domain configuration error:', error.message);
+            return NextResponse.json(
+                {
+                    error: 'Checkout is temporarily unavailable while the store domain is being configured.',
+                    code: error.code,
+                },
+                { status: 503 }
+            );
+        }
+
         console.error('Buy Now checkout creation failed:', error);
         return NextResponse.json(
             { error: error instanceof Error ? error.message : 'Checkout creation failed' },

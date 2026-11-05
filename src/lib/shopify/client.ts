@@ -288,7 +288,8 @@ export async function createCheckoutCart(
     variantId: string,
     quantity: number,
     customerAccessToken?: string,
-    email?: string
+    email?: string,
+    buyerIp?: string
 ): Promise<{ id: string; checkoutUrl: string }> {
     const variables = {
         lines: [{ merchandiseId: variantId, quantity }],
@@ -305,6 +306,7 @@ export async function createCheckoutCart(
     }>({
         query: createCheckoutCartMutation,
         variables,
+        headers: buyerIp ? { 'Shopify-Storefront-Buyer-IP': buyerIp } : undefined,
         cache: 'no-store',
     });
 
@@ -316,10 +318,11 @@ export async function createCheckoutCart(
     return res.body.cartCreate.cart;
 }
 
-export async function getCart(cartId: string): Promise<Cart | undefined> {
+export async function getCart(cartId: string, buyerIp?: string): Promise<Cart | undefined> {
     const res = await shopifyFetch<{ cart: Cart }>({
         query: getCartQuery,
         variables: { cartId },
+        headers: buyerIp ? { 'Shopify-Storefront-Buyer-IP': buyerIp } : undefined,
         tags: ['cart'],
         cache: 'no-store',
     });
@@ -371,7 +374,11 @@ export async function updateCart(
     return res.body.cartLinesUpdate.cart;
 }
 
-export async function updateCartBuyerIdentity(cartId: string, customerAccessToken: string) {
+export async function updateCartBuyerIdentity(
+    cartId: string,
+    customerAccessToken: string,
+    buyerIp?: string
+): Promise<Cart> {
     const res = await shopifyFetch<{
         cartBuyerIdentityUpdate: {
             cart: Cart;
@@ -385,9 +392,16 @@ export async function updateCartBuyerIdentity(cartId: string, customerAccessToke
                 customerAccessToken,
             },
         },
+        headers: buyerIp ? { 'Shopify-Storefront-Buyer-IP': buyerIp } : undefined,
         cache: 'no-store',
     });
-    return res.body.cartBuyerIdentityUpdate.cart;
+
+    const result = res.body.cartBuyerIdentityUpdate;
+    if (result.userErrors.length > 0 || !result.cart) {
+        throw new Error(result.userErrors[0]?.message || 'Unable to attach customer to checkout.');
+    }
+
+    return result.cart;
 }
 
 // --- Auth Functions ---
