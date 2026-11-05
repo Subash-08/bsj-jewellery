@@ -67,7 +67,7 @@ export default function AboutUs() {
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                   </svg>
                 </div>
-                <span>BIS Hallmarked & Certified</span>
+                <span>Product details shown clearly</span>
               </li>
               <li className="flex items-center gap-4">
                 <div className="flex-shrink-0 text-[#F1D380]">
@@ -81,7 +81,7 @@ export default function AboutUs() {
             </ul>
 
             <Link 
-              href="/pages/about" 
+              href="/about" 
               className={`${montserrat.className} inline-flex items-center justify-center bg-[#F1D380] text-[#230532] px-8 py-3.5 rounded text-[14px] sm:text-[15px] font-bold tracking-[0.05em] uppercase hover:bg-[#e0c06b] hover:scale-[1.02] transition-all shadow-lg`}
             >
               Explore Our Story

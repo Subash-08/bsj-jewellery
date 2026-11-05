@@ -112,6 +112,27 @@ export async function getSearchResults({
     productFilters?: any[];
     after?: string;
 }): Promise<{ products: Product[]; filters: Filter[]; pageInfo: PageInfo }> {
+    // The Storefront `search` connection currently returns no products for this
+    // store, even though the same query succeeds through `products`. Use the
+    // products connection for the normal (unfiltered) customer search flow.
+    // Keep the search connection below for faceted searches because it is the
+    // only response that exposes Shopify's productFilters data.
+    if (!productFilters?.length) {
+        const productSortKey = sortKey === 'RELEVANCE' ? undefined : sortKey;
+        const data = await getProducts({
+            query,
+            sortKey: productSortKey,
+            reverse,
+            after,
+        });
+
+        return {
+            products: data.products,
+            filters: [],
+            pageInfo: data.pageInfo,
+        };
+    }
+
     const res = await shopifyFetch<{
         search: {
             edges: Array<{ node: Product }>;

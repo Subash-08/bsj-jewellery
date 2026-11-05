@@ -20,7 +20,7 @@ const HARDCODED_POLICIES: Record<PolicyType, PolicyContent> = {
     title: "Privacy Policy",
     body: `
       <p>Last updated: March 24, 2026</p>
-      <p>BSJ Jewellers operates this store and website, including all related information, content, features, tools, products and services, in order to provide you, the customer, with a curated shopping experience (the "Services"). BSJ Jewellers is powered by Shopify, which enables us to provide the Services to you. This Privacy Policy describes how we collect, use, and disclose your personal information when you visit, use, or make a purchase or other transaction using the Services or otherwise communicate with us. If there is a conflict between our Terms of Service and this Privacy Policy, this Privacy Policy controls with respect to the collection, processing, and disclosure of your personal information.</p>
+      <p>Bakya operates this store and website, including all related information, content, features, tools, products and services, in order to provide you, the customer, with a curated shopping experience (the "Services"). Bakya is powered by Shopify, which enables us to provide the Services to you. This Privacy Policy describes how we collect, use, and disclose your personal information when you visit, use, or make a purchase or other transaction using the Services or otherwise communicate with us. If there is a conflict between our Terms of Service and this Privacy Policy, this Privacy Policy controls with respect to the collection, processing, and disclosure of your personal information.</p>
       <p>Please read this Privacy Policy carefully. By using and accessing any of the Services, you acknowledge that you have read this Privacy Policy and understand the collection, use, and disclosure of your information as described in this Privacy Policy.</p>
 
       <h2>Personal Information We Collect or Process</h2>
@@ -134,7 +134,7 @@ const HARDCODED_POLICIES: Record<PolicyType, PolicyContent> = {
     title: "Terms of Service",
     body: `
       <h2>OVERVIEW</h2>
-      <p>Welcome to BSJ Jewellers! The terms "we", "us" and "our" refer to BSJ Jewellers. BSJ Jewellers operates this store and website, including all related information, content, features, tools, products and services in order to provide you, the customer, with a curated shopping experience (the "Services"). BSJ Jewellers is powered by Shopify, which enables us to provide the Services to you.</p>
+      <p>Welcome to Bakya! The terms "we", "us" and "our" refer to Bakya. Bakya operates this store and website, including all related information, content, features, tools, products and services in order to provide you, the customer, with a curated shopping experience (the "Services"). Bakya is powered by Shopify, which enables us to provide the Services to you.</p>
       <p>The below terms and conditions, together with any policies referenced herein (these "Terms of Service" or "Terms") describe your rights and responsibilities when you use the Services.</p>
       <p>Please read these Terms of Service carefully, as they include important information about your legal rights and cover areas such as warranty disclaimers and limitations of liability.</p>
       <p>By visiting, interacting with or using our Services, you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree to these Terms of Service or Privacy Policy, you should not use or access our Services.</p>
@@ -150,7 +150,7 @@ const HARDCODED_POLICIES: Record<PolicyType, PolicyContent> = {
       <p>All descriptions of products are subject to change at any time without notice at our sole discretion. We reserve the right to discontinue any product at any time and may limit the quantities of any products that we offer to any person, geographic region or jurisdiction, on a case-by-case basis.</p>
 
       <h2>SECTION 3 - ORDERS</h2>
-      <p>When you place an order, you are making an offer to purchase. BSJ Jewellers reserves the right to accept or decline your order for any reason at its discretion. Your order is not accepted until BSJ Jewellers confirms acceptance. We must receive and process your payment before your order is accepted. Please review your order carefully before submitting, as BSJ Jewellers may be unable to accommodate cancellation requests after an order is accepted. In the event that we do not accept, make a change to, or cancel an order, we will attempt to notify you by contacting the e-mail, billing address, and/or phone number provided at the time the order was made.</p>
+      <p>When you place an order, you are making an offer to purchase. Bakya reserves the right to accept or decline your order for any reason at its discretion. Your order is not accepted until Bakya confirms acceptance. We must receive and process your payment before your order is accepted. Please review your order carefully before submitting, as Bakya may be unable to accommodate cancellation requests after an order is accepted. In the event that we do not accept, make a change to, or cancel an order, we will attempt to notify you by contacting the e-mail, billing address, and/or phone number provided at the time the order was made.</p>
       <p>Your purchases are subject to return or exchange solely in accordance with our Refund Policy.</p>
       <p>You represent and warrant that your purchases are for your own personal or household use and not for commercial resale or export.</p>
 
@@ -164,9 +164,9 @@ const HARDCODED_POLICIES: Record<PolicyType, PolicyContent> = {
       <p>We are not liable for shipping and delivery delays. All delivery times are estimates only and are not guaranteed. We are not responsible for delays caused by shipping carriers, customs processing, or events outside our control. Once we transfer products to the carrier, title and risk of loss passes to you.</p>
 
       <h2>SECTION 6 - INTELLECTUAL PROPERTY</h2>
-      <p>Our Services, including but not limited to all trademarks, brands, text, displays, images, graphics, product reviews, video, and audio, and the design, selection, and arrangement thereof, are owned by BSJ Jewellers, its affiliates or licensors and are protected by U.S. and foreign patent, copyright and other intellectual property laws.</p>
-      <p>These Terms permit you to use the Services for your personal, non-commercial use only. You must not reproduce, distribute, modify, create derivative works of, publicly display, publicly perform, republish, download, store, or transmit any of the material on the Services without our prior written consent. Except as expressly provided herein, nothing in these Terms grants or shall be construed as granting a license or other rights to you under any patent, trademark, copyright, or other intellectual property of BSJ Jewellers, Shopify or any third party. Unauthorized use of the Services may be a violation of federal and state intellectual property laws. All rights not expressly granted herein are reserved by BSJ Jewellers.</p>
-      <p>BSJ Jewellers's names, logos, product and service names, designs, and slogans are trademarks of BSJ Jewellers or its affiliates or licensors. You must not use such trademarks without the prior written permission of BSJ Jewellers. Shopify's name, logo, product and service names, designs and slogans are trademarks of Shopify. All other names, logos, product and service names, designs, and slogans on the Services are the trademarks of their respective owners.</p>
+      <p>Our Services, including but not limited to all trademarks, brands, text, displays, images, graphics, product reviews, video, and audio, and the design, selection, and arrangement thereof, are owned by Bakya, its affiliates or licensors and are protected by U.S. and foreign patent, copyright and other intellectual property laws.</p>
+      <p>These Terms permit you to use the Services for your personal, non-commercial use only. You must not reproduce, distribute, modify, create derivative works of, publicly display, publicly perform, republish, download, store, or transmit any of the material on the Services without our prior written consent. Except as expressly provided herein, nothing in these Terms grants or shall be construed as granting a license or other rights to you under any patent, trademark, copyright, or other intellectual property of Bakya, Shopify or any third party. Unauthorized use of the Services may be a violation of federal and state intellectual property laws. All rights not expressly granted herein are reserved by Bakya.</p>
+      <p>Bakya's names, logos, product and service names, designs, and slogans are trademarks of Bakya or its affiliates or licensors. You must not use such trademarks without the prior written permission of Bakya. Shopify's name, logo, product and service names, designs and slogans are trademarks of Shopify. All other names, logos, product and service names, designs, and slogans on the Services are the trademarks of their respective owners.</p>
 
       <h2>SECTION 7 - OPTIONAL TOOLS</h2>
       <p>You may be provided with access to customer tools offered by third parties as part of the Services, which we neither monitor nor have any control nor input.</p>
@@ -179,7 +179,7 @@ const HARDCODED_POLICIES: Record<PolicyType, PolicyContent> = {
       <p>We are not liable for any harm or damages related to your access of any third-party websites, or your purchase or use of any products, services, resources, or content on any third-party websites. Please review carefully the third-party's policies and practices and make sure you understand them before you engage in any transaction. Complaints, claims, concerns, or questions regarding third-party products and services should be directed to the third-party.</p>
 
       <h2>SECTION 9 - RELATIONSHIP WITH SHOPIFY</h2>
-      <p>BSJ Jewellers is powered by Shopify, which enables us to provide the Services to you. However, any sales and purchases you make in our Store are made directly with BSJ Jewellers. By using the Services, you acknowledge and agree that Shopify is not responsible for any aspect of any sales between you and BSJ Jewellers, including any injury, damage, or loss resulting from purchased products and services. You hereby expressly release Shopify and its affiliates from all claims, damages, and liabilities arising from or related to your purchases and transactions with BSJ Jewellers.</p>
+      <p>Bakya is powered by Shopify, which enables us to provide the Services to you. However, any sales and purchases you make in our Store are made directly with Bakya. By using the Services, you acknowledge and agree that Shopify is not responsible for any aspect of any sales between you and Bakya, including any injury, damage, or loss resulting from purchased products and services. You hereby expressly release Shopify and its affiliates from all claims, damages, and liabilities arising from or related to your purchases and transactions with Bakya.</p>
 
       <h2>SECTION 10 - PRIVACY POLICY</h2>
       <p>All personal information we collect through the Services is subject to our Privacy Policy. By using the Services, you acknowledge that you have read these privacy policies.</p>
@@ -195,7 +195,7 @@ const HARDCODED_POLICIES: Record<PolicyType, PolicyContent> = {
       <p>Occasionally there may be information on or in the Services that contain typographical errors, inaccuracies or omissions that may relate to product descriptions, pricing, promotions, offers, product shipping charges, transit times and availability. We reserve the right to correct any errors, inaccuracies or omissions, and to change or update information or cancel orders if any information is inaccurate at any time without prior notice (including after you have submitted your order).</p>
 
       <h2>SECTION 13 - PROHIBITED USES</h2>
-      <p>You may access and use the Services for lawful purposes only. You may not access or use the Services, directly or indirectly: (a) for any unlawful or malicious purpose; (b) to violate any international, federal, provincial or state regulations, rules, laws, or local ordinances; (c) to infringe upon or violate our intellectual property rights or the intellectual property rights of others; (d) to harass, abuse, insult, harm, defame, slander, disparage, intimidate, or harm any of our employees or any other person; (e) to transmit false or misleading information; (f) to send, knowingly receive, upload, download, use, or re-use any material that does not comply with the these Terms; (g) to transmit, or procure the sending of, any advertising or promotional material, including any "junk mail," "chain letter," "spam," or any other similar solicitation; (h) to impersonate or attempt to impersonate any other person or entity; or (i) to engage in any other conduct that restricts or inhibits anyone's use or enjoyment of the Services, or which, as determined by us, may harm BSJ Jewellers, Shopify or users of the Services, or expose them to liability.</p>
+      <p>You may access and use the Services for lawful purposes only. You may not access or use the Services, directly or indirectly: (a) for any unlawful or malicious purpose; (b) to violate any international, federal, provincial or state regulations, rules, laws, or local ordinances; (c) to infringe upon or violate our intellectual property rights or the intellectual property rights of others; (d) to harass, abuse, insult, harm, defame, slander, disparage, intimidate, or harm any of our employees or any other person; (e) to transmit false or misleading information; (f) to send, knowingly receive, upload, download, use, or re-use any material that does not comply with the these Terms; (g) to transmit, or procure the sending of, any advertising or promotional material, including any "junk mail," "chain letter," "spam," or any other similar solicitation; (h) to impersonate or attempt to impersonate any other person or entity; or (i) to engage in any other conduct that restricts or inhibits anyone's use or enjoyment of the Services, or which, as determined by us, may harm Bakya, Shopify or users of the Services, or expose them to liability.</p>
       <p>In addition, you agree not to: (a) upload or transmit viruses or any other type of malicious code that will or may be used in any way that will affect the functionality or operation of the Services; (b) reproduce, duplicate, copy, sell, resell or exploit any portion of the Services; (c) collect or track the personal information of others; (d) spam, phish, pharm, pretext, spider, crawl, or scrape; or (e) interfere with or circumvent the security features of the Services or any related website, other websites, or the Internet. We reserve the right to suspend, disable, or terminate your account at any time, without notice, if we determine that you have violated any part of these Terms.</p>
 
       <h2>SECTION 14 - TERMINATION</h2>
@@ -204,13 +204,13 @@ const HARDCODED_POLICIES: Record<PolicyType, PolicyContent> = {
 
       <h2>SECTION 15 - DISCLAIMER OF WARRANTIES</h2>
       <p>The information presented on or through the Services is made available solely for general information purposes. We do not warrant the accuracy, completeness, or usefulness of this information. Any reliance you place on such information is strictly at your own risk. We disclaim all liability and responsibility arising from any reliance placed on such materials by you or any other visitor to the Services, or by anyone who may be informed of any of its contents.</p>
-      <p>EXCEPT AS EXPRESSLY STATED BY BSJ Jewellers, THE SERVICES AND ALL PRODUCTS OFFERED THROUGH THE SERVICES ARE PROVIDED 'AS IS' AND 'AS AVAILABLE' FOR YOUR USE, WITHOUT ANY REPRESENTATION, WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ALL IMPLIED WARRANTIES OR CONDITIONS OF MERCHANTABILITY, MERCHANTABLE QUALITY, FITNESS FOR A PARTICULAR PURPOSE, DURABILITY, TITLE, AND NON-INFRINGEMENT. WE DO NOT GUARANTEE, REPRESENT OR WARRANT THAT YOUR USE OF THE SERVICES WILL BE UNINTERRUPTED, TIMELY, SECURE OR ERROR-FREE. SOME JURISDICTIONS LIMIT OR DO NOT ALLOW THE DISCLAIMER OF IMPLIED OR OTHER WARRANTIES SO THE ABOVE DISCLAIMER MAY NOT APPLY TO YOU.</p>
+      <p>EXCEPT AS EXPRESSLY STATED BY Bakya, THE SERVICES AND ALL PRODUCTS OFFERED THROUGH THE SERVICES ARE PROVIDED 'AS IS' AND 'AS AVAILABLE' FOR YOUR USE, WITHOUT ANY REPRESENTATION, WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ALL IMPLIED WARRANTIES OR CONDITIONS OF MERCHANTABILITY, MERCHANTABLE QUALITY, FITNESS FOR A PARTICULAR PURPOSE, DURABILITY, TITLE, AND NON-INFRINGEMENT. WE DO NOT GUARANTEE, REPRESENT OR WARRANT THAT YOUR USE OF THE SERVICES WILL BE UNINTERRUPTED, TIMELY, SECURE OR ERROR-FREE. SOME JURISDICTIONS LIMIT OR DO NOT ALLOW THE DISCLAIMER OF IMPLIED OR OTHER WARRANTIES SO THE ABOVE DISCLAIMER MAY NOT APPLY TO YOU.</p>
 
       <h2>SECTION 16 - LIMITATION OF LIABILITY</h2>
-      <p>TO THE FULLEST EXTENT PROVIDED BY LAW, IN NO CASE SHALL BSJ Jewellers, OUR PARTNERS, DIRECTORS, OFFICERS, EMPLOYEES, AFFILIATES, AGENTS, CONTRACTORS, SERVICE PROVIDERS OR LICENSORS, OR THOSE OF SHOPIFY AND ITS AFFILIATES, BE LIABLE FOR ANY INJURY, LOSS, CLAIM, OR ANY DIRECT, INDIRECT, INCIDENTAL, PUNITIVE, SPECIAL, OR CONSEQUENTIAL DAMAGES OF ANY KIND, INCLUDING, WITHOUT LIMITATION, LOST PROFITS, LOST REVENUE, LOST SAVINGS, LOSS OF DATA, REPLACEMENT COSTS, OR ANY SIMILAR DAMAGES, WHETHER BASED IN CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE, ARISING FROM YOUR USE OF ANY OF THE SERVICES OR ANY PRODUCTS PROCURED USING THE SERVICES, OR FOR ANY OTHER CLAIM RELATED IN ANY WAY TO YOUR USE OF THE SERVICES OR ANY PRODUCT, INCLUDING, BUT NOT LIMITED TO, ANY ERRORS OR OMISSIONS IN ANY CONTENT, OR ANY LOSS OR DAMAGE OF ANY KIND INCURRED AS A RESULT OF THE USE OF THE SERVICES OR ANY CONTENT (OR PRODUCT) POSTED, TRANSMITTED, OR OTHERWISE MADE AVAILABLE VIA THE SERVICES, EVEN IF ADVISED OF THEIR POSSIBILITY.</p>
+      <p>TO THE FULLEST EXTENT PROVIDED BY LAW, IN NO CASE SHALL Bakya, OUR PARTNERS, DIRECTORS, OFFICERS, EMPLOYEES, AFFILIATES, AGENTS, CONTRACTORS, SERVICE PROVIDERS OR LICENSORS, OR THOSE OF SHOPIFY AND ITS AFFILIATES, BE LIABLE FOR ANY INJURY, LOSS, CLAIM, OR ANY DIRECT, INDIRECT, INCIDENTAL, PUNITIVE, SPECIAL, OR CONSEQUENTIAL DAMAGES OF ANY KIND, INCLUDING, WITHOUT LIMITATION, LOST PROFITS, LOST REVENUE, LOST SAVINGS, LOSS OF DATA, REPLACEMENT COSTS, OR ANY SIMILAR DAMAGES, WHETHER BASED IN CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE, ARISING FROM YOUR USE OF ANY OF THE SERVICES OR ANY PRODUCTS PROCURED USING THE SERVICES, OR FOR ANY OTHER CLAIM RELATED IN ANY WAY TO YOUR USE OF THE SERVICES OR ANY PRODUCT, INCLUDING, BUT NOT LIMITED TO, ANY ERRORS OR OMISSIONS IN ANY CONTENT, OR ANY LOSS OR DAMAGE OF ANY KIND INCURRED AS A RESULT OF THE USE OF THE SERVICES OR ANY CONTENT (OR PRODUCT) POSTED, TRANSMITTED, OR OTHERWISE MADE AVAILABLE VIA THE SERVICES, EVEN IF ADVISED OF THEIR POSSIBILITY.</p>
 
       <h2>SECTION 17 - INDEMNIFICATION</h2>
-      <p>You agree to indemnify, defend and hold harmless BSJ Jewellers, Shopify, and our affiliates, partners, officers, directors, employees, agents, contractors, licensors, and service providers from any losses, damages, liabilities or claims, including reasonable attorneys' fees, payable to any third party due to or arising out of (1) your breach of these Terms of Service or the documents they incorporate by reference, (2) your violation of any law or the rights of a third party, or (3) your access to and use of the Services.</p>
+      <p>You agree to indemnify, defend and hold harmless Bakya, Shopify, and our affiliates, partners, officers, directors, employees, agents, contractors, licensors, and service providers from any losses, damages, liabilities or claims, including reasonable attorneys' fees, payable to any third party due to or arising out of (1) your breach of these Terms of Service or the documents they incorporate by reference, (2) your violation of any law or the rights of a third party, or (3) your access to and use of the Services.</p>
 
       <h2>SECTION 18 - SEVERABILITY</h2>
       <p>In the event that any provision of these Terms of Service is determined to be unlawful, void or unenforceable, such provision shall nonetheless be enforceable to the fullest extent permitted by applicable law, and the unenforceable portion shall be deemed to be severed from these Terms of Service, such determination shall not affect the validity and enforceability of any other remaining provisions.</p>
@@ -223,7 +223,7 @@ const HARDCODED_POLICIES: Record<PolicyType, PolicyContent> = {
       <p>You may not delegate, transfer or assign this Agreement or any of your rights or obligations under these Terms without our prior written consent, and any such attempt will be null and void. We may transfer, assign, or delegate these Terms and our rights and obligations without consent or notice to you.</p>
 
       <h2>SECTION 21 - GOVERNING LAW</h2>
-      <p>These Terms of Service and any separate agreements whereby we provide you Services shall be governed by and construed in accordance with the federal and state or territorial courts in the jurisdiction where BSJ Jewellers is headquartered. You and BSJ Jewellers consent to venue and personal jurisdiction in such courts.</p>
+      <p>These Terms of Service and any separate agreements whereby we provide you Services shall be governed by and construed in accordance with the federal and state or territorial courts in the jurisdiction where Bakya is headquartered. You and Bakya consent to venue and personal jurisdiction in such courts.</p>
 
       <h2>SECTION 22 - HEADINGS</h2>
       <p>The headings used in this agreement are included for convenience only and will not limit or otherwise affect these Terms.</p>
@@ -235,7 +235,7 @@ const HARDCODED_POLICIES: Record<PolicyType, PolicyContent> = {
       <h2>SECTION 24 - CONTACT INFORMATION</h2>
       <p>Questions about the Terms of Service should be sent to us at bagyalakhsmijewellers97@gmail.com</p>
       <p>Our contact information is posted below:<br/>
-      Trade name: BSJ Jewellers<br/>
+      Trade name: Bakya<br/>
       Phone number: 9025790527<br/>
       Email: bagyalakhsmijewellers97@gmail.com<br/>
       Physical address: BAGYALAKSHMI JEWELLERY, 57A/12, KOOLAKKADAI BAZAAR, TOWN, TOWN, 627006 Tirunelveli TN, India</p>
@@ -244,7 +244,7 @@ const HARDCODED_POLICIES: Record<PolicyType, PolicyContent> = {
   shippingPolicy: {
     title: "Shipping Policy",
     body: `
-      <p>Thank you for shopping at BSJ Jewellers. We are committed to delivering your favorite silver and gold jewelry safely and on time. Below are the terms and conditions that constitute our Shipping Policy.</p>
+      <p>Thank you for shopping at Bakya. We are committed to delivering your favorite silver and gold jewelry safely and on time. Below are the terms and conditions that constitute our Shipping Policy.</p>
 
       <h2>1. Shipment Processing Time</h2>
       <ul>
@@ -287,10 +287,10 @@ const HARDCODED_POLICIES: Record<PolicyType, PolicyContent> = {
       <p>Once your order has shipped, you will receive a Shipment Confirmation email containing your tracking number(s). The tracking number will be active within 24 hours. You can track your package via our courier partner's website.</p>
 
       <h2>4. Transit Insurance</h2>
-      <p>BSJ Jewellers ensures all parcels are fully insured until they reach your doorstep. We take full responsibility for the safety of the jewelry during transit. However, we are not responsible for any damage caused after the delivery has been successfully completed.</p>
+      <p>Bakya ensures all parcels are fully insured until they reach your doorstep. We take full responsibility for the safety of the jewelry during transit. However, we are not responsible for any damage caused after the delivery has been successfully completed.</p>
 
       <h2>5. Custom Duties &amp; Taxes (International Orders)</h2>
-      <p>BSJ Jewellers is not responsible for any customs and taxes applied to your order. All fees imposed during or after shipping are the responsibility of the customer (tariffs, taxes, etc.).</p>
+      <p>Bakya is not responsible for any customs and taxes applied to your order. All fees imposed during or after shipping are the responsibility of the customer (tariffs, taxes, etc.).</p>
 
       <h2>6. Damaged or Tampered Parcels</h2>
       <p>If you receive a parcel that appears to be tampered with or damaged, please do not accept the delivery.</p>
@@ -298,7 +298,7 @@ const HARDCODED_POLICIES: Record<PolicyType, PolicyContent> = {
       <p>Report any issues to our customer support within 24 hours of delivery at bagyalakshmijewellers97@gmail.com.</p>
 
       <h2>7. Incorrect Shipping Addresses</h2>
-      <p>BSJ Jewellers will not be held responsible for orders shipped to an incorrect address provided by the customer. Please ensure your shipping details are accurate before finalizing your order.</p>
+      <p>Bakya will not be held responsible for orders shipped to an incorrect address provided by the customer. Please ensure your shipping details are accurate before finalizing your order.</p>
     `
   }
 };
@@ -383,9 +383,12 @@ async function fetchPageFallback(handle: string): Promise<PolicyContent> {
 /**
  * Fetch all four policies.
  *
- * 1. Primary: Tries to resolve from HARDCODED_POLICIES first.
- * 2. Fallback: Fetches from shop { privacyPolicy, termsOfService, refundPolicy }
- * 3. Fallback: Fetches from page(handle: ...) if still missing
+ * 1. Primary: Fetches the current policy text from Shopify.
+ * 2. Fallback: Fetches a Shopify page by handle if the policy is not exposed
+ *    on the shop object (for example, shippingPolicy).
+ * 3. Final fallback: Uses the legacy local copy only when Shopify has no
+ *    policy content. This prevents stale local policy text from overriding
+ *    the merchant's current Shopify policy.
  * 4. Never throws — returns null for any policy that cannot be resolved.
  */
 export async function getAllPolicies(): Promise<AllPolicies> {
@@ -403,12 +406,7 @@ export async function getAllPolicies(): Promise<AllPolicies> {
 
   // Resolve each policy: prefer HARDCODED -> then shop-level data -> then page query
   const resolve = async (type: PolicyType): Promise<PolicyContent> => {
-    // 1. Primary fallback: hardcoded policies
-    if (HARDCODED_POLICIES[type]) {
-      return HARDCODED_POLICIES[type];
-    }
-
-    // 2. Secondary fallback: Shopify API shop object
+    // 1. Current Shopify policy text
     // shippingPolicy is NEVER on the shop object
     if (type !== 'shippingPolicy' && shopData) {
       const shopPolicy = shopData[type as keyof typeof shopData];
@@ -417,8 +415,14 @@ export async function getAllPolicies(): Promise<AllPolicies> {
       }
     }
 
-    // 3. Final fallback: fetch by page handle
-    return fetchPageFallback(POLICY_HANDLE_MAP[type]);
+    // 2. Shopify page fallback
+    const pagePolicy = await fetchPageFallback(POLICY_HANDLE_MAP[type]);
+    if (pagePolicy) {
+      return pagePolicy;
+    }
+
+    // 3. Legacy local copy, only if Shopify has no usable content.
+    return HARDCODED_POLICIES[type];
   };
 
   const [privacyPolicy, termsOfService, refundPolicy, shippingPolicy] =

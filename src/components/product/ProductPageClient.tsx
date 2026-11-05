@@ -118,14 +118,15 @@ export default function ProductPageClient({
 
     const meta = product.jewelryMetafields || {};
     const parsed = parseHighlightsFromDescription(product.description || '');
+    const productPurity = meta['Purity Percentage']
+        ? `${meta['Purity Percentage']}%`
+        : meta['Purity'] || parsed.purity;
 
     // Build highlights — metafield priority, fallback to parsed
     const highlights = [
         {
             label: 'Purity',
-            value: meta['Purity Percentage']
-                ? `${meta['Purity Percentage']}%`
-                : meta['Purity'] || parsed.purity,
+            value: productPurity,
             icon: Award,
         },
         {
@@ -262,15 +263,13 @@ export default function ProductPageClient({
                         )}
 
                         {/* QuickAnswer — for AEO / AI engine citations */}
-                        {(meta['Purity Percentage'] || meta['Purity'] || parsed.purity) && (
+                        {productPurity && (
                             <QuickAnswer
                                 answer={[
                                     product.title.replace(/\|\s*Bakya.*/i, '').trim(),
-                                    'handcrafted in',
-                                    meta['Purity Percentage'] ? `${meta['Purity Percentage']}% BIS hallmarked silver` : '92.5 BIS hallmarked silver',
+                                    `has ${productPurity} purity information`,
                                     meta['Gross Weight'] ? `(${meta['Gross Weight']}g)` : parsed.weight ? `(${parsed.weight})` : '',
-                                    'from Bakya, Tirunelveli.',
-                                    'Ships across Tamil Nadu.',
+                                    'from Bakya.',
                                 ].filter(Boolean).join(' ')}
                             />
                         )}
@@ -354,10 +353,10 @@ export default function ProductPageClient({
                         {/* ── Trust Badge Strip ───────────────────────────── */}
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
                             {[
-                                { icon: Shield, label: 'Hallmark Certified' },
-                                { icon: Truck, label: 'Free Shipping ₹999+' },
-                                { icon: RotateCcw, label: 'Easy Returns' },
-                                { icon: Lock, label: 'Secure Payment' },
+                                { icon: Shield, label: 'Product details available' },
+                                { icon: Truck, label: 'Shipping at checkout' },
+                                { icon: RotateCcw, label: 'Return policy available' },
+                                { icon: Lock, label: 'Secure checkout' },
                             ].map(({ icon: Icon, label }) => (
                                 <div key={label} className="flex items-center gap-2 text-stone-500">
                                     <Icon size={14} className="text-amber-600 shrink-0" strokeWidth={1.5} />
@@ -372,7 +371,7 @@ export default function ProductPageClient({
                             <p className="text-xs text-stone-600">
                                 {dispatchTime
                                     ? `Dispatch in ${dispatchTime}`
-                                    : 'Estimated delivery in 3–5 business days'}
+                                    : 'Delivery timing is confirmed at checkout'}
                             </p>
                         </div>
 
