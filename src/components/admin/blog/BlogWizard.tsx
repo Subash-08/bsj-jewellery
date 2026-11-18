@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import type { BlogPost, ContentBlock, AdminFormStep } from '@/types/blog'
-import { BLOG_CATEGORIES } from '@/types/blog'
 import StepIndicator from './StepIndicator'
 import BasicInfoStep from './create-steps/BasicInfoStep'
 import ContentStep from './create-steps/ContentStep'
@@ -25,25 +24,14 @@ type BasicFields = {
 type SeoOverrides = {
   metaTitle?: string
   metaDescription?: string
+  ogTitle?: string
+  ogDescription?: string
+  ogImage?: string
 }
 
 interface Props {
   initialData?: Partial<BlogPost> & { slug?: string }
   isEdit?: boolean
-}
-
-function defaultBasic(): BasicFields {
-  return {
-    title: '',
-    slug: '',
-    excerpt: '',
-    category: BLOG_CATEGORIES[0],
-    tags: [],
-    author: 'Bakya Team',
-    coverImage: '',
-    status: 'draft',
-    featured: false,
-  }
 }
 
 export default function BlogWizard({ initialData, isEdit = false }: Props) {
@@ -56,7 +44,7 @@ export default function BlogWizard({ initialData, isEdit = false }: Props) {
     title: initialData?.title ?? '',
     slug: initialData?.slug ?? '',
     excerpt: initialData?.excerpt ?? '',
-    category: initialData?.category ?? BLOG_CATEGORIES[0],
+    category: initialData?.category ?? 'Silver Care',
     tags: initialData?.tags ?? [],
     author: initialData?.author ?? 'Bakya Team',
     coverImage: initialData?.coverImage ?? '',
@@ -69,6 +57,9 @@ export default function BlogWizard({ initialData, isEdit = false }: Props) {
   const [seo, setSeo] = useState<SeoOverrides>(() => ({
     metaTitle: initialData?.seo?.metaTitle ?? '',
     metaDescription: initialData?.seo?.metaDescription ?? '',
+    ogTitle: initialData?.seo?.ogTitle ?? '',
+    ogDescription: initialData?.seo?.ogDescription ?? '',
+    ogImage: initialData?.seo?.ogImage ?? '',
   }))
 
   // ── Validation ────────────────────────────────────────────────────────────────
@@ -125,6 +116,9 @@ export default function BlogWizard({ initialData, isEdit = false }: Props) {
         seo: {
           metaTitle: seo.metaTitle || undefined,
           metaDescription: seo.metaDescription || undefined,
+          ogTitle: seo.ogTitle || undefined,
+          ogDescription: seo.ogDescription || undefined,
+          ogImage: seo.ogImage || undefined,
         },
       }
 
@@ -166,7 +160,7 @@ export default function BlogWizard({ initialData, isEdit = false }: Props) {
       <StepIndicator current={step} onSaveDraft={handleSaveDraft} saving={saving} />
 
       {step === 1 && (
-        <BasicInfoStep data={basic} onChange={setBasic} />
+        <BasicInfoStep data={basic} onChange={(data) => setBasic({ ...data, featured: data.featured ?? false })} />
       )}
       {step === 2 && (
         <ContentStep blocks={blocks} onChange={setBlocks} />

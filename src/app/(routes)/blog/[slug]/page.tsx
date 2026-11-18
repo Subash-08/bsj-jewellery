@@ -26,9 +26,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = post.seo?.metaTitle ?? post.title
   const description = post.seo?.metaDescription ?? post.excerpt
   const url = post.seo?.canonicalUrl ?? `${SITE.domain}/blog/${slug}`
-  const imageUrl = post.coverImage.startsWith('http')
-    ? post.coverImage
-    : `${SITE.domain}${post.coverImage}`
+  const socialImage = post.seo?.ogImage || post.coverImage
+  const imageUrl = socialImage.startsWith('http')
+    ? socialImage
+    : `${SITE.domain}${socialImage}`
 
   return {
     title,
@@ -48,8 +49,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     alternates: { canonical: url },
     openGraph: {
-      title,
-      description,
+      title: post.seo?.ogTitle || title,
+      description: post.seo?.ogDescription || description,
       url,
       siteName: SITE.name,
       type: 'article',
@@ -58,15 +59,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       authors: [post.author],
       section: post.category,
       tags: post.tags,
-      images: post.coverImage
-        ? [{ url: imageUrl, width: 1200, height: 630, alt: title }]
+      images: socialImage
+        ? [{ url: imageUrl, alt: post.seo?.ogTitle || title }]
         : undefined,
     },
     twitter: {
       card: 'summary_large_image',
-      title,
-      description,
-      images: post.coverImage ? [imageUrl] : undefined,
+      title: post.seo?.ogTitle || title,
+      description: post.seo?.ogDescription || description,
+      images: socialImage ? [imageUrl] : undefined,
       site: '@bakya_jewels',
     },
   }

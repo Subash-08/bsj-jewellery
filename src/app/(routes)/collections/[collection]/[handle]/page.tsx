@@ -5,6 +5,7 @@ import type { Product } from '@/types/shopify/product';
 import type { ReviewSummaryData, JudgeMeReview } from '@/types/review';
 import ProductPageClient from '@/components/product/ProductPageClient';
 import { getReviews, getReviewSummary, extractNumericProductId } from '@/lib/judgeme';
+import { SITE } from '@/lib/seo.config';
 
 // Enable dynamic rendering for this route
 export const dynamic = 'force-dynamic';
@@ -102,7 +103,7 @@ export default async function ProductPage(props: Props) {
         },
         offers: {
             '@type': 'Offer',
-            url: `https://bsjjewellery.com/products/${product.handle}`,
+            url: `${SITE.domain}/products/${product.handle}`,
             priceCurrency: minPrice.currencyCode,
             price: minPrice.amount,
             availability: product.availableForSale

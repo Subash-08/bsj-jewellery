@@ -430,22 +430,23 @@ export default async function ProductPage(props: Props) {
     });
 
     const cleanProductTitle = product.title.replace(/\|\s*Bakya.*/i, '').trim();
+    const listedPurity = jewelryMetafields?.['Purity Percentage'];
     const productFaqs = [
-        {
-            q: `Is the ${cleanProductTitle} made of real silver?`,
-            a: `Yes. This is genuine 92.5 BIS hallmarked sterling silver with HUID certification. You can verify purity by scanning the hallmark using the BIS CARE app.`,
-        },
+        ...(listedPurity ? [{
+            q: `What purity is the ${cleanProductTitle}?`,
+            a: `The listed product purity is ${listedPurity}%. Review the product details or contact Bakya before purchase if you need further information.`,
+        }] : []),
         {
             q: 'What is the return policy?',
-            a: 'We offer a 7-day return policy for damaged or wrong items. Contact us at bagyalakshmijewellers97@gmail.com within 7 days of receiving your order.',
+            a: 'Return eligibility and the process are described in the Return and Refund Policy. Please review that policy before placing an order.',
         },
         {
             q: 'How long does delivery take?',
-            a: 'Standard delivery takes 3–5 business days across Tamil Nadu. Orders are dispatched within 1–2 business days from our Tirunelveli workshop.',
+            a: 'Available shipping options, charges and delivery estimates are shown at checkout. Please review the Shipping Policy for the current terms.',
         },
         {
             q: 'Is this product good for gifting?',
-            a: 'Yes. All Bakya silver jewellery ships in a premium jewellery box with a silver care card, making it ready to gift without extra packaging.',
+            a: 'Please contact Bakya before purchase if you need help choosing this item for a gift.',
         },
     ];
 

@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Playfair_Display, Montserrat } from "next/font/google";
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import { ShieldCheck, Tag, Gem, RefreshCw } from "lucide-react";
+import { ShieldCheck, Tag, Gem, RefreshCw, MessageCircle, Sparkles, MapPin, Phone } from "lucide-react";
 
 // Fonts
 const playfair = Playfair_Display({
@@ -38,7 +39,7 @@ const styleVars = {
 // Animation variants
 const fadeInUp = {
   hidden: { opacity: 0, y: 30, scale: 0.97 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: "easeOut" as const } },
 };
 
 const staggerContainer = {
@@ -74,12 +75,13 @@ const FallbackImg = ({ src, alt, className }: { src: string; alt: string; classN
   const [error, setError] = useState(false);
 
   return (
-    <div className={`relative overflow-hidden bg-[var(--gold-muted)]/10 animate-pulse ${className}`}>
+    <div className={`absolute inset-0 overflow-hidden bg-[var(--gold-muted)]/10 ${className ?? ''}`}>
       {!error && (
-        <img
+        <Image
           src={src}
           alt={alt}
-          loading="lazy"
+          fill
+          sizes="(max-width: 1024px) 100vw, 50vw"
           onLoad={() => setLoaded(true)}
           onError={() => setError(true)}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${loaded ? "opacity-100" : "opacity-0"}`}
@@ -95,16 +97,10 @@ const FallbackImg = ({ src, alt, className }: { src: string; alt: string; classN
 };
 
 export default function AboutPage() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
-  if (!mounted) return null; // Prevent hydration mismatch
-
   return (
     <div
       style={styleVars}
       className={`${playfair.variable} ${montserrat.variable} font-montserrat text-[var(--noir)] selection:bg-[var(--gold)] selection:text-[var(--noir)] bg-[var(--ivory)] overflow-hidden motion-reduce:transform-none motion-reduce:transition-none`}
-      suppressHydrationWarning
     >
       <style dangerouslySetInnerHTML={{__html: `
         html { scroll-behavior: smooth; }
@@ -115,7 +111,7 @@ export default function AboutPage() {
       `}} />
 
       {/* SECTION 1: CINEMATIC HERO */}
-      <section className="relative min-h-screen flex items-center justify-center bg-[var(--noir)] text-white py-32 overflow-hidden z-0">
+      <section className="relative min-h-[72vh] flex items-center justify-center bg-[var(--noir)] text-white py-20 md:py-24 overflow-hidden z-0">
         <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-overlay">
           <svg className="w-full h-full opacity-30">
             <filter id="noise">
@@ -151,12 +147,12 @@ export default function AboutPage() {
           </motion.div>
 
           <motion.h1 variants={fadeInUp} className="font-playfair text-5xl md:text-7xl lg:text-[80px] leading-tight mb-8">
-            Where Gold Meets <br />
-            <span className="italic font-light">Generations of Trust</span>
+            A Tirunelveli Story <br />
+            <span className="italic font-light">Told in Silver</span>
           </motion.h1>
 
-          <motion.p variants={fadeInUp} className="font-cormorant italic text-[var(--stone-light)] text-xl md:text-2xl max-w-2xl mx-auto mb-14 leading-relaxed">
-            For over two decades, Bagyalakshmi Jewellers has adorned families across Tamil Nadu with handcrafted pure silver jewellery — built on purity, pride, and tradition.
+          <motion.p variants={fadeInUp} className="font-cormorant italic text-white/85 text-xl md:text-2xl max-w-2xl mx-auto mb-10 leading-relaxed">
+            Bakya brings Bagyalakshmi Jewellers&apos; Tirunelveli heritage online, with silver jewellery for everyday wear, gifting and meaningful traditions.
           </motion.p>
 
           <motion.div variants={fadeInUp} className="mb-14 opacity-80">
@@ -187,7 +183,7 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 2: LEGACY STATS BAR */}
-      <section className="w-full bg-[var(--gold-gradient)] py-12 relative z-10">
+      <section className="w-full bg-[var(--gold-gradient)] py-8 relative z-10">
         <div className="max-w-[1200px] mx-auto px-6">
           <motion.div 
             initial="hidden" 
@@ -197,10 +193,10 @@ export default function AboutPage() {
             className="flex flex-col md:flex-row items-center justify-between gap-10 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-[var(--noir)]/20 text-[var(--noir)] text-center"
           >
             {[
-              { value: 25, suffix: "+", label: "Years Legacy" },
-              { value: 10000, suffix: "+", label: "Happy Families" },
-              { value: 3, suffix: "", label: "Generations" },
-              { value: 100, suffix: "%", label: "BIS Certified" },
+              { value: 29, suffix: "", label: "Years Since 1997" },
+              { value: 1997, suffix: "", label: "Our Beginning" },
+              { value: 5, suffix: "+", label: "Silver Categories" },
+              { value: 1, suffix: "", label: "Tirunelveli Home" },
             ].map((stat, i) => (
               <motion.div key={i} variants={fadeInUp} className="w-full pt-6 md:pt-0 px-4">
                 <div className="font-playfair text-5xl md:text-6xl font-bold mb-2">
@@ -216,7 +212,7 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 3: ORIGIN STORY */}
-      <section id="our-story" className="py-24 md:py-32 bg-[var(--ivory)] overflow-hidden">
+      <section id="our-story" className="py-16 md:py-20 bg-[var(--ivory)] overflow-hidden">
         <div className="max-w-[1200px] mx-auto px-6">
           <motion.div 
             initial="hidden" 
@@ -229,8 +225,8 @@ export default function AboutPage() {
             <motion.div variants={fadeInUp} className="w-full lg:w-[55%] relative">
               <div className="relative aspect-[4/5] w-full max-w-md mx-auto lg:mx-0 transform -rotate-[1.5deg] border-[12px] border-[#FFFDF8] shadow-[8px_8px_0px_var(--gold-muted)]">
                 <FallbackImg 
-                  src="https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=1200&auto=format&fit=crop" 
-                  alt="Original Bagyalakshmi Jewellers store"
+                  src="https://cdn.shopify.com/s/files/1/0704/8554/0995/files/ChatGPTImageMay18_2026_07_55_48PM.png?v=1779280809"
+                  alt="Bakya silver bracelet displayed against a purple background"
                 />
                 {/* Decorative leaf */}
                 <div className="absolute -top-6 -right-6 text-[var(--gold)] w-12 h-12 bg-[var(--ivory)] rounded-full flex items-center justify-center shadow-sm">
@@ -240,7 +236,7 @@ export default function AboutPage() {
                 </div>
               </div>
               <p className="mt-8 text-center lg:text-left font-cormorant italic text-[var(--stone-light)] text-lg">
-                Our founder, 1997
+                A silver design from the Bakya collection
               </p>
             </motion.div>
 
@@ -248,20 +244,20 @@ export default function AboutPage() {
             <motion.div variants={fadeInUp} className="w-full lg:w-[45%]">
               <span className="text-[var(--gold)] uppercase tracking-[0.2em] text-sm font-semibold mb-6 block">OUR STORY</span>
               <h2 className="font-playfair text-4xl md:text-5xl text-[var(--noir)] mb-8 leading-tight">
-                From a Small Shop to a Trusted Legacy
+                From Our Tirunelveli Shop to You
               </h2>
               <div className="font-jost font-light text-[var(--stone)] text-lg leading-[1.9] space-y-6 mb-10">
                 <p>
-                  Bagyalakshmi Jewellers began in Tirunelveli's vibrant Koolakkadai Bazaar in 1997 with a simple yet profound vision: to provide pure, hallmarked jewellery to every family.
+                  Bagyalakshmi Jewellers began in Tirunelveli&apos;s Koolakkadai Bazaar in 1997. Bakya carries that local story into an online silver jewellery collection.
                 </p>
                 <p>
-                  Through word-of-mouth, unwavering trust, and consistent quality, our small shop grew into becoming the go-to jeweller for weddings, festivals, and daily wear across Tamil Nadu. We believe that true luxury lies in honesty and pristine craftsmanship.
+                  Browse silver anklets, rings, chains, bracelets and pendants at your own pace. Each product page is the place to check its stated material, purity, weight, size and care details.
                 </p>
               </div>
               
               <div className="relative pl-8 mb-8 border-l-2 border-[var(--gold-muted)]">
                 <p className="font-cormorant italic text-[28px] text-[var(--gold)] leading-snug">
-                  "Every ornament we craft carries the weight of your trust and the warmth of our tradition."
+                  &ldquo;A piece of silver can hold a memory, a tradition or an everyday moment.&rdquo;
                 </p>
               </div>
               
@@ -272,16 +268,16 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 4: TRUST PILLARS */}
-      <section className="py-24 md:py-32 bg-[var(--noir-soft)] text-white relative">
+      <section className="py-16 md:py-20 bg-[var(--noir-soft)] text-white relative">
         <div className="max-w-[1200px] mx-auto px-6">
           <motion.div 
             initial="hidden" 
             whileInView="visible" 
             viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
-            className="text-center mb-20"
+            className="text-center mb-10"
           >
-            <motion.span variants={fadeInUp} className="text-[var(--gold-muted)] uppercase tracking-[0.2em] text-sm font-semibold mb-4 block">
+            <motion.span variants={fadeInUp} className="text-[#F1D887] uppercase tracking-[0.2em] text-sm font-semibold mb-4 block">
               WHY FAMILIES TRUST US
             </motion.span>
             <motion.h2 variants={fadeInUp} className="font-playfair text-4xl md:text-[42px] text-white">
@@ -299,23 +295,23 @@ export default function AboutPage() {
             {[
               {
                 icon: <ShieldCheck size={32} className="text-[var(--noir)]" strokeWidth={1.5} />,
-                title: "100% BIS Hallmarked",
-                desc: "Every piece of silver jewellery is certified under India's Bureau of Indian Standards, guaranteeing purity you can trust.",
+                title: "Product Details",
+                desc: "Check the available material, purity, weight and size details on the individual product page before choosing.",
               },
               {
                 icon: <Tag size={32} className="text-[var(--noir)]" strokeWidth={1.5} />,
-                title: "Zero Hidden Charges",
-                desc: "What you see is what you pay. Honest making charges, live rate pricing, and no surprise fees — ever.",
+                title: "Clear Checkout",
+                desc: "Review the final product price, shipping charges and available delivery options before placing an order.",
               },
               {
                 icon: <Gem size={32} className="text-[var(--noir)]" strokeWidth={1.5} />,
-                title: "IGI/GIA Certified Stones",
-                desc: "All precious gemstones come with independent certification for authenticity, cut, and carat.",
+                title: "Silver for Every Day",
+                desc: "Explore jewellery for daily wear, gifting and occasions that bring families together.",
               },
               {
                 icon: <RefreshCw size={32} className="text-[var(--noir)]" strokeWidth={1.5} />,
-                title: "Lifetime Exchange",
-                desc: "Upgrade or exchange your jewellery anytime. We stand behind every piece we sell, long after you leave the store.",
+                title: "Help When Needed",
+                desc: "Contact our team with questions about a product, sizing or an order before you buy.",
               }
             ].map((card, idx) => (
               <motion.div 
@@ -327,7 +323,7 @@ export default function AboutPage() {
                   {card.icon}
                 </div>
                 <h3 className="font-playfair text-xl text-white mb-4">{card.title}</h3>
-                <p className="font-jost font-light text-[var(--stone-light)] leading-relaxed text-[15px]">
+                <p className="font-jost text-white/80 leading-relaxed text-[15px]">
                   {card.desc}
                 </p>
               </motion.div>
@@ -337,7 +333,7 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 5: CRAFTSMANSHIP DEEP DIVE */}
-      <section className="py-24 md:py-32 bg-[var(--ivory)] overflow-hidden">
+      <section className="py-16 md:py-20 bg-[var(--ivory)] overflow-hidden">
         <div className="max-w-[1200px] mx-auto px-6">
           <motion.div 
             initial="hidden" 
@@ -350,25 +346,25 @@ export default function AboutPage() {
             <motion.div variants={fadeInUp} className="w-full lg:w-1/2 order-2 lg:order-1">
               <span className="text-[var(--gold)] uppercase tracking-[0.2em] text-sm font-semibold mb-6 block">THE ART OF MAKING</span>
               <h2 className="font-playfair text-4xl md:text-[40px] text-[var(--noir)] mb-12 leading-tight">
-                Crafted by Hand. <br/>Born from Tradition.
+                Thoughtful Silver. <br/>Everyday Tradition.
               </h2>
               
               <div className="relative pl-6 sm:pl-10 space-y-12 before:absolute before:inset-y-0 before:left-3 sm:before:left-[19px] before:w-px before:bg-[var(--gold)]/30">
                 {[
                   {
                     num: "1",
-                    title: "Design & Conception",
-                    desc: "Every piece begins with a hand-drawn sketch, inspired by classical South Indian temple jewellery patterns and contemporary aesthetics."
+                    title: "Find Your Style",
+                    desc: "Explore silver designs for everyday wear, gifting and occasions inspired by familiar traditions."
                   },
                   {
                     num: "2",
-                    title: "Material Selection",
-                    desc: "Only authentic 92.5 pure silver sourced from verified refineries. Gemstones hand-selected for colour, clarity and brilliance."
+                    title: "Check the Details",
+                    desc: "Review the material, purity, weight and measurements listed for the piece you are considering."
                   },
                   {
                     num: "3",
-                    title: "Master Craftsmanship",
-                    desc: "Our artisans, trained over decades, shape each ornament with precision tools and traditional techniques passed down through generations."
+                    title: "Choose with Confidence",
+                    desc: "If you need help with a size, a gift or an order, get in touch with the Bakya team."
                   }
                 ].map((step, i) => (
                   <motion.div key={i} variants={fadeInUp} className="relative">
@@ -388,16 +384,17 @@ export default function AboutPage() {
             <motion.div variants={fadeInUp} className="w-full lg:w-1/2 order-1 lg:order-2 relative mt-10 lg:mt-0 px-4">
               <div className="relative aspect-[3/4] w-full max-w-[400px] mx-auto lg:mr-0 lg:ml-auto transform rotate-[1.5deg] border-[8px] sm:border-[12px] border-[#FFFDF8] shadow-[8px_8px_0px_var(--gold-muted)] z-10">
                 <FallbackImg 
-                  src="https://images.unsplash.com/photo-1611085583191-a3b181a88401?q=80&w=1000&auto=format&fit=crop" 
-                  alt="Artisan hands crafting jewelry"
+                  src="/about/silver-making-illustration.png"
+                  alt="Illustrative image of hands working on a silver ornament"
                 />
               </div>
               <div className="absolute -bottom-12 -left-4 sm:left-10 lg:-left-10 w-[200px] sm:w-[260px] aspect-square transform -rotate-3 border-[8px] sm:border-[12px] border-[#FFFDF8] shadow-lg z-20">
                 <FallbackImg 
-                  src="https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?q=80&w=800&auto=format&fit=crop" 
-                  alt="Gold necklace close up"
+                  src="https://cdn.shopify.com/s/files/1/0704/8554/0995/files/top_left_2.png?v=1778481934"
+                  alt="Bakya silver Vinayagar pendant"
                 />
               </div>
+              <p className="mt-4 text-center text-xs text-[var(--stone-light)] lg:text-right">Illustrative silver making image; product photograph from Bakya.</p>
             </motion.div>
 
           </motion.div>
@@ -405,14 +402,14 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 6: COLLECTIONS TEASER */}
-      <section className="py-24 md:py-32 bg-[var(--ivory-deep)]">
+      <section className="py-16 md:py-20 bg-[var(--ivory-deep)]">
         <div className="max-w-[1200px] mx-auto px-6">
           <motion.div 
             initial="hidden" 
             whileInView="visible" 
             viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
-            className="text-center mb-16"
+            className="text-center mb-10"
           >
             <motion.span variants={fadeInUp} className="text-[var(--gold)] uppercase tracking-[0.2em] text-sm font-semibold mb-4 block">
               WHAT WE OFFER
@@ -427,15 +424,16 @@ export default function AboutPage() {
             whileInView="visible" 
             viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-16"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-10"
           >
             {[
-              { title: "Gold Jewellery", desc: "Necklaces, bangles, earrings, chains", img: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?q=80&w=800&auto=format&fit=crop" },
-              { title: "Diamond Jewellery", desc: "Rings, pendants, solitaires", img: "https://images.unsplash.com/photo-1574542385806-6bd4bdaf3a24?q=80&w=800&auto=format&fit=crop" },
-              { title: "Bridal Sets", desc: "Full bridal collection, kasu mala", img: "https://images.unsplash.com/photo-1573408301185-9519f94816b5?q=80&w=800&auto=format&fit=crop" },
+              { title: "Silver Anklets", desc: "Kolusu for daily wear and celebrations", img: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/anklet_jewellery_box_574de163-52b3-4d8b-ace0-18065667fdd7.png?v=1779277658", alt: "Silver kolusu displayed in a Bakya jewellery box", href: "/silver-jewellery/anklets" },
+              { title: "Silver Rings", desc: "Find a style and size that suits you", img: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/ChatGPTImageMay9_2026_02_39_36PM_cdd591e1-7ba7-490e-b8cd-b9352be768ba.png?v=1778400198", alt: "Bakya silver ring with a gold tone detail", href: "/silver-jewellery/rings" },
+              { title: "Silver Chains", desc: "Easy to wear and thoughtful to gift", img: "https://cdn.shopify.com/s/files/1/0704/8554/0995/files/bottom_left_2d0e7ff7-e383-4d31-8e82-ba174a6e3845.png?v=1779268856", alt: "Bakya silver chain on a purple background", href: "/silver-jewellery/chains" },
             ].map((col, idx) => (
-              <motion.div key={idx} variants={fadeInUp} className="group relative aspect-[2/3] overflow-hidden cursor-pointer rounded-sm bg-[var(--gold-muted)]/20 focus-within:ring-2 focus-within:ring-[var(--gold)] focus-within:ring-offset-2">
-                <FallbackImg src={col.img} alt={col.title} className="transition-transform duration-[0.8s] group-hover:scale-105" />
+              <motion.div key={idx} variants={fadeInUp} className="group relative aspect-square overflow-hidden rounded-sm bg-[var(--gold-muted)]/20 focus-within:ring-2 focus-within:ring-[var(--gold)] focus-within:ring-offset-2">
+                <FallbackImg src={col.img} alt={col.alt} className="transition-transform duration-[0.8s] group-hover:scale-105" />
+                <Link href={col.href} className="absolute inset-0 z-20" aria-label={`Explore ${col.title}`} />
                 <div className="absolute inset-0 bg-gradient-to-t from-[var(--noir)]/90 via-[var(--noir)]/30 to-transparent transition-opacity duration-500 group-hover:opacity-80" />
                 <div className="absolute inset-0 p-8 flex flex-col justify-end">
                   <h3 className="font-playfair text-3xl text-white mb-2 transform group-hover:-translate-y-2 transition-transform duration-500">
@@ -470,118 +468,70 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* SECTION 7: SOCIAL PROOF */}
-      <section className="py-24 md:py-32 bg-[var(--noir)] text-white overflow-hidden">
+      {/* SECTION 7: VISITING AND SHOPPING */}
+      <section className="py-16 md:py-20 bg-[var(--noir)] text-white overflow-hidden">
         <div className="max-w-[1200px] mx-auto px-6">
-          <motion.div 
-            initial="hidden" 
-            whileInView="visible" 
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerContainer}
-            className="text-center mb-20"
-          >
-            <motion.span variants={fadeInUp} className="text-[var(--gold-muted)] uppercase tracking-[0.2em] text-sm font-semibold mb-4 block">
-              CUSTOMER STORIES
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="font-playfair text-4xl md:text-[40px] mb-6">
-              Trusted by Thousands of Families
-            </motion.h2>
-            <motion.p variants={fadeInUp} className="font-jost text-[var(--stone-light)] text-lg max-w-2xl mx-auto font-light">
-              From first earrings to bridal trousseau — our customers return for every milestone.
-            </motion.p>
-          </motion.div>
-
-          <motion.div 
-            initial="hidden" 
-            whileInView="visible" 
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          >
+          <div className="text-center mb-10">
+            <span className="text-[#F1D887] uppercase tracking-[0.2em] text-sm font-semibold mb-4 block">YOUR BAKYA EXPERIENCE</span>
+            <h2 className="font-playfair text-4xl md:text-[40px]">Here to Help You Choose</h2>
+            <p className="font-jost text-white/80 text-lg max-w-2xl mx-auto mt-4">Whether you visit the shop or browse online, the details should be easy to find.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              {
-                text: "We've been buying jewellery from Bagyalakshmi for our family weddings for 15 years. The quality is unmatched and the staff is incredibly trustworthy.",
-                name: "Meenakshi R.", loc: "Tirunelveli", init: "MR"
-              },
-              {
-                text: "Got my bridal set made here. Every single piece was perfect — pure silver, beautiful design, and delivered on time. Couldn't be happier.",
-                name: "Kavitha S.", loc: "Nagercoil", init: "KS"
-              },
-              {
-                text: "Transparent pricing and genuine hallmarked silver. I've checked multiple shops — nobody comes close to the trust and value Bagyalakshmi offers.",
-                name: "Rajendran M.", loc: "Madurai", init: "RM"
-              }
-            ].map((review, i) => (
-              <motion.div key={i} variants={fadeInUp} className="group relative bg-[var(--noir-soft)] p-8 border-b-2 border-[var(--gold-muted)] hover:shadow-[0_0_30px_rgba(184,134,11,0.08)] transition-shadow duration-500">
-                <div className="absolute top-2 left-6 font-playfair text-[120px] text-[var(--gold)] opacity-15 leading-none select-none" aria-hidden="true">
-                  &ldquo;
-                </div>
-                <div className="relative z-10">
-                  <div className="flex text-[var(--gold)] mb-6 text-sm" aria-label="5 out of 5 stars">
-                    ★★★★★
-                  </div>
-                  <p className="font-cormorant italic text-[19px] leading-[1.8] text-white/90 mb-8 min-h-[140px]">
-                    "{review.text}"
-                  </p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-[var(--gold-gradient)] flex items-center justify-center text-[var(--noir)] font-playfair font-bold text-lg" aria-hidden="true">
-                      {review.init}
-                    </div>
-                    <div>
-                      <h4 className="font-jost font-medium text-[var(--gold)]">{review.name}</h4>
-                      <p className="font-jost text-[var(--stone-light)] text-sm">{review.loc}</p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+              { title: "Browse silver", text: "Explore anklets, rings, chains, bracelets and pendants across the Bakya collection.", href: "/silver-jewellery", link: "Shop the collection" },
+              { title: "Read the details", text: "Check the available size, weight, material and care information on each product page.", href: "/blog", link: "Read the journal" },
+              { title: "Ask our team", text: "Have a question about a piece or your order? Contact us before making your choice.", href: "/contact", link: "Contact Bakya" },
+            ].map((item) => (
+              <div key={item.title} className="bg-[var(--noir-soft)] p-7 border-b-2 border-[var(--gold-muted)]">
+                <h3 className="font-playfair text-xl text-white">{item.title}</h3>
+                <p className="font-jost text-white/80 text-sm leading-7 mt-3 mb-5">{item.text}</p>
+                <Link href={item.href} className="text-[#F1D887] text-sm font-medium hover:underline">{item.link} →</Link>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
-
       {/* SECTION 8: MEET THE TEAM / HERITAGE */}
-      <section className="py-24 md:py-32 bg-[var(--ivory)]">
+      <section className="py-16 md:py-20 bg-[var(--ivory)]">
         <div className="max-w-[1200px] mx-auto px-6">
           <motion.div 
             initial="hidden" 
             whileInView="visible" 
             viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
-            className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24"
+            className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16"
           >
-            {/* Left side: Founder Portrait */}
+            {/* The photograph supplied by the shop */}
             <motion.div variants={fadeInUp} className="w-full lg:w-[45%]">
-              <div className="relative aspect-[3/4] w-full max-w-sm mx-auto p-4 border border-[var(--gold)]/30 bg-white shadow-xl">
+              <div className="relative aspect-[4/3] w-full max-w-lg mx-auto p-3 border border-[var(--gold)]/30 bg-white shadow-xl">
                 <FallbackImg 
-                  src="https://images.unsplash.com/photo-1507676184212-d035043a9689?q=80&w=800&auto=format&fit=crop" 
-                  alt="Founder of Bagyalakshmi Jewellers" 
-                  className="filter sepia-[0.3] contrast-[1.1]"
+                  src="/about/bakya-store.jpg"
+                  alt="A team member inside the Bagyalakshmi Jewellers shop"
                 />
-                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-[var(--noir)] text-white px-8 py-3 text-center whitespace-nowrap shadow-xl min-w-[280px]">
-                  <h3 className="font-playfair text-xl mb-1 text-[var(--gold)]">Sri Bagyalakshmi</h3>
-                  <p className="font-jost text-xs uppercase tracking-[0.1em] opacity-80">Founder & Visionary</p>
+                <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-[var(--noir)] text-white px-6 py-3 text-center shadow-xl w-[90%]">
+                  <h3 className="font-playfair text-lg text-[#F1D887]">Inside our Tirunelveli shop</h3>
                 </div>
               </div>
             </motion.div>
 
             {/* Right side: Heritage Content */}
-            <motion.div variants={fadeInUp} className="w-full lg:w-[55%] mt-12 lg:mt-0">
-              <span className="text-[var(--gold)] uppercase tracking-[0.2em] text-sm font-semibold mb-6 block">THE PEOPLE BEHIND THE SILVER</span>
+            <motion.div variants={fadeInUp} className="w-full lg:w-[55%] mt-7 lg:mt-0">
+              <span className="text-[#725315] uppercase tracking-[0.2em] text-sm font-semibold mb-4 block">THE PEOPLE BEHIND THE SILVER</span>
               <h2 className="font-playfair text-4xl md:text-5xl text-[var(--noir)] mb-8 leading-tight">
-                A Family Business <br/>Built on Values
+                A Real Shop <br/>Behind Bakya
               </h2>
-              <p className="font-jost font-light text-[var(--stone)] text-lg leading-[1.8] mb-12 max-w-[500px]">
-                We don't just sell jewellery; we build relationships. Our founding family personally oversees sourcing, crafting, and quality control. When you step into our showroom, you aren't just a customer — you're welcomed as part of the Bagyalakshmi family.
+              <p className="font-jost text-[var(--stone)] text-base leading-[1.8] mb-7 max-w-[500px]">
+                The photograph shows the jewellery shop behind Bakya. Our Tirunelveli roots matter to us, and we want choosing silver online to feel personal. Contact the team if you need help with a size, a gift or an order.
               </p>
               
-              <div className="space-y-6">
+              <div className="space-y-3">
                 {[
-                  { icon: "🤝", text: "Personal Relationship with Every Customer" },
-                  { icon: "🎓", text: "40+ Years of Combined Jewellery Expertise" },
-                  { icon: "📍", text: "Rooted in Tirunelveli, Trusted Across TN" },
+                  { icon: <MessageCircle size={23} strokeWidth={1.8} />, text: "Help with product questions" },
+                  { icon: <Sparkles size={23} strokeWidth={1.8} />, text: "Silver for daily wear and occasions" },
+                  { icon: <MapPin size={23} strokeWidth={1.8} />, text: "Rooted in Tirunelveli since 1997" },
                 ].map((val, idx) => (
-                  <div key={idx} className="flex items-center gap-5 p-5 bg-white shadow-sm border border-[var(--border-warm)]">
-                    <span className="text-2xl" aria-hidden="true">{val.icon}</span>
+                  <div key={idx} className="flex items-center gap-4 p-4 bg-white shadow-sm border border-[var(--border-warm)]">
+                    <span className="text-[var(--noir-soft)]" aria-hidden="true">{val.icon}</span>
                     <span className="font-jost font-medium text-[var(--noir)] lg:text-lg">{val.text}</span>
                   </div>
                 ))}
@@ -592,7 +542,7 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 9: CONVERSION CTA */}
-      <section className="py-24 md:py-32 bg-[var(--gold-gradient)] text-center px-6 relative overflow-hidden z-10">
+      <section className="py-16 md:py-20 bg-[var(--gold-gradient)] text-center px-6 relative overflow-hidden z-10">
         <div className="absolute inset-0 bg-white/5 opacity-50 mix-blend-overlay pointer-events-none" />
         
         <motion.div 
@@ -615,7 +565,7 @@ export default function AboutPage() {
           </motion.h2>
 
           <motion.p variants={fadeInUp} className="font-cormorant italic text-xl md:text-2xl text-[var(--noir-soft)] mb-12 max-w-2xl mx-auto opacity-90">
-            Visit us at Koolakkadai Bazaar, Tirunelveli or reach out — we'd love to be part of your most precious moments.
+            Visit us at Koolakkadai Bazaar, Tirunelveli or reach out — we&apos;d love to be part of your most precious moments.
           </motion.p>
 
           <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-16">
@@ -645,8 +595,9 @@ export default function AboutPage() {
             </a>
           </motion.div>
 
-          <motion.div variants={fadeInUp} className="font-jost text-[var(--noir-soft)] text-sm tracking-wide opacity-80">
-            📍 57A/12, Koolakkadai Bazaar, Tirunelveli 627006 &nbsp;|&nbsp; 📞 +91 97907 90527
+          <motion.div variants={fadeInUp} className="font-jost text-[var(--noir-soft)] text-sm tracking-wide opacity-80 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            <span className="inline-flex items-center gap-2"><MapPin size={16} aria-hidden="true" /> 57A/12, Koolakkadai Bazaar, Tirunelveli 627006</span>
+            <span className="inline-flex items-center gap-2"><Phone size={16} aria-hidden="true" /> +91 90257 90527</span>
           </motion.div>
         </motion.div>
       </section>

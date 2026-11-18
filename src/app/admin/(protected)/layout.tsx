@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { LayoutDashboard, FileText, Plus, Star, Trash2, FolderOpen } from 'lucide-react'
+import { LayoutDashboard, FileText, Plus, Star, Trash2, FolderOpen, Film } from 'lucide-react'
 import AdminLogoutButton from '@/components/admin/AdminLogoutButton'
 import ToastProvider from '@/components/admin/ToastProvider'
 import { getDraftCount, getTrashCount } from '@/lib/blog'
@@ -84,6 +84,16 @@ export default function AdminProtectedLayout({ children }: { children: React.Rea
           >
             <FolderOpen className="w-4 h-4 shrink-0" />
             Categories
+          </Link>
+          <div className="pt-3 pb-1 px-3">
+            <span className="text-[10px] uppercase tracking-wider text-white/30 font-semibold">Home page</span>
+          </div>
+          <Link
+            href="/admin/video-showcase"
+            className="flex items-center gap-2.5 px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded transition-colors"
+          >
+            <Film className="w-4 h-4 shrink-0" />
+            Video Showcase
           </Link>
         </nav>
 

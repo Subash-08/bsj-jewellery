@@ -42,7 +42,12 @@ import { parseMetafields } from '@/lib/utils/metafield-parser';
 function reshapeProduct(rawProduct: any): Product | undefined {
     if (!rawProduct) return undefined;
 
-    const metafields = rawProduct.metafields?.edges?.map((edge: any) => edge.node) || [];
+    // Shopify returns `metafields(identifiers: ...)` as a nullable array,
+    // while other connections use `{ edges }`. Support both response shapes
+    // so product detail fields are never silently discarded.
+    const metafields = Array.isArray(rawProduct.metafields)
+        ? rawProduct.metafields.filter(Boolean)
+        : rawProduct.metafields?.edges?.map((edge: any) => edge.node).filter(Boolean) || [];
     const parsedMetafields = parseMetafields(metafields);
 
     return {

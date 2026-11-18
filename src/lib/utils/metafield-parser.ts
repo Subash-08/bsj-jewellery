@@ -12,7 +12,34 @@ export function parseMetafields(metafields: Metafield[]): JewelryMetafields {
         }
     });
 
+    // Map the current Shopify keys to the display names used by the existing
+    // storefront. Keep the original keys too, so no product data is lost.
+    const values = result as Record<string, string | number | boolean | undefined>;
+    values['Purity Percentage'] = values.metal_purity ?? values.anklet_purity ?? values['Purity Percentage'];
+    values['Net Weight'] = parseWeight(values.net_weight) ?? values['Net Weight'];
+    values['Metal Type'] = values.metal_type ?? values['Metal Type'];
+    values['Jewellery Category'] = values.jewellery_category ?? values['Jewellery Category'];
+    values['Sub Category'] = values.sub_category ?? values['Sub Category'];
+    values['Gender'] = values.gender ?? values['Gender'];
+    values['Occasion'] = values.occasion ?? values['Occasion'];
+    values['Design Style'] = values.design_style ?? values['Design Style'];
+    values['Size / Length'] = values.ringsize
+        ?? values.chain_size
+        ?? values.anklet_size_and_fit_details
+        ?? values['Size / Length'];
+
     return result;
+}
+
+function parseWeight(value: string | number | boolean | undefined): number | undefined {
+    if (typeof value === 'number') return Number.isFinite(value) ? value : undefined;
+    if (typeof value !== 'string') return undefined;
+
+    const match = value.match(/\d+(?:\.\d+)?/);
+    if (!match) return undefined;
+
+    const parsed = Number(match[0]);
+    return Number.isFinite(parsed) ? parsed : undefined;
 }
 
 function parseMetafieldValue(metafield: Metafield): any {

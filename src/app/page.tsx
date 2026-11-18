@@ -24,6 +24,7 @@ import Testimonials from '@/components/home/Testimonials';
 import FAQ from '@/components/home/FAQ';
 import InstagramFeed from '@/components/home/InstagramFeed';
 import FinalCTA from '@/components/home/FinalCTA';
+import VideoShowcaseSection from '@/components/home/VideoShowcaseSection';
 import ProductSkeleton from '@/components/home/ProductSkeleton';
 import SectionSkeleton from '@/components/home/SectionSkeleton';
 import { mockProducts } from '@/lib/shopify/mock';
@@ -173,6 +174,7 @@ export default async function HomePage() {
           />
         </Suspense>
 
+        <VideoShowcaseSection />
         <PromoBanner />
         {/* <StyleGridServer /> */}
         <FinalCTA />

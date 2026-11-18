@@ -18,6 +18,22 @@ const TRASH_DIR = path.join(process.cwd(), 'content', 'blog', '_trash')
 const CATEGORIES_FILE = path.join(process.cwd(), 'content', 'blog', 'categories.json')
 const DEFAULT_PER_PAGE = 9
 
+function markdownToBlocks(content: string): ContentBlock[] {
+  const asHtml = (value: string) => value
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\[([^\]]+)\]\((https:\/\/[^)]+|\/[^)]+)\)/g, '<a href="$2">$1</a>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+  return content.trim().split(/\n\s*\n/).filter(Boolean).map((part, index) => {
+    const heading = part.match(/^(#{2,4})\s+(.+)$/)
+    if (heading?.[1] && heading[2]) {
+      const text = heading[2]
+      const type = `h${heading[1].length}` as ContentBlock['type']
+      return { id: `md-${index}`, type, content: text, anchorId: text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-') }
+    }
+    return { id: `md-${index}`, type: 'paragraph' as const, content: `<p>${asHtml(part.replace(/\n/g, ' '))}</p>` }
+  })
+}
+
 function ensureDir(): void {
   if (!fs.existsSync(POSTS_DIR)) fs.mkdirSync(POSTS_DIR, { recursive: true })
 }
@@ -60,6 +76,8 @@ export function getPostBySlug(slug: string): BlogPost | null {
         blocks = undefined
       }
     }
+
+    if (!blocks && content.trim()) blocks = markdownToBlocks(content)
 
     return {
       slug,
@@ -267,7 +285,7 @@ export function saveCategory(category: BlogCategoryConfig): void {
   const categories = getAdminCategories()
   const idx = categories.findIndex((c) => c.slug === category.slug)
   if (idx >= 0) {
-    categories[idx] = { ...category, postCount: categories[idx].postCount }
+    categories[idx] = { ...category, postCount: categories[idx]?.postCount ?? 0 }
   } else {
     categories.push({ ...category, postCount: 0 })
   }

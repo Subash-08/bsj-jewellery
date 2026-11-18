@@ -8,6 +8,25 @@ export interface Metafield {
 
 // Jewelry-specific metafield interface
 export interface JewelryMetafields {
+    // Current Shopify merchant-owned product fields (namespace: custom)
+    metal_purity?: string;
+    net_weight?: string;
+    metal_type?: string;
+    jewellery_category?: string;
+    sub_category?: string;
+    gender?: string;
+    occasion?: string;
+    design_style?: string;
+    ring_weight?: string;
+    bracelet_weight?: string;
+    anklet_weight?: string;
+    anklet_purity?: string;
+    pendant_weight?: string;
+    chain_size?: string;
+    chain_weight?: string;
+    ringsize?: string;
+    anklet_size_and_fit_details?: string;
+    'Size / Length'?: string;
     // Stone & Weight Details
     'Stone Weight'?: number;
     'Net Weight'?: number;

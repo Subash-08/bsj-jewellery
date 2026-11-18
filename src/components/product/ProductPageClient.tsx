@@ -131,8 +131,8 @@ export default function ProductPageClient({
         },
         {
             label: 'Weight',
-            value: meta['Gross Weight']
-                ? `${meta['Gross Weight']}g`
+            value: meta['Net Weight']
+                ? `${meta['Net Weight']}g`
                 : parsed.weight,
             icon: Sparkles,
         },
@@ -142,6 +142,7 @@ export default function ProductPageClient({
                 || meta['Bracelet Length(inches)']
                 || meta['Ankle Length']
                 || meta['Necklace Length']
+                || meta['Size / Length']
                 || parsed.length,
             icon: Clock,
         },
@@ -268,7 +269,7 @@ export default function ProductPageClient({
                                 answer={[
                                     product.title.replace(/\|\s*Bakya.*/i, '').trim(),
                                     `has ${productPurity} purity information`,
-                                    meta['Gross Weight'] ? `(${meta['Gross Weight']}g)` : parsed.weight ? `(${parsed.weight})` : '',
+                                    meta['Net Weight'] ? `(${meta['Net Weight']}g)` : parsed.weight ? `(${parsed.weight})` : '',
                                     'from Bakya.',
                                 ].filter(Boolean).join(' ')}
                             />

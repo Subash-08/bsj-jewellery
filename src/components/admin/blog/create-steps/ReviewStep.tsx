@@ -7,6 +7,9 @@ import { calculateSeoMetrics } from '@/lib/blog/seo-metrics'
 interface SeoOverrides {
   metaTitle?: string
   metaDescription?: string
+  ogTitle?: string
+  ogDescription?: string
+  ogImage?: string
 }
 
 interface Props {
@@ -148,6 +151,20 @@ export default function ReviewStep({
             placeholder="Defaults to excerpt if empty"
           />
         </div>
+      </div>
+
+      <div className="border border-stone-200 p-4 space-y-3">
+        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Social sharing (optional)</h3>
+        <p className="text-xs text-gray-500">The post title, description and cover image are used when these fields are empty.</p>
+        <label className="block text-xs text-gray-600">Open Graph title
+          <input value={seo.ogTitle ?? ''} onChange={(e) => onSeoChange({ ...seo, ogTitle: e.target.value })} className="mt-1 w-full text-sm px-2 py-1.5 border border-stone-300" />
+        </label>
+        <label className="block text-xs text-gray-600">Open Graph description
+          <textarea value={seo.ogDescription ?? ''} onChange={(e) => onSeoChange({ ...seo, ogDescription: e.target.value })} rows={2} className="mt-1 w-full text-sm px-2 py-1.5 border border-stone-300" />
+        </label>
+        <label className="block text-xs text-gray-600">Open Graph image URL
+          <input type="url" value={seo.ogImage ?? ''} onChange={(e) => onSeoChange({ ...seo, ogImage: e.target.value })} placeholder="https://cdn.shopify.com/..." className="mt-1 w-full text-sm px-2 py-1.5 border border-stone-300" />
+        </label>
       </div>
 
       {/* publish actions */}
