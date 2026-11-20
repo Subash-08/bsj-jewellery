@@ -16,8 +16,8 @@ function adminDomain(): string {
 }
 
 async function requestClientCredentialsToken(domain: string): Promise<string> {
-  const clientId = process.env.SHOPIFY_ADMIN_CLIENT_ID
-  const clientSecret = process.env.SHOPIFY_ADMIN_CLIENT_SECRET
+  const clientId = process.env.SHOPIFY_ADMIN_CLIENT_ID?.trim()
+  const clientSecret = process.env.SHOPIFY_ADMIN_CLIENT_SECRET?.trim()
   if (!clientId || !clientSecret) throw new Error('Shopify Admin client credentials are not configured')
   const response = await fetch(`https://${domain}/admin/oauth/access_token`, {
     method: 'POST',
@@ -25,8 +25,17 @@ async function requestClientCredentialsToken(domain: string): Promise<string> {
     body: new URLSearchParams({ grant_type: 'client_credentials', client_id: clientId, client_secret: clientSecret }),
     cache: 'no-store',
   })
-  const data = await response.json().catch(() => ({})) as TokenResponse
+  const raw = await response.text()
+  let data: TokenResponse = {}
+  try { data = JSON.parse(raw) as TokenResponse } catch { /* Shopify may return an HTML error page. */ }
   if (!response.ok || !data.access_token) {
+    const knownErrors: Record<string, string> = {
+      app_not_installed: 'Install Bakya Website Videos on this Shopify store first. Open the app in Dev Dashboard, select Install app, choose the Bakya store and approve installation.',
+      shop_not_permitted: 'The Shopify app and store are not in the same organization. Client credentials require the same organization; otherwise an OAuth installation flow is needed.',
+      invalid_client: 'The Shopify client ID or secret is invalid. Copy both from the same installed app’s Settings → Credentials.',
+    }
+    const errorCode = Object.keys(knownErrors).find((code) => data.error === code || raw.includes(code))
+    if (errorCode) throw new Error(`Shopify authentication (${response.status}, ${errorCode}): ${knownErrors[errorCode]}`)
     throw new Error(`Shopify app credentials were rejected (${response.status}). Check the client ID, secret, app installation and store domain.`)
   }
   const lifetime = Math.max(60, Number(data.expires_in) || 3600)

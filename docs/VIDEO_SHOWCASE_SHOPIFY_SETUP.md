@@ -19,11 +19,15 @@ The app also needs permission to read and write the shop metafield. Shopify appl
 ## Upload and publishing
 
 1. Open `/admin/video-showcase` while signed in to the Next.js admin.
-2. Choose an MP4 or MOV file (up to 100 MB), enter a title and upload.
+2. Open the Video Library tab. Choose an MP4, MOV or WebM file (up to 25 MB), enter a title, description and display orientation, and optionally upload a JPEG/PNG/WebP thumbnail (up to 2 MB).
 3. The browser sends the file directly to the temporary upload URL issued by Shopify. The Next.js server then calls `fileCreate`; Shopify processes the file asynchronously and saves it under **Settings → Files**.
-4. Refresh status until Shopify reports `READY`. Set the section heading and description, enable it, then save.
+4. Refresh status until Shopify reports `READY`. Open Video Sections, add or edit a section, choose its heading, subtitle, margins and layout, then attach library videos. Click Add more than once to repeat a video. Save the section.
 5. The home page reads the shop metafield and resolves each video ID to its Shopify CDN URL and preview image. It shows only READY videos. Removing a video from the showcase does not delete it from Shopify Files.
 
 The checkout domain, Hostinger DNS and Vercel domain routing do not host these files and need no video-specific DNS change.
+
+The version 2 configuration separates the reusable library from up to 20 ordered sections. Each section supports up to 24 placements, including repeated references to the same video. Existing single-section settings are migrated in memory on read, and saved in the new format on the next edit. Removing a library entry removes its placements but retains the Shopify file. Removing a section retains its library videos. Concurrent edits are checked using Shopify's metafield digest; refresh before retrying a conflicting save.
+
+Layouts: Hero Highlight, Equal Grid, Horizontal Slider, Vertical Reels and Spotlight Split. Section order is controlled by the up/down buttons. Public players show Shopify's duration and load media metadata without autoplay; titles are available as accessible labels rather than visible captions.
 
 Shopify references: [client credentials](https://shopify.dev/docs/apps/build/authentication-authorization/client-credentials-grant), [fileCreate](https://shopify.dev/docs/api/admin-graphql/2026-10/mutations/fileCreate), [stagedUploadsCreate](https://shopify.dev/docs/api/admin-graphql/2026-10/mutations/stagedUploadsCreate), [metafieldsSet](https://shopify.dev/docs/api/admin-graphql/2026-10/mutations/metafieldsSet).

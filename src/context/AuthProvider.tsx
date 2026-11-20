@@ -33,12 +33,12 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children, initialCustomer }: AuthProviderProps) {
     const [customer, setCustomer] = useState<Customer | null>(initialCustomer ?? null);
-    const [isLoading, setIsLoading] = useState(!initialCustomer);
+    const [isLoading, setIsLoading] = useState(initialCustomer === undefined);
     const router = useRouter();
 
     const fetchCustomer = async () => {
         try {
-            const res = await fetch("/api/auth/customer");
+            const res = await fetch("/api/auth/customer", { cache: 'no-store' });
             if (res.ok) {
                 const data = await res.json();
                 setCustomer(data.customer);
@@ -58,7 +58,7 @@ export function AuthProvider({ children, initialCustomer }: AuthProviderProps) {
 
     useEffect(() => {
         // Skip fetch if initialCustomer was provided server-side
-        if (initialCustomer !== undefined && initialCustomer !== null) {
+        if (initialCustomer !== undefined) {
             return;
         }
         fetchCustomer();

@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // Keep production builds from overwriting a running development server's output.
+    distDir: process.env.NODE_ENV === 'development' ? '.next-dev' : '.next',
     reactStrictMode: true,
     images: {
         formats: ['image/avif', 'image/webp'],

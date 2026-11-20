@@ -5,16 +5,14 @@ import { SessionProvider } from '@/context/SessionProvider';
 import { AuthProvider } from '@/context/AuthProvider';
 import { ThemeProvider } from '@/context/ThemeProvider';
 import { WishlistProvider } from '@/context/WishlistProvider';
-import Navbar from '@/components/layout/Navbar';
 import ShopByCategoryMenu from '@/components/layout/ShopByCategoryMenu';
-import Footer from '@/components/layout/Footer';
 import { Toaster } from 'sonner';
 import { getCustomerFromSession } from '@/lib/auth/session';
 import type { Metadata, Viewport } from 'next';
 import { SchemaScript } from '@/components/seo/SchemaScript';
 import { organizationSchema, localBusinessSchema, websiteSchema } from '@/lib/schema';
-import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
 import { Analytics } from '@/components/analytics/Analytics';
+import StorefrontChrome from '@/components/layout/StorefrontChrome';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -170,12 +168,7 @@ export default async function RootLayout({
               <WishlistProvider>
                 <CartProvider>
                   <Toaster position="bottom-center" richColors closeButton expand />
-                  <Navbar categoryMenuSlot={<ShopByCategoryMenu />} />
-                  <main>
-                    {children}
-                  </main>
-                  <Footer />
-                  <WhatsAppButton />
+                  <StorefrontChrome categoryMenu={<ShopByCategoryMenu />}>{children}</StorefrontChrome>
                 </CartProvider>
               </WishlistProvider>
             </ThemeProvider>

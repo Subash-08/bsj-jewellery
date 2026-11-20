@@ -140,7 +140,7 @@ export default function SplitProductShowcase({
   if (!products?.length) return null;
 
   return (
-    <section className="sps-root my-20">
+    <section className="sps-root">
       <div className="sps-grid">
 
         {/* LEFT: Products */}

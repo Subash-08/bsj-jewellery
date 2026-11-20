@@ -1,64 +1,51 @@
 import 'server-only'
 import { shopifyAdmin } from '@/lib/shopify/admin'
+import { videoConfigSchema, type VideoConfig, type LibraryVideo, type ResolvedLibraryVideo } from '@/types/video-showcase'
 
-export type ShowcaseVideo = { id: string; title: string }
-export type ShowcaseConfig = {
-  enabled: boolean
-  title: string
-  subtitle: string
-  videos: ShowcaseVideo[]
-}
-export type ResolvedVideo = ShowcaseVideo & { status: string; url: string | null; poster: string | null }
-
-const DEFAULT_CONFIG: ShowcaseConfig = {
-  enabled: false,
-  title: 'Stories in Silver',
-  subtitle: 'A closer look at the pieces and people behind Bakya.',
-  videos: [],
-}
-
-type ShopMetafield = { shop: { id: string; metafield: { value: string; compareDigest: string } | null } }
-
-export async function getShowcaseConfig(): Promise<{ config: ShowcaseConfig; ownerId: string; compareDigest: string | null }> {
-  const data = await shopifyAdmin<ShopMetafield>(`query ShowcaseConfig {
+export async function getShowcaseConfig() {
+  const data = await shopifyAdmin<{ shop: { id: string; metafield: { value: string; compareDigest: string } | null } }>(`query ShowcaseConfig {
     shop { id metafield(namespace: "bakya", key: "home_video_showcase") { value compareDigest } }
   }`)
-  let config = DEFAULT_CONFIG
-  try {
-    if (data.shop.metafield?.value) {
-      const parsed = JSON.parse(data.shop.metafield.value) as Partial<ShowcaseConfig>
-      config = {
-        enabled: parsed.enabled === true,
-        title: typeof parsed.title === 'string' ? parsed.title : DEFAULT_CONFIG.title,
-        subtitle: typeof parsed.subtitle === 'string' ? parsed.subtitle : DEFAULT_CONFIG.subtitle,
-        videos: Array.isArray(parsed.videos) ? parsed.videos.filter((v): v is ShowcaseVideo =>
-          typeof v?.id === 'string' && /^gid:\/\/shopify\/Video\/\d+$/.test(v.id) && typeof v.title === 'string'
-        ).slice(0, 12) : [],
-      }
+  let config: VideoConfig = { version: 2, library: [], sections: [] }
+  if (data.shop.metafield) {
+    const raw = JSON.parse(data.shop.metafield.value)
+    if (raw.version === 2) config = videoConfigSchema.parse(raw)
+    else {
+      // Migrate the existing single section in memory. Nothing is written until Save.
+      config = videoConfigSchema.parse({
+        version: 2,
+        library: raw.videos || [],
+        sections: [{ id: 'original', title: raw.title || 'Stories in Silver', subtitle: raw.subtitle || '',
+          enabled: raw.enabled === true, layout: 'reels', marginTop: 0, marginBottom: 0,
+          videoIds: (raw.videos || []).map((v: { id: string }) => v.id) }],
+      })
     }
-  } catch {
-    // A malformed value should never break the public home page.
   }
   return { config, ownerId: data.shop.id, compareDigest: data.shop.metafield?.compareDigest ?? null }
 }
 
-export async function saveShowcaseConfig(config: ShowcaseConfig, ownerId: string, compareDigest: string | null) {
+export async function saveShowcaseConfig(config: VideoConfig, ownerId: string, compareDigest: string | null) {
   const data = await shopifyAdmin<{ metafieldsSet: { userErrors: { message: string }[] } }>(`mutation SaveShowcase($metafields: [MetafieldsSetInput!]!) {
     metafieldsSet(metafields: $metafields) { userErrors { message } }
   }`, { metafields: [{ ownerId, namespace: 'bakya', key: 'home_video_showcase', type: 'json', value: JSON.stringify(config), compareDigest }] })
-  if (data.metafieldsSet.userErrors.length) throw new Error(data.metafieldsSet.userErrors.map((e) => e.message).join('; '))
+  if (data.metafieldsSet.userErrors.length) throw new Error(data.metafieldsSet.userErrors.map(e => e.message).join('; '))
 }
 
-export async function resolveShowcaseVideos(videos: ShowcaseVideo[]): Promise<ResolvedVideo[]> {
+export async function resolveShowcaseVideos(videos: LibraryVideo[]): Promise<ResolvedLibraryVideo[]> {
   if (!videos.length) return []
-  const data = await shopifyAdmin<{ nodes: Array<{ id: string; fileStatus: string; sources: { url: string; format: string; mimeType: string }[]; preview: { image: { url: string } | null } | null } | null> }>(`query ShowcaseVideos($ids: [ID!]!) {
+  const thumbnails = videos.flatMap(v => v.thumbnailId ? [v.thumbnailId] : [])
+  const images = thumbnails.length ? await shopifyAdmin<{ nodes: Array<{ id: string; image: { url: string } | null } | null> }>(`query VideoThumbnails($ids: [ID!]!) {
+    nodes(ids: $ids) { ... on MediaImage { id image { url } } }
+  }`, { ids: [...new Set(thumbnails)] }) : { nodes: [] }
+  const data = await shopifyAdmin<{ nodes: Array<{ fileStatus: string; duration: number | null; sources: { url: string; mimeType: string }[]; preview: { image: { url: string } | null } | null } | null> }>(`query ShowcaseVideos($ids: [ID!]!) {
     nodes(ids: $ids) {
-      ... on Video { id fileStatus sources { url format mimeType } preview { image { url } } }
+      ... on Video { fileStatus duration sources { url mimeType } preview { image { url } } }
     }
-  }`, { ids: videos.map((video) => video.id) })
+  }`, { ids: videos.map(v => v.id) })
   return videos.map((video, index) => {
     const node = data.nodes[index]
-    const source = node?.sources?.find((item) => item.mimeType === 'video/mp4') ?? node?.sources?.[0]
-    return { ...video, status: node?.fileStatus ?? 'MISSING', url: source?.url ?? null, poster: node?.preview?.image?.url ?? null }
+    const source = node?.sources?.find(s => s.mimeType === 'video/mp4') ?? node?.sources?.[0]
+    return { ...video, status: node?.fileStatus ?? 'MISSING', duration: node?.duration ?? null,
+      url: source?.url ?? null, poster: images.nodes.find(n => n?.id === video.thumbnailId)?.image?.url || video.thumbnail || node?.preview?.image?.url || null }
   })
 }

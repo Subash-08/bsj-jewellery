@@ -294,22 +294,22 @@ export default function AboutPage() {
           >
             {[
               {
-                icon: <ShieldCheck size={32} className="text-[var(--noir)]" strokeWidth={1.5} />,
+                icon: <ShieldCheck size={32} className="text-[var(--gold)]" strokeWidth={1.5} />,
                 title: "Product Details",
                 desc: "Check the available material, purity, weight and size details on the individual product page before choosing.",
               },
               {
-                icon: <Tag size={32} className="text-[var(--noir)]" strokeWidth={1.5} />,
+                icon: <Tag size={32} className="text-[var(--gold)]" strokeWidth={1.5} />,
                 title: "Clear Checkout",
                 desc: "Review the final product price, shipping charges and available delivery options before placing an order.",
               },
               {
-                icon: <Gem size={32} className="text-[var(--noir)]" strokeWidth={1.5} />,
+                icon: <Gem size={32} className="text-[var(--gold)]" strokeWidth={1.5} />,
                 title: "Silver for Every Day",
                 desc: "Explore jewellery for daily wear, gifting and occasions that bring families together.",
               },
               {
-                icon: <RefreshCw size={32} className="text-[var(--noir)]" strokeWidth={1.5} />,
+                icon: <RefreshCw size={32} className="text-[var(--gold)]" strokeWidth={1.5} />,
                 title: "Help When Needed",
                 desc: "Contact our team with questions about a product, sizing or an order before you buy.",
               }
@@ -319,7 +319,7 @@ export default function AboutPage() {
                 variants={fadeInUp}
                 className="group p-8 border border-[var(--gold)]/20 bg-white/[0.04] backdrop-blur-[8px] hover:border-[var(--gold)]/60 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(184,134,11,0.1)] transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
               >
-                <div className="w-16 h-16 rounded-2xl bg-[var(--gold-gradient)] flex items-center justify-center mb-8 shadow-inner">
+                <div className="w-16 h-16 rounded-2xl bg-[var(--noir)] border border-[var(--gold)]/30 flex items-center justify-center mb-8 shadow-inner">
                   {card.icon}
                 </div>
                 <h3 className="font-playfair text-xl text-white mb-4">{card.title}</h3>
