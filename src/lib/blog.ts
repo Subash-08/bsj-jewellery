@@ -45,7 +45,6 @@ function ensureTrashDir(): void {
 // ── Read ──────────────────────────────────────────────────────────────────────
 
 export function getAllSlugs(): string[] {
-  ensureDir()
   try {
     return fs
       .readdirSync(POSTS_DIR)
@@ -57,7 +56,6 @@ export function getAllSlugs(): string[] {
 }
 
 export function getPostBySlug(slug: string): BlogPost | null {
-  ensureDir()
   const mdxPath = path.join(POSTS_DIR, `${slug}.mdx`)
   const mdPath = path.join(POSTS_DIR, `${slug}.md`)
   const filePath = fs.existsSync(mdxPath) ? mdxPath : fs.existsSync(mdPath) ? mdPath : null
@@ -105,7 +103,6 @@ export function getPostBySlug(slug: string): BlogPost | null {
 }
 
 export function getRawPost(slug: string): string | null {
-  ensureDir()
   const mdxPath = path.join(POSTS_DIR, `${slug}.mdx`)
   const mdPath = path.join(POSTS_DIR, `${slug}.md`)
   const filePath = fs.existsSync(mdxPath) ? mdxPath : fs.existsSync(mdPath) ? mdPath : null
@@ -171,7 +168,6 @@ export function trashPost(slug: string): boolean {
 }
 
 export function getTrashedPosts(): TrashedPost[] {
-  ensureTrashDir()
   try {
     return fs
       .readdirSync(TRASH_DIR)
@@ -241,7 +237,6 @@ export function emptyTrash(): number {
 }
 
 export function getTrashCount(): number {
-  ensureTrashDir()
   try {
     return fs
       .readdirSync(TRASH_DIR)
@@ -264,7 +259,6 @@ const DEFAULT_CATEGORIES: BlogCategoryConfig[] = [
 
 export function getAdminCategories(): BlogCategoryConfig[] {
   if (!fs.existsSync(CATEGORIES_FILE)) {
-    fs.writeFileSync(CATEGORIES_FILE, JSON.stringify(DEFAULT_CATEGORIES, null, 2))
     return DEFAULT_CATEGORIES
   }
   try {
